@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import path from "path";
+import prisma from "./utils/prisma";
 
 import { upload_item } from "./routes";
 
@@ -17,7 +18,7 @@ app.set("view engine", "ejs");
 
 // define a route handler for the default home page
 app.use(upload_item);
-app.get("/", (req, res) => res.send("Hello world!"));
+app.get("/", (req, res) => res.render("views/home"));
 
 // start the Express server
 app.listen(process.env.PORT || 8080, () => {

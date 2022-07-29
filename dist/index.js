@@ -17,7 +17,7 @@ app.set("views", path_1.default.join(__dirname, "views"));
 app.set("view engine", "ejs");
 // define a route handler for the default home page
 app.use(routes_1.upload_item);
-app.get("/", (req, res) => res.send("Hello world!"));
+app.get("/", (req, res) => res.render("views/home"));
 // start the Express server
 app.listen(process.env.PORT || 8080, () => {
     console.log(`server started at http://localhost:${process.env.PORT || 8080}`);

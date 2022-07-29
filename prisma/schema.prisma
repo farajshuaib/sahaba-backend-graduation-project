@@ -1,11 +1,89 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model categories {
+  id          Int           @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name        String        @unique(map: "name_UNIQUE") @db.VarChar(45)
+  collections collections[]
+}
+
+model collections {
+  id                        Int                         @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name                      String                      @db.VarChar(45)
+  description               String                      @db.VarChar(45)
+  category_id               Int
+  banner_image              String                      @db.VarChar(45)
+  logo_image                String                      @db.VarChar(45)
+  website_url               String?                     @db.VarChar(45)
+  facebook_url              String?                     @db.VarChar(45)
+  telegram_url              String?                     @db.VarChar(45)
+  twitter_url               String?                     @db.VarChar(45)
+  istagram_url              String?                     @db.VarChar(45)
+  payout_wallet_address     String                      @db.VarChar(45)
+  blockchain                String                      @db.VarChar(45)
+  is_sensitive_content      Int                         @default(0) @db.TinyInt
+  creator_earnings          Int                         @db.TinyInt
+  categories                categories                  @relation(fields: [category_id], references: [id], onDelete: Cascade, map: "category_id")
+  collections_collaborators collections_collaborators[]
+  products                  products[]
+
+  @@index([category_id], map: "category_id_idx")
+}
+
+model collections_collaborators {
+  id            Int         @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  user_id       Int
+  collection_id Int
+  collections   collections @relation(fields: [collection_id], references: [id], onDelete: Cascade, map: "collaborate_collection_id")
+  users         users       @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "collaborate_user_id")
+
+  @@index([collection_id], map: "collection_id_idx")
+  @@index([user_id], map: "user_id_idx")
+}
+
+model products {
+  id              Int         @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  image_url       String      @unique(map: "image_url_UNIQUE") @db.VarChar(45)
+  image_hash      String      @unique(map: "image_hash_UNIQUE") @db.VarChar(45)
+  user_id         Int
+  tilte           String      @db.VarChar(45)
+  description     String      @db.VarChar(45)
+  collection_id   Int
+  creator_address String      @db.VarChar(45)
+  price           String      @db.VarChar(45)
+  status          String      @db.VarChar(45)
+  created_at      DateTime    @db.DateTime(0)
+  updated_at      DateTime    @db.DateTime(0)
+  blockchain      String      @db.VarChar(45)
+  collections     collections @relation(fields: [collection_id], references: [id], onDelete: Cascade, map: "collection_id")
+  users           users       @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "user_id")
+
+  @@index([collection_id], map: "collection_id_idx")
+  @@index([user_id], map: "user_id_idx")
+}
+
+model users {
+  id                        Int                         @unique(map: "id_UNIQUE") @default(autoincrement())
+  username                  String                      @db.VarChar(45)
+  email                     String                      @unique(map: "email_UNIQUE") @db.VarChar(45)
+  wallet_address            String                      @unique(map: "wallet_address_UNIQUE") @db.VarChar(45)
+  password                  String                      @db.VarChar(45)
+  bio                       String?                     @db.VarChar(255)
+  banner_image              String?                     @db.VarChar(45)
+  facebook_url              String?                     @db.VarChar(45)
+  profile_photo             String?                     @db.VarChar(45)
+  twitter_url               String?                     @db.VarChar(45)
+  telegram_url              String?                     @db.VarChar(45)
+  created_at                DateTime                    @db.DateTime(0)
+  updated_at                DateTime                    @db.DateTime(0)
+  collections_collaborators collections_collaborators[]
+  products                  products[]
+
+  @@id([id, email, wallet_address])
 }
