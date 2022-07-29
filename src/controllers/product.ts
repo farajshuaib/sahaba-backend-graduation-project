@@ -1,27 +1,8 @@
-import express, { Request, Response } from "express";
-import multer from "multer";
+import { Request, Response } from "express";
 import ipfsAPI from "ipfs-api";
 
 //Connceting to the ipfs network via infura gateway
 const ipfs = ipfsAPI("ipfs.infura.io", "5001", { protocol: "https" });
-
-const multer_storage = multer.memoryStorage();
-
-const multer_filter = (req: any, file: any, cb: any) => {
-  if (file.mimetype.startsWith("image")) {
-    cb(null, true);
-  } else {
-    cb("error", false);
-  }
-};
-
-const upload = multer({
-  storage: multer_storage,
-  fileFilter: multer_filter,
-});
-
-// storing the process image in the buffer storage
-export const upload_image = upload.single("photo");
 
 interface MulterRequest extends Request {
   file: any;
@@ -40,7 +21,7 @@ export const upload_item = async (req: Request, res: Response) => {
     const hash = result[0].hash; // should saved to the db to return it from ipfs.get() in the future
     res.status(200).json({
       message: "success",
-      data: { path: `https://ipfs.infura.io/ipfs/${result[0].path}` },
+      data: { path: `https://ipfs.infura.io/ipfs/${result[0].path}`, hash },
     });
   } catch (error) {
     console.log("ipfs image upload error: ", error);

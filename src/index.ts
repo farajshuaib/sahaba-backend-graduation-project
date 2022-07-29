@@ -1,9 +1,12 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
-import path from "path";
 import prisma from "./utils/prisma";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import cors from "cors"
 
-import { upload_item } from "./routes";
+import { useRoutes } from "./routes";
+import useHeader from "./middlewares/header";
 
 const app: Express = express();
 
@@ -11,16 +14,28 @@ const app: Express = express();
 dotenv.config();
 app.use(express.static("public"));
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(useHeader);
 
-// Configure Express to use EJS
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+// setup db connection
+async function main() {
+  app.use(useRoutes());
+}
+main()
+  .catch((e) => {
+    console.log("something went wrong while connection to DB", e);
+    throw e;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
 
+main();
 // define a route handler for the default home page
-app.use(upload_item);
-app.get("/", (req, res) => res.render("views/home"));
 
 // start the Express server
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`server started at http://localhost:${process.env.PORT || 8080}`);
+app.listen(process.env.PORT || 8000, () => {
+  console.log(`server started at http://localhost:${process.env.PORT || 8000}`);
 });

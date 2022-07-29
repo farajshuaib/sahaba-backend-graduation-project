@@ -1,6 +1,18 @@
-import upload_item from "./upload_item";
+import express, { Express } from "express";
 
+import products from "./product";
 
-export {
-    upload_item
-} 
+const router = express.Router();
+
+const useRoutes = () => {
+  router.get("/", (req, res) =>
+    res
+      .status(200)
+      .json({ status: 200, message: "Welcome to sahaba NFT marketplace" })
+  );
+  router.use(products);
+
+  return router;
+};
+
+export { useRoutes };

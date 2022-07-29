@@ -82,8 +82,17 @@ model users {
   telegram_url              String?                     @db.VarChar(45)
   created_at                DateTime                    @db.DateTime(0)
   updated_at                DateTime                    @db.DateTime(0)
+  role_id                   Int
+  roles                     roles                       @relation(fields: [role_id], references: [id], onDelete: Cascade, map: "role_id")
   collections_collaborators collections_collaborators[]
   products                  products[]
 
   @@id([id, email, wallet_address])
+  @@index([role_id], map: "role_id_idx")
+}
+
+model roles {
+  id    Int     @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name  String  @db.VarChar(45)
+  users users[]
 }
