@@ -1,8 +1,8 @@
 import multer from "multer";
 
-const multer_storage = multer.memoryStorage();
+const multerStorage = multer.memoryStorage();
 
-const multer_filter = (req: any, file: any, cb: any) => {
+const multerFilter = (req: any, file: any, cb: any) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
@@ -11,11 +11,11 @@ const multer_filter = (req: any, file: any, cb: any) => {
 };
 
 const upload = multer({
-  storage: multer_storage,
-  fileFilter: multer_filter,
+  storage: multerStorage,
+  fileFilter: multerFilter,
 });
 
 // storing the process image in the buffer storage
-const upload_image = upload.single("photo");
+const uploadImage = upload.single("photo");
 
-export default upload_image;
+export default uploadImage;

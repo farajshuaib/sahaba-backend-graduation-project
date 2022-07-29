@@ -1,6 +1,6 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
-import prisma from "./utils/prisma";
+import prisma from "./services/prisma";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors"
@@ -26,7 +26,7 @@ async function main() {
 main()
   .catch((e) => {
     console.log("something went wrong while connection to DB", e);
-    throw e;
+    process.exit(1)
   })
   .finally(async () => {
     await prisma.$disconnect();

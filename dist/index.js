@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const prisma_1 = __importDefault(require("./utils/prisma"));
+const prisma_1 = __importDefault(require("./services/prisma"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
@@ -38,7 +38,7 @@ function main() {
 main()
     .catch((e) => {
     console.log("something went wrong while connection to DB", e);
-    throw e;
+    process.exit(1);
 })
     .finally(() => __awaiter(void 0, void 0, void 0, function* () {
     yield prisma_1.default.$disconnect();

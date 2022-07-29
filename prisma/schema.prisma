@@ -52,7 +52,7 @@ model products {
   image_url       String      @unique(map: "image_url_UNIQUE") @db.VarChar(45)
   image_hash      String      @unique(map: "image_hash_UNIQUE") @db.VarChar(45)
   user_id         Int
-  tilte           String      @db.VarChar(45)
+  title           String      @db.VarChar(45)
   description     String      @db.VarChar(45)
   collection_id   Int
   creator_address String      @db.VarChar(45)
