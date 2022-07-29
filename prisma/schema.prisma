@@ -60,7 +60,6 @@ model products {
   status          String      @db.VarChar(45)
   created_at      DateTime    @db.DateTime(0)
   updated_at      DateTime    @db.DateTime(0)
-  blockchain      String      @db.VarChar(45)
   collections     collections @relation(fields: [collection_id], references: [id], onDelete: Cascade, map: "collection_id")
   users           users       @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "user_id")
 

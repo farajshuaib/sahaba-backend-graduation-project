@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import ipfsAPI from "ipfs-api";
 
-//Connceting to the ipfs network via infura gateway
+// Connecting to the ipfs network via infura gateway
 const ipfs = ipfsAPI("ipfs.infura.io", "5001", { protocol: "https" });
 
 interface MulterRequest extends Request {
   file: any;
 }
-export const upload_item = async (req: Request, res: Response) => {
+export const uploadImage = async (req: Request, res: Response) => {
   const file = (req as MulterRequest).file;
 
   if (!file) {
@@ -25,6 +25,6 @@ export const upload_item = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log("ipfs image upload error: ", error);
-    res.status(500).send({ message: "upload failed", error: error });
+    res.status(500).send({ message: "upload failed", error });
   }
 };

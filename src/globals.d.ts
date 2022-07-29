@@ -1,5 +1,7 @@
 declare module "ipfs-api";
 
+type ProductStatus = "published" | "blocked" | "pending" ; 
+
 interface Category {
   id?: number;
   name: string;
@@ -35,7 +37,6 @@ interface Product {
   status: string;
   created_at: Date;
   updated_at: Date;
-  blockchain: string;
 }
 
 interface Collection {
