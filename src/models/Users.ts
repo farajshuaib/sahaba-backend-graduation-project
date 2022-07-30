@@ -1,11 +1,13 @@
-import prisma from "../services/prisma";
+import { prisma } from "../constant";
 
 const create = async (payload: User): Promise<User> => {
   try {
     const user = await prisma.users.create({
-      data: { ...payload, role_id: 1 },
-      select: {
-        password: false,
+      data: {
+        ...payload,
+        role_id: 1,
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     });
     return user as User;
@@ -14,12 +16,27 @@ const create = async (payload: User): Promise<User> => {
   }
 };
 
+const getByWalletAddress = async (walletAddress: string) => {
+  try {
+    const user = (await prisma.users.findUnique({
+      where: {
+        wallet_address: walletAddress,
+      },
+    })) as User | null;
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const createAdmin = async (payload: User): Promise<User> => {
   try {
     const user = await prisma.users.create({
-      data: { ...payload, role_id: 2 },
-      select: {
-        password: false,
+      data: {
+        ...payload,
+        role_id: 2,
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     });
     return user as User;
@@ -31,9 +48,6 @@ const createAdmin = async (payload: User): Promise<User> => {
 const getAll = async (): Promise<User[]> => {
   try {
     const users = (await prisma.users.findMany({
-      select: {
-        password: false,
-      },
       where: {
         role_id: 1, // return only users...
       },
@@ -53,9 +67,6 @@ const getById = async (id: number): Promise<User | null> => {
       where: {
         id,
       },
-      select: {
-        password: false,
-      },
     })) as User | null;
     return user;
   } catch (err) {
@@ -69,10 +80,7 @@ const update = async (id: number, payload: User): Promise<User> => {
       where: {
         id,
       },
-      select: {
-        password: false,
-      },
-      data: payload,
+      data: { ...payload, updated_at: new Date() },
     })) as User;
     return user;
   } catch (err) {
@@ -91,4 +99,12 @@ const drop = async (id: number): Promise<boolean> => {
   }
 };
 
-export { create, getById, getAll, drop, update, createAdmin };
+export {
+  create,
+  getById,
+  getAll,
+  drop,
+  update,
+  createAdmin,
+  getByWalletAddress,
+};

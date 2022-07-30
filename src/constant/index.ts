@@ -1,1 +1,5 @@
-export const SECRET = "asbadfbnsrpdbbddfnbdfnsnh3hbb";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+export { prisma };

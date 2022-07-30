@@ -1,4 +1,4 @@
-import prisma from "../constant/prisma";
+import { prisma } from "../constant";
 
 const create = async (payload: Product): Promise<Product> => {
   try {
@@ -30,7 +30,7 @@ const getById = async (id: number): Promise<Product | null> => {
       where: {
         id,
       },
-      
+
     })) as Product | null;
     return product;
   } catch (err) {

@@ -1,6 +1,6 @@
 declare module "ipfs-api";
 
-type ProductStatus = "published" | "blocked" | "pending" ; 
+type ProductStatus = "published" | "blocked" | "pending";
 
 interface Category {
   id?: number;
@@ -8,20 +8,20 @@ interface Category {
 }
 
 interface User {
-  id: number;
-  username: string;
-  email: string;
+  id?: number;
+  username?: string;
+  email?: string;
   wallet_address: string;
-  password: string;
-  bio: string;
-  banner_image: string;
-  facebook_url: string;
-  profile_photo: string;
-  twitter_url: string;
-  telegram_url: string;
-  created_at: Date;
-  updated_at: Date;
+  bio?: string;
+  banner_image?: string;
+  facebook_url?: string;
+  profile_photo?: string;
+  twitter_url?: string;
+  telegram_url?: string;
+  created_at?: Date;
+  updated_at?: Date;
   role_id?: number;
+  token?: string;
 }
 
 interface Product {
@@ -55,4 +55,10 @@ interface Collection {
   blockchain: string;
   is_sensitive_content: 0 | 1;
   creator_earnings: number;
+}
+
+interface MyToken {
+  userId: string;
+  wallet_address: string;
+  exp: number;
 }

@@ -1,4 +1,4 @@
-import prisma from "../constant/prisma";
+import { prisma } from "../constant";
 
 const create = async (payload: Category): Promise<Category> => {
   try {

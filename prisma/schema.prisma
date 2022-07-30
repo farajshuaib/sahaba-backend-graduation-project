@@ -69,10 +69,9 @@ model products {
 
 model users {
   id                        Int                         @unique(map: "id_UNIQUE") @default(autoincrement())
-  username                  String                      @db.VarChar(45)
-  email                     String                      @unique(map: "email_UNIQUE") @db.VarChar(45)
+  username                  String?                     @db.VarChar(45)
+  email                     String?                     @unique(map: "email_UNIQUE") @db.VarChar(45)
   wallet_address            String                      @unique(map: "wallet_address_UNIQUE") @db.VarChar(45)
-  password                  String                      @db.VarChar(45)
   bio                       String?                     @db.VarChar(255)
   banner_image              String?                     @db.VarChar(45)
   facebook_url              String?                     @db.VarChar(45)
@@ -82,11 +81,12 @@ model users {
   created_at                DateTime                    @db.DateTime(0)
   updated_at                DateTime                    @db.DateTime(0)
   role_id                   Int
+  token                     String?                     @unique(map: "token_UNIQUE") @db.VarChar(45)
   roles                     roles                       @relation(fields: [role_id], references: [id], onDelete: Cascade, map: "role_id")
   collections_collaborators collections_collaborators[]
   products                  products[]
 
-  @@id([id, email, wallet_address])
+  @@id([id, wallet_address])
   @@index([role_id], map: "role_id_idx")
 }
 
