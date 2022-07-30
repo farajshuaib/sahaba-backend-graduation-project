@@ -1,6 +1,6 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
-import prisma from "./services/prisma";
+import prisma from "./constant/prisma";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors"

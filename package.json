@@ -5,10 +5,9 @@
     "main": "/src/boostrap.ts",
     "scripts": {
         "clean": "rimraf dist/*",
-        "copy-assets": "ts-node tools/copyAssets",
         "lint": "tslint -c tslint.json -p tsconfig.json --fix",
         "tsc": "tsc",
-        "build": "npx tsc",
+        "build": "rimraf dist/* && npx tsc",
         "start": "node dist/boostrap.js",
         "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/boostrap.js\"",
         "test": "jest"
