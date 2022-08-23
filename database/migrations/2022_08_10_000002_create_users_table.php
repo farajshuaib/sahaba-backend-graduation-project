@@ -15,16 +15,15 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained();
-            $table->foreignId('social_link_id')->constrained();
-            $table->string('username', 45);
-            $table->string('email', 45)->unique();
-            $table->string('bio')->unique();
+            $table->foreignId('role_id')->constrained()->default(2);
+            $table->foreignId('social_link_id')->nullable()->constrained();
+            $table->string('username', 45)->nullable();
+            $table->string('email', 45)->nullable()->unique();
+            $table->string('bio')->nullable()->unique();
             $table->string('wallet_address', 45)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('banner_image', 45)->nullable();
             $table->string('profile_photo', 45)->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
