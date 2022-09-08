@@ -10,14 +10,14 @@ return new class extends Migration {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('collection_id')->constrained();
-            $table->string('image_url', 45);
-            $table->string('image_hash', 45);
-            $table->string('title', 45);
-            $table->string('description', 45);
-            $table->string('creator_address', 45);
-            $table->string('price', 45);
-            $table->string('status', 45);
-            $table->string('owner_address', 45);
+            $table->string('image_hash');
+            $table->string('title');
+            $table->string('description');
+            $table->string('creator_address');
+            $table->unsignedInteger('price');
+            $table->string('status');
+            $table->string('owner_address');
+            $table->unsignedInteger('numberOfTransfers');
             $table->timestamps();
         });
     }

@@ -20,9 +20,8 @@ return new class extends Migration {
             $table->string('instagram_url', 45)->nullable();
             $table->string('telegram_url', 45)->nullable();
             $table->string('payout_wallet_address', 45);
-            $table->string('blockchain', 45);
-            $table->tinyInteger('is_sensitive_content')->default(0);
-            $table->tinyInteger('creator_earnings');
+            $table->boolean('is_sensitive_content')->default(0);
+//            $table->tinyInteger('creator_earnings');
             $table->timestamps();
         });
     }
