@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('buyer_id')->constrained('users');
             $table->foreignId('seller_id')->constrained('users');
             $table->enum('type',['mint', 'buy']);
-            $table->unsignedDouble('price');
+            $table->unsignedDecimal('price');
             $table->timestamps();
         });
     }

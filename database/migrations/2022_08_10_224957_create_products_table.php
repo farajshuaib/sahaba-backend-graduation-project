@@ -14,10 +14,13 @@ return new class extends Migration {
             $table->string('title');
             $table->string('description');
             $table->string('creator_address');
-            $table->unsignedInteger('price');
-            $table->string('status');
+            $table->foreignId('category_id')->constrained();
+            $table->unsignedDecimal('price');
+            $table->enum('status',['published', 'pending', 'canceled', 'deleted']);
             $table->string('owner_address');
             $table->unsignedInteger('numberOfTransfers');
+            $table->boolean('is_for_sale')->default(false);
+            $table->date('sale_end_at')->nullable();
             $table->timestamps();
         });
     }

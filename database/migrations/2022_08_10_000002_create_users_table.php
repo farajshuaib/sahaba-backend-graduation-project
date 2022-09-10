@@ -16,13 +16,17 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('role_id')->default(2)->constrained();
-            $table->foreignId('social_link_id')->nullable()->constrained();
             $table->string('username')->nullable();
             $table->string('email')->nullable()->unique();
-            $table->string('bio')->nullable()->unique();
+            $table->string('bio')->nullable();
             $table->string('wallet_address')->unique();
             $table->string('banner_image')->nullable();
             $table->string('profile_photo')->nullable();
+            $table->string('website_url')->nullable();
+            $table->string('facebook_url')->nullable();
+            $table->string('twitter_url')->nullable();
+            $table->string('instagram_url')->nullable();
+            $table->string('telegram_url')->nullable();
             $table->boolean('is_verified')->default(false);
             $table->timestamps();
         });

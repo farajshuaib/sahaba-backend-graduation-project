@@ -9,17 +9,16 @@ return new class extends Migration {
     {
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 45);
-            $table->string('description', 45);
+            $table->string('name');
+            $table->string('description');
             $table->foreignId('category_id')->constrained();
-            $table->string('logo_image', 45);
-            $table->string('banner_image', 45);
-            $table->string('website_url', 45)->nullable();
-            $table->string('facebook_url', 45)->nullable();
-            $table->string('twitter_url', 45)->nullable();
-            $table->string('instagram_url', 45)->nullable();
-            $table->string('telegram_url', 45)->nullable();
-            $table->string('payout_wallet_address', 45);
+            $table->string('logo_image');
+            $table->string('banner_image');
+            $table->string('website_url')->nullable();
+            $table->string('facebook_url')->nullable();
+            $table->string('twitter_url')->nullable();
+            $table->string('instagram_url')->nullable();
+            $table->string('telegram_url')->nullable();
             $table->boolean('is_sensitive_content')->default(0);
 //            $table->tinyInteger('creator_earnings');
             $table->timestamps();
