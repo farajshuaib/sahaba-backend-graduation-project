@@ -12,28 +12,17 @@ use Overtrue\LaravelLike\Traits\Liker;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Liker;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
+
     protected $guarded = [];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -42,11 +31,6 @@ class User extends Authenticatable
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Role::class);
-    }
-
-    public function socialLink(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(SocialLink::class);
     }
 
     public function collections(): \Illuminate\Database\Eloquent\Relations\BelongsToMany

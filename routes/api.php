@@ -17,13 +17,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/connect-wallet', [AuthController::class, 'connectWallet']);
+Route::post('/logout', [AuthController::class, 'logout']);
 Route::get('/get-items', [ProductController::class, 'index']);
 Route::get('/get-item/{product}', [ProductController::class, 'show']);
 
-// Route::prefix('blaa')->group(function () {
-// });
+
 
 Route::middleware('auth:sanctum')->group(function () {
+     Route::prefix('profile')->group(function () {
+         Route::put('/{user}', [AuthController::class, 'update']);
+         Route::get('/', [AuthController::class, 'show']);
+    });
+
     Route::post('/create-item', [ProductController::class, 'store']);
     Route::put('/update-item', [ProductController::class, 'update']);
 });

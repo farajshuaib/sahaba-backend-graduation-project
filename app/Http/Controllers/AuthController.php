@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
+use App\Models\Product;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
 class AuthController extends Controller
 {
-    public function connectWallet(Request $request) {
+    public function connectWallet(Request $request): \Illuminate\Http\JsonResponse
+    {
         if(auth()->user())
             return response()->json(['user' => auth()->user()]);
 
@@ -34,8 +39,49 @@ class AuthController extends Controller
     public function logout()
     {
         $user = Auth::user();
-        $user->currentAccessToken()->delete();
-        $user->save();
-        return response()->noContent(204);
+        if($user){
+            $user->currentAccessToken()->delete();
+            $user->save();
+            return response()->noContent(204);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'message' => 'you\'re not logged inÏ'
+            ],401);
+        }
+
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function update(User $user, Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $user->update([
+                'username' => $request->username,
+                'email' => $request->email,
+                'bio' => $request->bio,
+                'profile_photo' => $request->profile_photo,
+                'website_url' => $request->website_url,
+                'facebook_url' => $request->facebook_url,
+                'twitter_url' => $request->twitter_url,
+                'telegram_url' => $request->telegram_url,
+            ]);
+            return response()->json(UserResource::make($user),200);
+        } catch (Exception $e) {
+            return response()->json(["error" => $e->getMessage()],500);
+        }
+
+
+    }
+
+
+    public  function  show(): \Illuminate\Http\JsonResponse
+    {
+        $user = auth()->user();
+        return response()->json([
+            'user' => $user
+        ]);
     }
 }
