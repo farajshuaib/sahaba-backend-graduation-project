@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_histories', function (Blueprint $table) {
+        Schema::create('nfts_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('nft_id')->constrained();
             $table->foreignId('buyer_id')->constrained('users');
             $table->foreignId('seller_id')->constrained('users');
             $table->enum('type',['mint', 'buy']);

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
-use App\Models\Product;
+use App\Models\Nft;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,9 +23,9 @@ class AuthController extends Controller
 
             if(!$user) {
                 $user = User::create([
-                    'wallet_address' => $request->wallet_address,
-                    'role_id' => 2
+                    'wallet_address' => $request->wallet_address
                 ]);
+                $user->assignRole(2);
             }
             $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
 
@@ -36,20 +36,12 @@ class AuthController extends Controller
 
     }
 
-    public function logout()
+    public function logout(): \Illuminate\Http\Response
     {
-        $user = Auth::user();
-        if($user){
-            $user->currentAccessToken()->delete();
-            $user->save();
-            return response()->noContent(204);
-        } else {
-            return response()->json([
-                'status' => 401,
-                'message' => 'you\'re not logged inÏ'
-            ],401);
-        }
-
+        $user = auth()->user();
+        $user->currentAccessToken()->delete();
+        $user->save();
+        return response()->noContent(204);
     }
 
     /**

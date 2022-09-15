@@ -28,10 +28,10 @@ class UserRequest extends FormRequest
             'email' => ['required', 'string'],
             'bio' => ['required', 'string'],
             'profile_photo' =>['required', 'string'],
-            'website_url' => [ 'string'],
-            'facebook_url' => [ 'string'],
-            'twitter_url' => [ 'string'],
-            'telegram_url' => [ 'string'],
+            'website_url' => [ 'string', 'nullable'],
+            'facebook_url' => [ 'string', 'nullable'],
+            'twitter_url' => [ 'string', 'nullable'],
+            'telegram_url' => [ 'string', 'nullable'],
         ];
     }
 }

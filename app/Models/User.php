@@ -8,10 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Overtrue\LaravelLike\Traits\Liker;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, Liker;
+    use HasApiTokens, HasFactory, Notifiable, Liker, HasRoles;
 
 
     protected $guarded = [];
@@ -27,11 +28,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
-    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Role::class);
-    }
 
     public function collections(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->default(2)->constrained();
             $table->string('username')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('bio')->nullable();
@@ -25,6 +24,7 @@ return new class extends Migration
             $table->string('facebook_url')->nullable();
             $table->string('twitter_url')->nullable();
             $table->string('telegram_url')->nullable();
+            $table->enum(['enabled', 'pending'])->default('enabled');
             $table->boolean('is_verified')->default(false);
             $table->timestamps();
         });
