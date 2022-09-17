@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NftRequest;
+use App\Http\Requests\ReportRequest;
 use App\Http\Resources\NftResource;
 use App\Models\Nft;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 
 class NftController extends Controller
@@ -55,7 +55,7 @@ class NftController extends Controller
     {
         try {
             // find only nft where user liked them
-            $nfts = auth()->user()->likes()->withType(Nft::class)->with('likeCounter')->paginate(20);
+            $nfts = auth()->user()->likes()->withType(Nft::class)->paginate(20);
             return response()->json($nfts);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -64,24 +64,21 @@ class NftController extends Controller
 
     public function toggleLike(Nft $nft)
     {
-        $nft->liked()? $nft->unlike() : $nft->like();
-        return response()->noContent();
-
-//        if ($nft->liked()) {
-//            $nft->unlike();
-//            return response()->json(['message' => 'nft unliked successfully'], 200);
-//        } else {
-//            $nft->like();
-//            return response()->json(['message' => 'nft liked successfully'], 200);
-//        }
+        $user = auth()->user();
+        if ($user->hasLiked($nft)) {
+            $user->unlike($nft);
+            return response()->json(['message' => 'nft unliked successfully'], 200);
+        } else {
+            $user->like($nft);
+            return response()->json(['message' => 'nft liked successfully'], 200);
+        }
     }
 
-    public function report(Nft $nft, Request $request)
+    public function report(Nft $nft, ReportRequest $request)
     {
-        $nft->reports()->create([
-           'reporter_id' => auth()->id(),
-           'reason' => $request->reason
-        ]);
+        $data = $request->validated();
+        $data['reporter_id'] = auth()->id();
+        $nft->reports()->create($data);
     }
 
 

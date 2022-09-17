@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CollectionRequest;
+use App\Http\Requests\ReportRequest;
 use App\Http\Resources\CollectionResource;
 use App\Models\Collection;
 use App\Models\CollectionCollaborator;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CollectionController extends Controller
@@ -44,12 +44,11 @@ class CollectionController extends Controller
         return response()->noContent();
     }
 
-    public function report(Collection $collection, Request $request)
+    public function report(Collection $collection, ReportRequest $request)
     {
-        $collection->reports()->create([
-            'reporter_id' => auth()->id(),
-            'reason' => $request->reason
-        ]);
+        $data = $request->validated();
+        $data['reporter_id'] = auth()->id();
+        $collection->reports()->create($data);
     }
 
 }

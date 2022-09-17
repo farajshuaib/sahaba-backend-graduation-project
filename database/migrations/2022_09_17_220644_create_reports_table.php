@@ -11,7 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->morphs('reportable');
             $table->foreignId('reporter_id')->constrained('users');
-            $table->text('reason');
+            $table->enum('type', ['spam', 'trouble', 'violence', 'other'])->default('other');
+            $table->text('message');
             $table->timestamps();
         });
     }

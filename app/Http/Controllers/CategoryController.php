@@ -33,8 +33,12 @@ class CategoryController extends Controller
 
     public function update(Category $category, Request $request): JsonResponse
     {
-        $category->update(['name' => $request->name]);
-        return response()->json(CategoryResource::make($category));
+        $category->update($request->validated());
+        return response()->json([
+            'user' => CategoryResource::make($category),
+            'message' => 'update success'
+        ],
+            200);
     }
 
     public function destroy(Category $category): Response
