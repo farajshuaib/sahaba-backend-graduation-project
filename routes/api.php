@@ -34,12 +34,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/my-profile', [AuthController::class, 'show']);
     Route::put('/my-profile', [AuthController::class, 'update']);
+    Route::get('/liked-nfts', [NftController::class, 'likedByUser']);
 
 
     Route::prefix('nft')->group(function () {
         Route::put('/{nft}', [NftController::class, 'update']);
         Route::post('/', [NftController::class, 'store']);
-        Route::get('/liked-by-me', [NftController::class, 'likedByUser']);
+        
         Route::post('/toggle-like/{nft}', [NftController::class, 'toggleLike']);
     });
 

@@ -53,11 +53,10 @@ class NftController extends Controller
 
     public function likedByUser()
     {
-        dd("blaaaa");
         try {
-            $nfts = Nft::with('user', 'collection')->likes()->with('likeable')->paginate(20);
             // find only nft where user liked them
-            return response()->json(['data' => Nft::whereLikedBy(auth()->id())->with('likeCounter')->get()]);
+            $likes = auth()->user()->likes()->with('likeable')->paginate(20);
+            return response()->json($likes);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -65,11 +64,12 @@ class NftController extends Controller
 
     public function toggleLike(Nft $nft)
     {
-        if ($nft->liked()) {
-            $nft->unlike();
+        $user = auth()->user();
+        if ($user->hasLiked($nft)) {
+            $user->unlike($nft);
             return response()->json(['message' => 'nft unliked successfully'], 200);
         } else {
-            $nft->like();
+            $user->like($nft);
             return response()->json(['message' => 'nft liked successfully'], 200);
         }
     }
