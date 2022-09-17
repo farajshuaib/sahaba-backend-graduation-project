@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class NftResource extends JsonResource
 {
-    public function toArray($request)
+    public function toArray($request): array
     {
         $currentNft = Nft::where('id', $this->id)->first();
         return [

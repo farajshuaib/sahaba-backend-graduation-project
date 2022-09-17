@@ -55,7 +55,7 @@ class NftController extends Controller
     {
         try {
             // find only nft where user liked them
-            $likes = auth()->user()->likes()->with('likeable')->paginate(20);
+            $likes = auth()->user()->likes()->paginate(20);
             return response()->json($likes);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);

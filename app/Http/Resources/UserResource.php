@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -22,7 +23,7 @@ class UserResource extends JsonResource
             'is_verified' => $this->is_verified,
             'collections' => CollectionResource::collection($this->collections),
             'nfts' => NftResource::collection($this->nfts),
-            'liked_nfts' => [],
+            'liked_nfts' => User::where('id', $this->id)->first()->likes(),
             'followers' => [],
             'following' => [],
             'status' => $this->status,
