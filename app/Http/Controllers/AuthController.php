@@ -23,7 +23,6 @@ class AuthController extends Controller
         $user = User::where('wallet_address', $request->wallet_address)->first();
 
         if (!$user) {
-//            dd($user);
             $user = User::create([
                 'wallet_address' => $request->wallet_address
             ]);
