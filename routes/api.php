@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\NftController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +51,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [CollectionController::class, 'store']);
         Route::put('/{collection}', [CollectionController::class, 'update']);
         Route::delete('/{collection}', [CollectionController::class, 'destroy']);
+        Route::post('/report/{collection}', [CollectionController::class, 'report']);
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::post('/report/{user}', [UserController::class, 'report']);
     });
 
 
