@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class NftRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,13 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'string'],
-            'email' => ['required', 'string', 'email'],
-            'bio' => ['nullable', 'string'],
-            'profile_photo' => ['nullable', 'url'],
-            'website_url' => ['nullable', 'url'],
-            'facebook_url' => ['nullable', 'url'],
-            'twitter_url' => ['nullable', 'url'],
-            'telegram_url' => ['nullable', 'url'],
+            'title' => ['string', 'required'],
+            'description' => ['string', 'required'],
+            'image_url' => ['url', 'required'],
+            'collection_id' => ['required', 'int'],
+            'price' => ['required', 'numeric'],
+            'sale_end_at' => ['nullable', 'date'],
+            'is_for_sale' => ['required', 'boolean'],
         ];
     }
-
 }

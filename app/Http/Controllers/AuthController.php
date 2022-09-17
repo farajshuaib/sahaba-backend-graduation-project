@@ -4,39 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
-use App\Models\Nft;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
+use Throwable;
 
 
 class AuthController extends Controller
 {
-    public function connectWallet(Request $request): \Illuminate\Http\JsonResponse
+    public function connectWallet(Request $request): JsonResponse
     {
-        if(auth()->user())
+        if (auth()->user())
             return response()->json(['user' => auth()->user()]);
 
 
-            $user = User::where('wallet_address', $request->wallet_address)->first();
+        $user = User::where('wallet_address', $request->wallet_address)->first();
 
-            if(!$user) {
-                $user = User::create([
-                    'wallet_address' => $request->wallet_address
-                ]);
-                $user->assignRole(2);
-            }
-            $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
-
-            return response()->json([
-                'token' => $token,
-                'user' => $user
+        if (!$user) {
+//            dd($user);
+            $user = User::create([
+                'wallet_address' => $request->wallet_address
             ]);
+            $user->assignRole(2);
+        }
+        $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user' => $user
+        ]);
 
     }
 
-    public function logout(): \Illuminate\Http\Response
+    public function logout(): Response
     {
         $user = auth()->user();
         $user->currentAccessToken()->delete();
@@ -45,35 +47,32 @@ class AuthController extends Controller
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
-    public function update(User $user, Request $request): \Illuminate\Http\JsonResponse
+    public function update(UserRequest $request): JsonResponse
     {
         try {
-            $user->update([
-                'username' => $request->username,
-                'email' => $request->email,
-                'bio' => $request->bio,
-                'profile_photo' => $request->profile_photo,
-                'website_url' => $request->website_url,
-                'facebook_url' => $request->facebook_url,
-                'twitter_url' => $request->twitter_url,
-                'telegram_url' => $request->telegram_url,
-            ]);
-            return response()->json(UserResource::make($user),200);
+            $user = auth()->user();
+            if (!$user) exit(403);
+            $user->update($request->validated());
+            return response()->json([
+                'user' => UserResource::make($user),
+                'message' => 'update success'
+            ],
+                200);
         } catch (Exception $e) {
-            return response()->json(["error" => $e->getMessage()],500);
+            return response()->json(['error' => $e->getMessage()], 400);
         }
 
 
     }
 
 
-    public  function  show(): \Illuminate\Http\JsonResponse
+    public function show(): JsonResponse
     {
         $user = auth()->user();
-        return response()->json([
-            'user' => $user
-        ]);
+        return response()->json(
+            UserResource::make(auth()->user())
+        );
     }
 }

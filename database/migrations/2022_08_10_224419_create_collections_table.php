@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('description');
             $table->foreignId('category_id')->constrained();
             $table->string('logo_image');
-            $table->string('banner_image');
+            $table->string('banner_image')->nullable();
             $table->string('website_url')->nullable();
             $table->string('facebook_url')->nullable();
             $table->string('twitter_url')->nullable();

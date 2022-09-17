@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->string('facebook_url')->nullable();
             $table->string('twitter_url')->nullable();
             $table->string('telegram_url')->nullable();
-            $table->enum(['enabled', 'pending'])->default('enabled');
+            $table->enum('status', ['enabled', 'pending'])->default('enabled');
             $table->boolean('is_verified')->default(false);
             $table->timestamps();
         });
