@@ -35,7 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/my-profile', [AuthController::class, 'show']);
     Route::put('/my-profile', [AuthController::class, 'update']);
-    Route::get('/liked-nfts', [NftController::class, 'likedByUser']);
 
 
     Route::prefix('nfts')->group(function () {
@@ -55,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/{user}', [UserController::class, 'show']);
         Route::post('/report/{user}', [UserController::class, 'report']);
     });
 
