@@ -25,8 +25,6 @@ class NftController extends Controller
             $data['user_id'] = auth()->id();
             $data['creator_address'] = auth()->user()->wallet_address;
             $nft = Nft::create($data);
-            $nft->refresh();
-            $nft->load('user.nfts');
             return response()->json(['nft' => NftResource::make($nft), 'message' => 'nft created successfully']);
         } catch (Exception $e) {
             return response()->json(['message' => $e], 500);
@@ -43,7 +41,7 @@ class NftController extends Controller
     public function update(Nft $nft, NftRequest $request)
     {
         $nft->update($request->validated());
-        return response()->json(NftResource::make($nft));
+        return response()->json(['nft' => NftResource::make($nft), 'message' => 'nft updated successfully']);
     }
 
     public function destroy(Nft $nft)
@@ -55,8 +53,14 @@ class NftController extends Controller
 
     public function likedByUser()
     {
-        // find only nft where user liked them
-        return response()->json(['data' => Nft::whereLikedBy(auth()->id)->with('likeCounter')->get()]);
+        dd("blaaaa");
+        try {
+            $nfts = Nft::with('user', 'collection')->likes()->with('likeable')->paginate(20);
+            // find only nft where user liked them
+            return response()->json(['data' => Nft::whereLikedBy(auth()->id())->with('likeCounter')->get()]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function toggleLike(Nft $nft)
