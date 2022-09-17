@@ -17,4 +17,12 @@ class UserController extends Controller
     public function show(User $user){
         return response()->json(UserResource::make($user));
     }
+
+    public function report(User $user, Request $request)
+    {
+        $user->reports()->create([
+            'reporter_id' => auth()->id(),
+            'reason' => $request->reason
+        ]);
+    }
 }

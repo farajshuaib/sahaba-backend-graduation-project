@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CollectionRequest extends FormRequest
 {
@@ -34,7 +35,7 @@ class CollectionRequest extends FormRequest
             'instagram_url' => ['nullable', 'url'],
             'telegram_url' => ['nullable', 'url'],
             'is_sensitive_content' => ['required', 'boolean'],
-            'category_id' => ['required', 'int'],
+            'category_id' => ['required', 'int', Rule::exists('categories', 'id')],
         ];
     }
 }

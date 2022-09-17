@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
@@ -17,9 +18,9 @@ class CategoryController extends Controller
         return response()->json(CategoryResource::collection($categories));
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(CategoryRequest $request): JsonResponse
     {
-        $category = Category::create(['name' => $request->name]);
+        $category = Category::create($request->validated());
         return response()->json(CategoryResource::make($category));
     }
 

@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('/connect-wallet', [AuthController::class, 'connectWallet']);
 
 Route::get('/nfts', [NftController::class, 'index']);
-Route::get('/nft/{nft}', [NftController::class, 'show']);
+Route::get('/nfts/{nft}', [NftController::class, 'show']);
 
 Route::get('/collections', [CollectionController::class, 'index']);
-Route::get('/collection/{collection}', [CollectionController::class, 'show']);
+Route::get('/collections/{collection}', [CollectionController::class, 'show']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/category/{category}', [CategoryController::class, 'show']);
+Route::get('/categories/{category}', [CategoryController::class, 'show']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -36,24 +36,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/my-profile', [AuthController::class, 'update']);
 
 
-    Route::prefix('nft')->group(function () {
-        Route::put('/{nft}', [NftController::class, 'update']);
+    Route::prefix('nfts')->group(function () {
         Route::post('/', [NftController::class, 'store']);
+        Route::put('/{nft}', [NftController::class, 'update']);
         Route::get('/liked-by-me', [NftController::class, 'likedByUser']);
         Route::post('/toggle-like/{nft}', [NftController::class, 'toggleLike']);
+        Route::post('/report/{nft}', [NftController::class, 'report']);
     });
 
 
-    Route::prefix('collection')->group(function () {
-        Route::put('/{collection}', [CollectionController::class, 'update']);
+    Route::prefix('collections')->group(function () {
         Route::post('/', [CollectionController::class, 'store']);
+        Route::put('/{collection}', [CollectionController::class, 'update']);
         Route::delete('/{collection}', [CollectionController::class, 'destroy']);
     });
 
 
-    Route::prefix('category')->group(function () {
-        Route::put('/{category}', [CategoryController::class, 'update']);
+    Route::prefix('categories')->group(function () {
         Route::post('/', [CategoryController::class, 'store']);
+        Route::put('/{category}', [CategoryController::class, 'update']);
         Route::delete('/{category}', [CategoryController::class, 'destroy']);
     });
 

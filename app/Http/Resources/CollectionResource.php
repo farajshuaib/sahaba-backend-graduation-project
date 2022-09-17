@@ -30,7 +30,7 @@ class CollectionResource extends JsonResource
             'instagram_url' => $this->instagram_url,
             'telegram_url' => $this->telegram_url,
             'is_sensitive_content' => $this->is_sensitive_content,
-            'category' => CategoryResource::make($this->category),
+            'category' => CategoryResource::make($this->whenLoaded('category')),
 
         ];
     }

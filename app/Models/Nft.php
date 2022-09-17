@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +12,7 @@ use Overtrue\LaravelLike\Traits\Likeable;
 
 class Nft extends Model
 {
-    use Likeable;
+    use Likeable, HasFactory;
 
     protected $fillable = ['title', 'description', 'collection_id', 'user_id', 'creator_address', 'image_url', 'price', 'is_for_sale', 'sale_end_at'];
 
@@ -40,6 +41,11 @@ class Nft extends Model
     public function scopeIsPublished($query): Builder
     {
         return $query->where('status', 'published');
+    }
+
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
     }
 
 

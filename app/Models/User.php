@@ -42,5 +42,8 @@ class User extends Authenticatable
         return $this->hasMany(Nft::class);
     }
 
-
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
 }

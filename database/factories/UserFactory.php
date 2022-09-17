@@ -16,10 +16,19 @@ class UserFactory extends Factory
 
     public function definition(): array
     {
+        $status = ['enabled', 'pending'];
         return [
             'username' => fake()->name(),
             'email' => fake()->safeEmail(),
-            'remember_token' => Str::random(10),
+            'bio' => fake()->title,
+            'wallet_address' => $this->faker->unique()->numberBetween(1,10000000000),
+            'profile_photo' => $this->faker->imageUrl,
+            'website_url' => $this->faker->url,
+            'facebook_url' => $this->faker->url,
+            'twitter_url' => $this->faker->url,
+            'telegram_url' => $this->faker->url,
+            'status' => $status[rand(0,1)],
+            'is_verified' => $this->faker->boolean,
         ];
     }
 

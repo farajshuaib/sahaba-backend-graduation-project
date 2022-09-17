@@ -7,13 +7,14 @@ use App\Http\Resources\CollectionResource;
 use App\Models\Collection;
 use App\Models\CollectionCollaborator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CollectionController extends Controller
 {
     public function index(): JsonResponse
     {
-        $collections = Collection::paginate(20);
+        $collections = Collection::with('category')->paginate(20);
         return response()->json(CollectionResource::collection($collections));
     }
 
@@ -27,7 +28,7 @@ class CollectionController extends Controller
 
     public function show(Collection $collection): JsonResponse
     {
-        return response()->json(CollectionResource::make($collection));
+        return response()->json(CollectionResource::make($collection->load('category')));
     }
 
 
@@ -43,5 +44,12 @@ class CollectionController extends Controller
         return response()->noContent();
     }
 
+    public function report(Collection $collection, Request $request)
+    {
+        $collection->reports()->create([
+            'reporter_id' => auth()->id(),
+            'reason' => $request->reason
+        ]);
+    }
 
 }

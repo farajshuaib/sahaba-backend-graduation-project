@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->foreignId('category_id')->constrained();
             $table->string('logo_image');
             $table->string('banner_image')->nullable();
