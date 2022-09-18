@@ -11,13 +11,15 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::role('user')->paginate(10);
+        $users = User::with('collections', 'followers', 'followings', 'likes.likeable')->isEnabled()->paginate(10);
         return response()->json(UserResource::collection($users));
     }
 
     public function show(User $user)
     {
-        return response()->json(UserResource::make($user));
+        if ($user->status != 'enabled')
+            return response()->json(['message' => 'user is suspended, profile can not be accessedÏ']);
+        return response()->json(UserResource::make($user->load('collections', 'followers', 'followings', 'likes.likeable')));
     }
 
     public function report(User $user, ReportRequest $request)

@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->morphMany(Report::class, 'reportable');
     }
+
+    public function scopeIsEnabled($query)
+    {
+        return $query->where('status', 'enabled');
+    }
 }

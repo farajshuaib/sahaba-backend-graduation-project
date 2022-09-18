@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -21,12 +20,11 @@ class UserResource extends JsonResource
             'twitter_url' => $this->twitter_url,
             'telegram_url' => $this->telegram_url,
             'is_verified' => $this->is_verified,
-            'collections' => CollectionResource::collection($this->collections),
-            'nfts' => NftResource::collection($this->nfts),
-            'liked_nfts' => User::where('id', $this->id)->first()->likes(),
+            'collections' => CollectionResource::collection($this->whenLoaded('collections')),
+            'nfts' => NftResource::collection($this->whenLoaded('nfts')),
+            'liked_nfts' => LikedNftsResource::collection($this->whenLoaded('likes')),
             'followers' => [],
             'following' => [],
-            'status' => $this->status,
         ];
     }
 }

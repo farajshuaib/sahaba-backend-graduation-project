@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Collection extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name', 'description', 'banner_image', 'category_id', 'facebook_url', 'instagram_url', 'logo_image', 'is_sensitive_content', 'telegram_url', 'twitter_url', 'website_url'];
 
 
@@ -26,5 +27,10 @@ class Collection extends Model
     public function reports()
     {
         return $this->morphMany(Report::class, 'reportable');
+    }
+
+    public function collabraters()
+    {
+        return $this->belongsToMany(User::class, 'collection_collaborators', 'collection_id', 'user_id');
     }
 }

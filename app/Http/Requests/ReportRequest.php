@@ -24,7 +24,7 @@ class ReportRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['string', 'required'],
+            'type' => ['string', 'required', 'in:spam,trouble,violence,other'],
             'message' => ['string', 'required']
 
         ];

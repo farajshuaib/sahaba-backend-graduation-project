@@ -14,7 +14,7 @@ class NftController extends Controller
 {
     public function index(): JsonResponse
     {
-        $nfts = Nft::with('user', 'collection')
+        $nfts = Nft::with('user', 'user.likes.likeable', 'collection')
             ->paginate(20);
         return response()->json(NftResource::collection($nfts));
     }
@@ -35,11 +35,14 @@ class NftController extends Controller
 
     public function show(Nft $nft): JsonResponse
     {
-        return response()->json(NftResource::make($nft->load(['user', 'collection'])));
+        return response()->json(NftResource::make($nft->load(['user', 'collection', 'user.likes.likeable'])));
     }
 
     public function update(Nft $nft, NftRequest $request)
     {
+        if (!$nft::isOwner())
+            return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
+
         $nft->update($request->validated());
         return response()->json(['nft' => NftResource::make($nft), 'message' => 'nft updated successfully']);
     }
@@ -55,7 +58,8 @@ class NftController extends Controller
     {
         try {
             // find only nft where user liked them
-            $nfts = auth()->user()->likes()->withType(Nft::class)->paginate(20);
+            $nfts = auth()->user()->likes()->withType(Nft::class)->with('likeable')->paginate(20);
+
             return response()->json($nfts);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);

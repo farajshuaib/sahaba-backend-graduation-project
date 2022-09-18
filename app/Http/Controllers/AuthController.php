@@ -69,9 +69,9 @@ class AuthController extends Controller
 
     public function show(): JsonResponse
     {
-        $user = auth()->user();
+        $user = auth()->user()->load(['likes', 'likes.likeable', 'collections', 'nfts', 'followings', 'followers']);
         return response()->json(
-            UserResource::make(auth()->user())
+            UserResource::make($user)
         );
     }
 }

@@ -14,6 +14,7 @@ class Nft extends Model
 {
     use Likeable, HasFactory;
 
+
     protected $fillable = ['title', 'description', 'collection_id', 'user_id', 'creator_address', 'image_url', 'price', 'is_for_sale', 'sale_end_at'];
 
 
@@ -41,6 +42,11 @@ class Nft extends Model
     public function scopeIsPublished($query): Builder
     {
         return $query->where('status', 'published');
+    }
+
+    public function scopeIsOwner($query): Builder
+    {
+        return $query->where('user_id', auth()->id());
     }
 
     public function reports()
