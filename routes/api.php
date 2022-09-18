@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [CollectionController::class, 'store']);
         Route::put('/{collection}', [CollectionController::class, 'update']);
         Route::delete('/{collection}', [CollectionController::class, 'destroy']);
+        Route::post('/add-collaboration/{collection}', [CollectionController::class, 'addCollaboration']);
         Route::post('/report/{collection}', [CollectionController::class, 'report']);
     });
 
