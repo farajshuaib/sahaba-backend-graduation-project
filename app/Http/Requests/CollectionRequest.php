@@ -35,6 +35,7 @@ class CollectionRequest extends FormRequest
             'instagram_url' => ['nullable', 'url'],
             'telegram_url' => ['nullable', 'url'],
             'is_sensitive_content' => ['required', 'boolean'],
+            'collection_token_id' => ['required', 'int'],
             'category_id' => ['required', 'int', Rule::exists('categories', 'id')],
         ];
     }
