@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class NftRequest extends FormRequest
 {
@@ -26,8 +27,9 @@ class NftRequest extends FormRequest
         return [
             'title' => ['string', 'required'],
             'description' => ['string', 'required'],
-            'image_url' => ['url', 'required'],
-            'collection_id' => ['required', 'int'],
+            'file_url' => ['url', 'required'],
+            'file_type' => ['required', 'in:image,audio,video'],
+            'collection_id' => ['required', 'int', Rule::exists('collections', 'id')],
             'price' => ['required', 'numeric'],
             'sale_end_at' => ['nullable', 'date'],
             'is_for_sale' => ['required', 'boolean'],

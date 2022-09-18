@@ -11,7 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('collection_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->string('image_url');
+            $table->string('file_url');
+            $table->enum('file_type', ['image', 'audio', 'video'])->default('image');
             $table->string('title');
             $table->string('description');
             $table->string('creator_address');

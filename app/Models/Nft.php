@@ -15,7 +15,7 @@ class Nft extends Model
     use Likeable, HasFactory;
 
 
-    protected $fillable = ['title', 'description', 'collection_id', 'user_id', 'creator_address', 'image_url', 'price', 'is_for_sale', 'sale_end_at'];
+    protected $fillable = ['title', 'description', 'collection_id', 'user_id', 'creator_address', 'file_url', 'price', 'is_for_sale', 'sale_end_at', 'file_type'];
 
 
     public function collection(): BelongsTo
