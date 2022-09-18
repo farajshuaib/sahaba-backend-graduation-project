@@ -14,20 +14,21 @@ class CategoryController extends Controller
 
     public function index(): JsonResponse
     {
-        $categories = Category::query()->paginate(20);
+        $categories = Category::with('collections', 'nfts')->paginate(20);
+//        dd($categories);
         return response()->json(CategoryResource::collection($categories));
     }
 
     public function store(CategoryRequest $request): JsonResponse
     {
         $category = Category::create($request->validated());
-        return response()->json(CategoryResource::make($category));
+        return response()->json(CategoryResource::make($category->load('collections', 'nfts')));
     }
 
 
     public function show(Category $category): JsonResponse
     {
-        return response()->json(CategoryResource::make($category));
+        return response()->json(CategoryResource::make($category->load('collections', 'nfts')));
     }
 
 
@@ -35,7 +36,7 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
         return response()->json([
-            'user' => CategoryResource::make($category),
+            'user' => CategoryResource::make($category->load('collections', 'nfts')),
             'message' => 'update success'
         ],
             200);

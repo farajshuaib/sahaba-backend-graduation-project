@@ -12,15 +12,18 @@ class NftFactory extends Factory
     public function definition(): array
     {
         $status = ['published', 'pending', 'canceled', 'deleted'];
+        $file_type = ['image', 'audio', 'video'];
         return [
             'title' => $this->faker->title,
-            'collection_id' => rand(1,10),
-            'user_id' => rand(1,10),
+            'collection_id' => rand(1, 10),
+            'user_id' => rand(1, 10),
+            'nft_token_id' => rand(1, 10),
             'description' => $this->faker->paragraph('2'),
-            'image_url' => $this->faker->url,
+            'file_url' => $this->faker->url,
+            'file_type' => $file_type[round(0, 3)],
             'creator_address' => $this->faker->url,
-            'price' => $this->faker->numberBetween(1,1000),
-            'status' => $status[rand(0,3)],
+            'price' => $this->faker->numberBetween(1, 1000),
+            'status' => $status[rand(0, 2)],
             'is_for_sale' => $this->faker->boolean,
             'sale_end_at' => $this->faker->date,
         ];

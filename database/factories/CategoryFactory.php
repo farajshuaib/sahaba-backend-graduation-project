@@ -16,6 +16,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'icon' => fake()->url(),
         ];
     }
 }
