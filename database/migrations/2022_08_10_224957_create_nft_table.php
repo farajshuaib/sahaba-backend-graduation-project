@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('nfts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('nft_token_id');
+            $table->unsignedInteger('nft_token_id')->unique();
             $table->foreignId('collection_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->string('file_url');

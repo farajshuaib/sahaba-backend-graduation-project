@@ -21,8 +21,8 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'icon' => $this->icon,
-            'collections_count' => CollectionResource::collection($this->whenLoaded('collections'))->count(),
-            'nfts_count' => NftResource::collection($this->whenLoaded('nfts'))->count(),
+            'collections_count' => CollectionResource::collection($this->whenLoaded('collections')),
+            'nfts_count' => NftResource::collection($this->whenLoaded('nfts')),
         ];
     }
 }

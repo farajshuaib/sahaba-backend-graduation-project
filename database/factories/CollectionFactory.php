@@ -21,7 +21,6 @@ class CollectionFactory extends Factory
             'website_url' => $this->faker->url,
             'facebook_url' => $this->faker->url,
             'twitter_url' => $this->faker->url,
-            'instagram_url' => $this->faker->url,
             'telegram_url' => $this->faker->url,
             'is_sensitive_content' => $this->faker->boolean,
         ];

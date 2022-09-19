@@ -32,6 +32,7 @@ class CollectionResource extends JsonResource
             'is_sensitive_content' => $this->is_sensitive_content,
             'collection_token_id' => $this->collection_token_id,
             'category' => CategoryResource::make($this->whenLoaded('category')),
+            'nfts' => NftResource::collection($this->whenLoaded('nfts')),
 
         ];
     }

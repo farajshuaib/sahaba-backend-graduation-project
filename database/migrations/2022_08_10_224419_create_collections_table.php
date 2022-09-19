@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedInteger('collection_token_id');
+            $table->unsignedInteger('collection_token_id')->unique();
             $table->text('description');
             $table->foreignId('category_id')->constrained();
             $table->string('logo_image');
@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->string('website_url')->nullable();
             $table->string('facebook_url')->nullable();
             $table->string('twitter_url')->nullable();
-            $table->string('instagram_url')->nullable();
             $table->string('telegram_url')->nullable();
             $table->boolean('is_sensitive_content')->default(0);
 //            $table->tinyInteger('creator_earnings');

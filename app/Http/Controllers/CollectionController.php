@@ -17,7 +17,7 @@ class CollectionController extends Controller
 {
     public function index(): JsonResponse
     {
-        $collections = Collection::with('category')->paginate(20);
+        $collections = Collection::with('category', 'nfts', 'collaborators')->paginate(20);
         return response()->json(CollectionResource::collection($collections));
     }
 
@@ -31,7 +31,7 @@ class CollectionController extends Controller
 
     public function show(Collection $collection): JsonResponse
     {
-        return response()->json(CollectionResource::make($collection->load('category')));
+        return response()->json(CollectionResource::make($collection->load('category', 'nfts')));
     }
 
 
@@ -65,7 +65,7 @@ class CollectionController extends Controller
             if ($collaboration_exist)
                 return response()->json(['message' => 'this user already collaborated with this collection'], 403);
 
-            $collection->collabraters()->attach($user->id);
+            $collection->collaborators()->attach($user->id);
             return response()->json(['data' => ['collection' => CollectionResource::make($collection), 'collaborator' => $user], 'message' => 'collection collaboration created successfully'], 200);
 
         } catch (Exception $e) {
