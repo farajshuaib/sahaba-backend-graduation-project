@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->unsignedInteger('collection_token_id')->unique();
             $table->text('description');
             $table->foreignId('category_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->string('logo_image');
             $table->string('banner_image')->nullable();
             $table->string('website_url')->nullable();

@@ -13,13 +13,13 @@ class Collection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'banner_image', 'category_id', 'facebook_url', 'instagram_url', 'logo_image', 'is_sensitive_content', 'collection_token_id', 'twitter_url', 'website_url'];
+    protected $fillable = ['name', 'description', 'banner_image', 'category_id', 'facebook_url', 'instagram_url', 'logo_image', 'is_sensitive_content', 'collection_token_id', 'twitter_url', 'website_url', 'user_id'];
 
     protected $casts = ['is_sensitive_content' => 'boolean'];
 
-    public function users(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function category(): BelongsTo

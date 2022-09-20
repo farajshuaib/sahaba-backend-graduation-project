@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Collection;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CollectionFactory extends Factory
@@ -12,12 +14,13 @@ class CollectionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'description' => $this->faker->paragraph('5'),
-            'category_id' => rand(1, 10),
-            'collection_token_id' => rand(1, 10000),
-            'logo_image' => $this->faker->url,
-            'banner_image' => $this->faker->url,
+            'name' => $this->faker->realText(20),
+            'description' => $this->faker->realText(50),
+            'category_id' => Category::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id,
+            'collection_token_id' => $this->faker->unique()->numberBetween(1, 1000),
+            'logo_image' => $this->faker->imageUrl,
+            'banner_image' => $this->faker->imageUrl,
             'website_url' => $this->faker->url,
             'facebook_url' => $this->faker->url,
             'twitter_url' => $this->faker->url,

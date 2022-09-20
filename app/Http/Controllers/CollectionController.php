@@ -17,7 +17,7 @@ class CollectionController extends Controller
 {
     public function index(): JsonResponse
     {
-        $collections = Collection::with('category', 'nfts', 'collaborators')->paginate(20);
+        $collections = Collection::with('category', 'nfts', 'collaborators', 'user')->paginate(20);
         return response()->json(CollectionResource::collection($collections));
     }
 
@@ -25,20 +25,20 @@ class CollectionController extends Controller
     {
         $collection = Collection::create($request->validated());
         CollectionCollaborator::create(['collection_id' => $collection->id, 'user_id' => auth()->id()]);
-        return response()->json(['data' => CollectionResource::make($collection), 'message' => 'collection created successfully'], 200);
+        return response()->json(['data' => CollectionResource::make($collection->load('category', 'nfts', 'user')), 'message' => 'collection created successfully'], 200);
     }
 
 
     public function show(Collection $collection): JsonResponse
     {
-        return response()->json(CollectionResource::make($collection->load('category', 'nfts')));
+        return response()->json(CollectionResource::make($collection->load('category', 'nfts', 'user')));
     }
 
 
     public function update(Collection $collection, CollectionRequest $request): JsonResponse
     {
         $collection->update($request->validated());
-        return response()->json(['data' => CollectionResource::make($collection), 'message' => 'collection updated successfully'], 200);
+        return response()->json(['data' => CollectionResource::make($collection->load('category', 'nfts', 'user')), 'message' => 'collection updated successfully'], 200);
     }
 
     public function destroy(Collection $collection): Response
@@ -77,7 +77,7 @@ class CollectionController extends Controller
 
     public function myCollections()
     {
-        $user = auth()->user()->load(['collections', 'collections.nfts']);
+        $user = auth()->user()->load(['collections', 'user']);
         return CollectionResource::collection($user['collections']);
     }
 
