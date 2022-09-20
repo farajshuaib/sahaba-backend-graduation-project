@@ -15,7 +15,7 @@ class Nft extends Model
     use Likeable, HasFactory;
 
 
-    protected $fillable = ['title', 'description', 'collection_id', 'user_id', 'creator_address', 'file_url', 'price', 'is_for_sale', 'sale_end_at', 'file_type', 'nft_token_id'];
+    protected $fillable = ['title', 'description', 'collection_id', 'user_id', 'creator_address', 'file_path', 'price', 'is_for_sale', 'sale_end_at', 'file_type', 'nft_token_id'];
 
     protected $casts = ['is_for_sale' => 'boolean'];
 

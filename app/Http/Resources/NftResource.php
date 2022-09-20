@@ -15,7 +15,7 @@ class NftResource extends JsonResource
             'title' => $this->title,
             'creator_address' => $this->creator_address,
             'description' => $this->description,
-            'file_url' => $this->file_url,
+            'file_path' => $this->file_path,
             'file_type' => $this->file_type,
             'collection' => CollectionResource::make($this->collection),
             'user' => UserResource::make($this->whenLoaded('user')),

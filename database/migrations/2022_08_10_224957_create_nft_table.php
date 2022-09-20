@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->unsignedInteger('nft_token_id')->unique();
             $table->foreignId('collection_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->string('file_url');
+            $table->string('file_path');
             $table->enum('file_type', ['image', 'audio', 'video'])->default('image');
             $table->string('title');
             $table->string('description');
