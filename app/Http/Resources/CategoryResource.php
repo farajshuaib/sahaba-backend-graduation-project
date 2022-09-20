@@ -15,14 +15,14 @@ class CategoryResource extends JsonResource
      * @param Request $request
      * @return array|Arrayable|JsonSerializable
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
             'icon' => $this->icon,
-            'collections_count' => CollectionResource::collection($this->whenLoaded('collections')),
-            'nfts_count' => NftResource::collection($this->whenLoaded('nfts')),
+            'collections_count' => CollectionResource::collection($this->collections)->count(),
+            'nfts_count' => NftResource::collection($this->nfts)->count(),
         ];
     }
 }

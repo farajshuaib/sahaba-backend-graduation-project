@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,7 +19,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Liker, HasRoles, Follower, Followable;
 
-
     protected $guarded = [];
 
 
@@ -30,6 +30,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_verified' => 'boolean'
     ];
 
 
@@ -44,7 +45,7 @@ class User extends Authenticatable
         return $this->hasMany(Nft::class);
     }
 
-    public function reports()
+    public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');
     }

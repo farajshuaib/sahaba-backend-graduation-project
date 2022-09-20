@@ -15,6 +15,7 @@ class Collection extends Model
 
     protected $fillable = ['name', 'description', 'banner_image', 'category_id', 'facebook_url', 'instagram_url', 'logo_image', 'is_sensitive_content', 'collection_token_id', 'twitter_url', 'website_url'];
 
+    protected $casts = ['is_sensitive_content' => 'boolean'];
 
     public function users(): BelongsToMany
     {
@@ -33,7 +34,7 @@ class Collection extends Model
 
     public function collaborators(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'collection_collaborators', 'user_id', 'collection_id');
+        return $this->belongsToMany(User::class, 'collection_collaborators', 'collection_id', 'user_id');
     }
 
     public function nfts(): HasMany
