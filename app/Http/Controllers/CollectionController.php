@@ -74,4 +74,11 @@ class CollectionController extends Controller
 
     }
 
+
+    public function myCollections()
+    {
+        $user = auth()->user()->load(['collections', 'collections.nfts']);
+        return CollectionResource::collection($user['collections']);
+    }
+
 }

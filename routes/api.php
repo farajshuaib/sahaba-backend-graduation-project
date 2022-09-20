@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/my-profile', [AuthController::class, 'show']);
     Route::put('/my-profile', [AuthController::class, 'update']);
     Route::post('users/report/{user}', [UserController::class, 'report']);
+    Route::get('/my-collections', [CollectionController::class, 'myCollections']);
 
 
     Route::prefix('nfts')->group(function () {
@@ -53,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('collections')->group(function () {
         Route::post('/', [CollectionController::class, 'store']);
+
         Route::put('/{collection}', [CollectionController::class, 'update']);
         Route::delete('/{collection}', [CollectionController::class, 'destroy']);
         Route::post('/add-collaboration/{collection}', [CollectionController::class, 'addCollaboration']);
