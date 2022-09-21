@@ -20,11 +20,9 @@ class UserResource extends JsonResource
             'twitter_url' => $this->twitter_url,
             'telegram_url' => $this->telegram_url,
             'is_verified' => $this->is_verified,
-            'collections' => CollectionResource::collection($this->whenLoaded('collections')),
-            'nfts' => NftResource::collection($this->whenLoaded('nfts')),
-            'liked_nfts' => LikedNftsResource::collection($this->whenLoaded('likes')),
-            'followers' => [],
-            'following' => [],
+//            'collections' => CollectionResource::collection($this->whenLoaded('collections')),
+//            'nfts' => NftResource::collection($this->whenLoaded('nfts')),
+//            'liked_nfts' => LikedNftsResource::collection($this->whenLoaded('likes')),
         ];
     }
 }

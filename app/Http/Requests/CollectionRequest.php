@@ -36,7 +36,6 @@ class CollectionRequest extends FormRequest
             'is_sensitive_content' => ['required', 'boolean'],
             'collection_token_id' => ['required', 'int'],
             'category_id' => ['required', Rule::exists('categories', 'id')],
-            'user_id' => ['required', Rule::exists('users', 'id')],
         ];
     }
 }

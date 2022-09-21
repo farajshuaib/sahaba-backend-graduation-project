@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationMeta;
 use App\Http\Requests\CollectionCollaboratorRequest;
 use App\Http\Requests\CollectionRequest;
 use App\Http\Requests\ReportRequest;
@@ -17,13 +18,18 @@ class CollectionController extends Controller
 {
     public function index(): JsonResponse
     {
-        $collections = Collection::with('category', 'nfts', 'collaborators', 'user')->paginate(20);
-        return response()->json(CollectionResource::collection($collections));
+        $collections = Collection::with('category', 'nfts', 'user')->paginate(20);
+        return response()->json([
+            'data' => CollectionResource::collection($collections),
+            'meta' => PaginationMeta::getPaginationMeta($collections)
+        ]);
     }
 
     public function store(CollectionRequest $request): JsonResponse
     {
-        $collection = Collection::create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+        $collection = Collection::create($data);
         CollectionCollaborator::create(['collection_id' => $collection->id, 'user_id' => auth()->id()]);
         return response()->json(['data' => CollectionResource::make($collection->load('category', 'nfts', 'user')), 'message' => 'collection created successfully'], 200);
     }
@@ -46,6 +52,7 @@ class CollectionController extends Controller
         $collection->delete();
         return response()->noContent();
     }
+
 
     public function report(Collection $collection, ReportRequest $request)
     {

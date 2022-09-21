@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationMeta;
 use App\Http\Requests\NftRequest;
 use App\Http\Requests\ReportRequest;
 use App\Http\Resources\NftResource;
@@ -16,7 +17,11 @@ class NftController extends Controller
     {
         $nfts = Nft::with('user', 'user.likes.likeable', 'collection')
             ->paginate(20);
-        return response()->json(NftResource::collection($nfts));
+
+        return response()->json([
+            'data' => NftResource::collection($nfts),
+            'meta' => PaginationMeta::getPaginationMeta($nfts)
+        ]);
     }
 
     public function store(NftRequest $request): JsonResponse
@@ -53,18 +58,6 @@ class NftController extends Controller
         return response()->noContent();
     }
 
-
-    public function likedByUser()
-    {
-        try {
-            // find only nft where user liked them
-            $nfts = auth()->user()->likes()->withType(Nft::class)->with('likeable')->paginate(20);
-
-            return response()->json($nfts);
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
 
     public function toggleLike(Nft $nft)
     {

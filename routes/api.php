@@ -29,24 +29,28 @@ Route::get('/collections/{collection}', [CollectionController::class, 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
 
+
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{user}', [UserController::class, 'show']);
+    Route::get('/collections/{user}', [UserController::class, 'userCollections']);
+    Route::get('/nfts/{user}', [UserController::class, 'userNfts']);
+    Route::get('/liked-nfts/{user}', [UserController::class, 'likedNfts']);
+    Route::get('/following/{user}', [UserController::class, 'following']);
+    Route::get('/followers/{user}', [UserController::class, 'followers']);
+
 });
 
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/my-profile', [AuthController::class, 'show']);
     Route::put('/my-profile', [AuthController::class, 'update']);
     Route::post('users/report/{user}', [UserController::class, 'report']);
-    Route::get('/my-collections', [CollectionController::class, 'myCollections']);
 
 
     Route::prefix('nfts')->group(function () {
         Route::post('/', [NftController::class, 'store']);
         Route::put('/{nft}', [NftController::class, 'update']);
-        Route::get('/liked/by-me', [NftController::class, 'likedByUser']);
         Route::post('/toggle-like/{nft}', [NftController::class, 'toggleLike']);
         Route::post('/report/{nft}', [NftController::class, 'report']);
     });
@@ -54,7 +58,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('collections')->group(function () {
         Route::post('/', [CollectionController::class, 'store']);
-
         Route::put('/{collection}', [CollectionController::class, 'update']);
         Route::delete('/{collection}', [CollectionController::class, 'destroy']);
         Route::post('/add-collaboration/{collection}', [CollectionController::class, 'addCollaboration']);
