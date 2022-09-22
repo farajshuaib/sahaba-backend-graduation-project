@@ -13,11 +13,13 @@ use Laravel\Sanctum\HasApiTokens;
 use Overtrue\LaravelFollow\Traits\Followable;
 use Overtrue\LaravelFollow\Traits\Follower;
 use Overtrue\LaravelLike\Traits\Liker;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, Liker, HasRoles, Follower, Followable;
+    use HasApiTokens, HasFactory, Notifiable, Liker, HasRoles, Follower, Followable, InteractsWithMedia;
 
     protected $guarded = [];
 
@@ -48,6 +50,11 @@ class User extends Authenticatable
     public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('users_profile')->singleFile();
     }
 
     public function scopeIsEnabled($query)

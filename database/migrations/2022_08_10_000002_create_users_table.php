@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->string('email')->nullable()->unique();
             $table->string('bio')->nullable();
             $table->string('wallet_address')->unique();
-            $table->string('profile_photo')->nullable();
             $table->string('website_url')->nullable();
             $table->string('facebook_url')->nullable();
             $table->string('twitter_url')->nullable();

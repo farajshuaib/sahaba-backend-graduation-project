@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $token,
-            'user' => $user
+            'user' => UserResource::make($user)
         ]);
 
     }
@@ -48,8 +48,22 @@ class AuthController extends Controller
     {
         try {
             $user = auth()->user();
-            if (!$user) exit(403);
-            $user->update($request->validated());
+            if (!$user)
+                return response()->json(['message' => 'you are not allowed to modify account'], 403);
+
+            $user->update([
+                'username' => $request->username,
+                'email' => $request->email,
+                'bio' => $request->bio,
+                'facebook_url' => $request->facebook_url,
+                'telegram_url' => $request->telegram_url,
+                'twitter_url' => $request->twitter_url,
+                'website_url' => $request->website_url,
+            ]);
+            if ($request->hasFile('profile_photo')) {
+                $user->addMedia($request->profile_photo)->toMediaCollection('users_profile');
+            }
+
             return response()->json([
                 'user' => UserResource::make($user),
                 'message' => 'update success'

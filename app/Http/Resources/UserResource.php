@@ -14,15 +14,12 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'bio' => $this->bio,
             'wallet_address' => $this->wallet_address,
-            'profile_photo' => $this->profile_photo,
+            'profile_photo' => $this->getFirstMedia('users_profile') ? $this->getFirstMedia('users_profile')->getUrl() : null,
             'website_url' => $this->website_url,
             'facebook_url' => $this->facebook_url,
             'twitter_url' => $this->twitter_url,
             'telegram_url' => $this->telegram_url,
             'is_verified' => $this->is_verified,
-//            'collections' => CollectionResource::collection($this->whenLoaded('collections')),
-//            'nfts' => NftResource::collection($this->whenLoaded('nfts')),
-//            'liked_nfts' => LikedNftsResource::collection($this->whenLoaded('likes')),
         ];
     }
 }

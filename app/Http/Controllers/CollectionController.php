@@ -13,12 +13,15 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class CollectionController extends Controller
 {
     public function index(): JsonResponse
     {
-        $collections = Collection::with('category', 'nfts', 'user')->paginate(20);
+        $collections = Collection::with(['category', 'user', 'nfts' => function ($query) {
+            $query->limit(5);
+        }])->paginate(20);
         return response()->json([
             'data' => CollectionResource::collection($collections),
             'meta' => PaginationMeta::getPaginationMeta($collections)
@@ -37,7 +40,9 @@ class CollectionController extends Controller
 
     public function show(Collection $collection): JsonResponse
     {
-        return response()->json(CollectionResource::make($collection->load('category', 'nfts', 'user')));
+        return response()->json(CollectionResource::make($collection->load(['category', 'user', 'nfts' => function ($query) {
+            $query->limit(5);
+        }])));
     }
 
 
@@ -64,6 +69,7 @@ class CollectionController extends Controller
     public function addCollaboration(Collection $collection, CollectionCollaboratorRequest $request)
     {
         try {
+            DB::beginTransaction();
             $user = User::where('wallet_address', $request->wallet_address)->first();
             if (!$user)
                 return response()->json(['message' => 'user with " ' . $request->wallet_address . ' " wallet address can\'t be found, please check it and try again'], 400);
@@ -71,12 +77,13 @@ class CollectionController extends Controller
             $collaboration_exist = CollectionCollaborator::where('user_id', $user->id)->where('collection_id', $collection->id)->first();
             if ($collaboration_exist)
                 return response()->json(['message' => 'this user already collaborated with this collection'], 403);
-
             $collection->collaborators()->attach($user->id);
+            DB::commit();
             return response()->json(['data' => ['collection' => CollectionResource::make($collection), 'collaborator' => $user], 'message' => 'collection collaboration created successfully'], 200);
-
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->json(['message' => $e], 500);
+
         }
 
     }

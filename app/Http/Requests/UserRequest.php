@@ -25,13 +25,13 @@ class UserRequest extends FormRequest
     {
         return [
             'username' => ['required', 'string'],
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email', 'unique:users,email,' . auth()->id()],
             'bio' => ['nullable', 'string'],
-            'profile_photo' => ['nullable', 'url'],
-            'website_url' => ['nullable', 'url'],
-            'facebook_url' => ['nullable', 'url'],
-            'twitter_url' => ['nullable', 'url'],
-            'telegram_url' => ['nullable', 'url'],
+            'profile_photo' => ['nullable', 'image'],
+            'website_url' => ['nullable', 'string'],
+            'facebook_url' => ['nullable', 'string'],
+            'twitter_url' => ['nullable', 'string'],
+            'telegram_url' => ['nullable', 'string'],
         ];
     }
 
