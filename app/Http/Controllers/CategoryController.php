@@ -21,7 +21,12 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request): JsonResponse
     {
-        $category = Category::create($request->validated());
+        $category = Category::create([
+            'name' => $request->name
+        ]);
+        if ($request->hasFile('icon')) {
+            $category->addMedia($request->icon)->toMediaCollection('category_icon');
+        }
         return response()->json(CategoryResource::make($category->load('collections', 'nfts')));
     }
 
@@ -34,7 +39,10 @@ class CategoryController extends Controller
 
     public function update(Category $category, Request $request): JsonResponse
     {
-        $category->update($request->validated());
+        $category->update(['name' => $request->name]);
+        if ($request->hasFile('icon')) {
+            $category->addMedia($request->icon)->toMediaCollection('category_icon');
+        }
         return response()->json([
             'user' => CategoryResource::make($category->load('collections', 'nfts')),
             'message' => 'update success'

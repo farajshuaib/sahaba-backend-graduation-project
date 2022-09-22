@@ -20,7 +20,7 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'icon' => $this->icon,
+            'icon' => $this->getFirstMedia('category_icon') ? $this->getFirstMedia('category_icon')->getUrl() : null,
             'collections_count' => CollectionResource::collection($this->collections)->count(),
             'nfts_count' => NftResource::collection($this->nfts)->count(),
         ];

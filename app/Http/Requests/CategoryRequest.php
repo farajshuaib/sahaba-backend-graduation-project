@@ -10,7 +10,7 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'icon' => ['required', 'url']
+            'icon' => ['required', 'image']
         ];
     }
 

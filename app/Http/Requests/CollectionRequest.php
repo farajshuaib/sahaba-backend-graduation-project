@@ -27,13 +27,13 @@ class CollectionRequest extends FormRequest
         return [
             'name' => ['required'],
             'description' => ['required', 'string'],
-            'logo_image' => ['required', 'string'],
-            'banner_image' => ['nullable', 'string'],
+            'logo_image' => ['required', 'image'],
+            'banner_image' => ['nullable', 'image'],
             'website_url' => ['nullable', 'url'],
             'facebook_url' => ['nullable', 'url'],
             'twitter_url' => ['nullable', 'url'],
-            'instagram_url' => ['nullable', 'url'],
-            'is_sensitive_content' => ['required', 'boolean'],
+            'telegram_url' => ['nullable', 'url'],
+            'is_sensitive_content' => ['required'],
             'collection_token_id' => ['required', 'int'],
             'category_id' => ['required', Rule::exists('categories', 'id')],
         ];

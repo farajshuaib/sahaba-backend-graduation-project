@@ -30,11 +30,30 @@ class CollectionController extends Controller
 
     public function store(CollectionRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $data['user_id'] = auth()->id();
-        $collection = Collection::create($data);
-        CollectionCollaborator::create(['collection_id' => $collection->id, 'user_id' => auth()->id()]);
-        return response()->json(['data' => CollectionResource::make($collection->load('category', 'nfts', 'user')), 'message' => 'collection created successfully'], 200);
+        try {
+            $collection = Collection::create([
+                'user_id' => auth()->id(),
+                'name' => $request->name,
+                'description' => $request->description,
+                'website_url' => $request->website_url,
+                'facebook_url' => $request->facebook_url,
+                'twitter_url' => $request->twitter_url,
+                'telegram_url' => $request->telegram_url,
+                'is_sensitive_content' => $request->is_sensitive_content == 'true',
+                'collection_token_id' => $request->collection_token_id,
+                'category_id' => $request->category_id,
+            ]);
+            if ($request->hasFile('logo_image')) {
+                $collection->addMedia($request->logo_image)->toMediaCollection('collection_logo_image');
+            }
+            if ($request->hasFile('banner_image')) {
+                $collection->addMedia($request->banner_image)->toMediaCollection('collection_banner_image');
+            }
+            CollectionCollaborator::create(['collection_id' => $collection->id, 'user_id' => auth()->id()]);
+            return response()->json(['data' => CollectionResource::make($collection->load('category', 'nfts', 'user')), 'message' => 'collection created successfully'], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e]);
+        }
     }
 
 
@@ -48,7 +67,22 @@ class CollectionController extends Controller
 
     public function update(Collection $collection, CollectionRequest $request): JsonResponse
     {
-        $collection->update($request->validated());
+        $collection->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'website_url' => $request->website_url,
+            'facebook_url' => $request->facebook_url,
+            'twitter_url' => $request->twitter_url,
+            'telegram_url' => $request->telegram_url,
+            'is_sensitive_content' => $request->is_sensitive_content == 'true',
+            'category_id' => $request->category_id,
+        ]);
+        if ($request->hasFile('logo_image')) {
+            $collection->addMedia($request->logo_image)->toMediaCollection('collection_logo_image');
+        }
+        if ($request->hasFile('banner_image')) {
+            $collection->addMedia($request->banner_image)->toMediaCollection('collection_banner_image');
+        }
         return response()->json(['data' => CollectionResource::make($collection->load('category', 'nfts', 'user')), 'message' => 'collection updated successfully'], 200);
     }
 

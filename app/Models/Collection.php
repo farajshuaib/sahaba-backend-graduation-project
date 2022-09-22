@@ -15,7 +15,7 @@ class Collection extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['name', 'description', 'banner_image', 'category_id', 'facebook_url', 'instagram_url', 'logo_image', 'is_sensitive_content', 'collection_token_id', 'twitter_url', 'website_url', 'user_id'];
+    protected $fillable = ['name', 'description', 'category_id', 'facebook_url', 'telegram_url', 'twitter_url', 'website_url', 'is_sensitive_content', 'collection_token_id', 'user_id'];
 
     protected $casts = ['is_sensitive_content' => 'boolean'];
 
@@ -39,8 +39,15 @@ class Collection extends Model implements HasMedia
         return $this->belongsToMany(User::class, 'collection_collaborators', 'collection_id', 'user_id');
     }
 
+
     public function nfts(): HasMany
     {
         return $this->hasMany(Nft::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('collection_banner_image')->singleFile();
+        $this->addMediaCollection('collection_logo_image')->singleFile();
     }
 }
