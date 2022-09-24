@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 
 class UserFactory extends Factory
@@ -21,13 +20,12 @@ class UserFactory extends Factory
             'username' => fake()->name(),
             'email' => fake()->safeEmail(),
             'bio' => fake()->title,
-            'wallet_address' => $this->faker->unique()->numberBetween(1,10000000000),
-            'profile_photo' => $this->faker->imageUrl,
+            'wallet_address' => $this->faker->unique()->numberBetween(1, 10000000000),
             'website_url' => $this->faker->url,
             'facebook_url' => $this->faker->url,
             'twitter_url' => $this->faker->url,
             'telegram_url' => $this->faker->url,
-            'status' => $status[rand(0,1)],
+            'status' => $status[rand(0, 1)],
             'is_verified' => $this->faker->boolean,
         ];
     }

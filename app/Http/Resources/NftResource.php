@@ -17,7 +17,7 @@ class NftResource extends JsonResource
             'description' => $this->description,
             'file_path' => $this->file_path,
             'file_type' => $this->file_type,
-            'collection' => CollectionResource::make($this->collection),
+            'collection' => CollectionResource::make($this->whenLoaded('collection')),
             'user' => UserResource::make($this->whenLoaded('user')),
             'price' => $this->price,
             'like_count' => $currentNft->likers()->count(),

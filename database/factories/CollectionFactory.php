@@ -19,8 +19,6 @@ class CollectionFactory extends Factory
             'category_id' => Category::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
             'collection_token_id' => $this->faker->unique()->numberBetween(1, 1000),
-            'logo_image' => $this->faker->imageUrl,
-            'banner_image' => $this->faker->imageUrl,
             'website_url' => $this->faker->url,
             'facebook_url' => $this->faker->url,
             'twitter_url' => $this->faker->url,

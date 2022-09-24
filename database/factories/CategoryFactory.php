@@ -26,7 +26,6 @@ class CategoryFactory extends Factory
         ];
         return [
             'name' => $names[rand(0, count($names) - 1)],
-            'icon' => $icons[rand(0, count($icons) - 1)],
         ];
     }
 }

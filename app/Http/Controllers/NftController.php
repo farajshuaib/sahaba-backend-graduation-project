@@ -15,9 +15,7 @@ class NftController extends Controller
 {
     public function index(): JsonResponse
     {
-        $nfts = Nft::with('user', 'user.likes.likeable', 'collection')
-            ->paginate(20);
-
+        $nfts = Nft::withFilters();
         return response()->json([
             'data' => NftResource::collection($nfts),
             'meta' => PaginationMeta::getPaginationMeta($nfts)

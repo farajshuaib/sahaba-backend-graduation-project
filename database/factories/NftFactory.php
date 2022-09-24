@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Collection;
 use App\Models\Nft;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class NftFactory extends Factory
@@ -34,9 +36,9 @@ class NftFactory extends Factory
 
         return [
             'title' => $this->faker->title,
-            'collection_id' => rand(1, 10),
-            'user_id' => rand(1, 10),
-            'nft_token_id' => rand(1, 10000),
+            'collection_id' => Collection::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id,
+            'nft_token_id' => rand(1, 1000000),
             'description' => $this->faker->paragraph('2'),
             'file_path' => $images[round(0, count($images) - 1)],
             'file_type' => $file_type[round(0, 3)],

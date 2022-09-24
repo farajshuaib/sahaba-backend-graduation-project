@@ -34,7 +34,7 @@ class CollectionResource extends JsonResource
             'category' => CategoryResource::make($this->whenLoaded('category')),
             'nfts' => NftResource::collection($this->whenLoaded('nfts')),
             'created_by' => UserResource::make($this->whenLoaded('user')),
-
+            'nfts_count' => NftResource::collection($this->nfts)->count(),
         ];
     }
 }

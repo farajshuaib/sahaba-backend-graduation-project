@@ -20,7 +20,7 @@ class CollectionController extends Controller
     public function index(): JsonResponse
     {
         $collections = Collection::with(['category', 'user', 'nfts' => function ($query) {
-            $query->limit(5);
+            $query->limit(3);
         }])->paginate(20);
         return response()->json([
             'data' => CollectionResource::collection($collections),
@@ -125,7 +125,7 @@ class CollectionController extends Controller
 
     public function myCollections()
     {
-        $user = auth()->user()->load(['collections', 'user']);
+        $user = auth()->user()->load(['collections']);
         return CollectionResource::collection($user['collections']);
     }
 

@@ -45,8 +45,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::put('/my-profile', [AuthController::class, 'update']);
+    Route::get('/my-collections', [CollectionController::class, 'myCollections']);
 
-    
+
     Route::post('users/report/{user}', [UserController::class, 'report']);
 
 
