@@ -9,12 +9,19 @@ use App\Http\Resources\NftResource;
 use App\Models\Nft;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 
 class NftController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+//        $nfts = Nft::with('user', 'user.likes.likeable', 'collection')->whereHas('collection', function ($query) use ($request) {
+//            $query->when($request->filled('collection_id'), function ($query) use ($request) {
+//                $query->where('id', '=', $request->collection_id);
+//            });
+//        })->orderBy('id', 'desc')->paginate(10);
+
         $nfts = Nft::withFilters();
         return response()->json([
             'data' => NftResource::collection($nfts),

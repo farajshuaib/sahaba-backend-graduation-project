@@ -15,9 +15,11 @@ class CollectionResource extends JsonResource
      * @param Request $request
      * @return array|Arrayable|JsonSerializable
      */
-    public function toArray($request)
 
+
+    public function toArray($request): array
     {
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -34,7 +36,10 @@ class CollectionResource extends JsonResource
             'category' => CategoryResource::make($this->whenLoaded('category')),
             'nfts' => NftResource::collection($this->whenLoaded('nfts')),
             'created_by' => UserResource::make($this->whenLoaded('user')),
-            'nfts_count' => NftResource::collection($this->nfts)->count(),
+            'nfts_count' => $this->nfts()->count(),
+            'volume' => $this->nfts()->sum('price'),
+            'min_price' => $this->nfts()->min('price'),
+            'max_price' => $this->nfts()->max('price'),
         ];
     }
 }

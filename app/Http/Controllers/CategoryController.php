@@ -14,7 +14,7 @@ class CategoryController extends Controller
 
     public function index(): JsonResponse
     {
-        $categories = Category::with('collections')->get();
+        $categories = Category::with('collections')->orderBy('id', 'desc')->get();
 //        dd($categories);
         return response()->json(CategoryResource::collection($categories));
     }

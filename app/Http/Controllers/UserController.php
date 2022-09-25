@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with('collections', 'followers', 'followings', 'likes.likeable')->isEnabled()->paginate(10);
+        $users = User::with('collections', 'followers', 'followings', 'likes.likeable', 'followables.follower')->isEnabled()->paginate(10);
         return response()->json([
             'data' => UserResource::collection($users),
             'meta' => PaginationMeta::getPaginationMeta($users)
@@ -63,10 +63,11 @@ class UserController extends Controller
     public function following(User $user): JsonResponse
     {
         try {
-            $users = $user->followings()->paginate(10);
+            $followings = $user->followings()->withType(User::class)->with('followable', 'user')->paginate(10);
+//
             return response()->json([
-                'data' => UserResource::collection($users),
-                'meta' => PaginationMeta::getPaginationMeta($users)
+                'data' => UserResource::collection($followings),
+//                'meta' => PaginationMeta::getPaginationMeta($users)
             ]);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -91,5 +92,18 @@ class UserController extends Controller
         $data = $request->validated();
         $data['reporter_id'] = auth()->id();
         $user->reports()->create($data);
+    }
+
+    public function toggleFollow(User $user)
+    {
+        $current_user = auth()->user();
+        if ($current_user->isFollowing($user)) {
+            $current_user->unfollow($user);
+            return response()->json(['message' => 'author unfollowed successfully'], 200);
+        } else {
+            $current_user->follow($user);
+            $user->acceptFollowRequestFrom($current_user);
+            return response()->json(['message' => 'author followed successfully'], 200);
+        }
     }
 }

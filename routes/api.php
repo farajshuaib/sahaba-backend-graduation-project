@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::post('users/report/{user}', [UserController::class, 'report']);
+    Route::post('users/toggle-follow/{user}', [UserController::class, 'toggleFollow']);
 
 
     Route::prefix('nfts')->group(function () {

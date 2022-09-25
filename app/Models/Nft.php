@@ -29,6 +29,7 @@ class Nft extends Model
             ->through([
                 Search::class,
                 \App\QueryFilters\Nfts\Collection::class,
+                \App\QueryFilters\Nfts\Category::class,
             ])
             ->thenReturn()
             ->with('collection', 'user', 'user.likes.likeable')

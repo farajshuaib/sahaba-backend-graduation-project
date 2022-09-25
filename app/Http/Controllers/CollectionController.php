@@ -19,9 +19,7 @@ class CollectionController extends Controller
 {
     public function index(): JsonResponse
     {
-        $collections = Collection::with(['category', 'user', 'nfts' => function ($query) {
-            $query->limit(3);
-        }])->paginate(20);
+        $collections = Collection::withFilters();
         return response()->json([
             'data' => CollectionResource::collection($collections),
             'meta' => PaginationMeta::getPaginationMeta($collections)
@@ -35,10 +33,8 @@ class CollectionController extends Controller
                 'user_id' => auth()->id(),
                 'name' => $request->name,
                 'description' => $request->description,
-                'website_url' => $request->website_url,
                 'facebook_url' => $request->facebook_url,
                 'twitter_url' => $request->twitter_url,
-                'telegram_url' => $request->telegram_url,
                 'is_sensitive_content' => $request->is_sensitive_content == 'true',
                 'collection_token_id' => $request->collection_token_id,
                 'category_id' => $request->category_id,
@@ -59,9 +55,7 @@ class CollectionController extends Controller
 
     public function show(Collection $collection): JsonResponse
     {
-        return response()->json(CollectionResource::make($collection->load(['category', 'user', 'nfts' => function ($query) {
-            $query->limit(5);
-        }])));
+        return response()->json(CollectionResource::make($collection->load(['category', 'user'])));
     }
 
 
