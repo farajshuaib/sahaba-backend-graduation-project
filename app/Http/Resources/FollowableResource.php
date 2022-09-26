@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LikedNftsResource extends JsonResource
+class FollowableResource extends JsonResource
 {
     /**
      * @param Request $request
@@ -13,6 +13,8 @@ class LikedNftsResource extends JsonResource
      */
     public function toArray($request): array
     {
-        return ['nft' => NftResource::make($this->whenLoaded('likeable'))];
+        return [
+            'user' => UserResource::make($this->whenLoaded('followable'))
+        ];
     }
 }
