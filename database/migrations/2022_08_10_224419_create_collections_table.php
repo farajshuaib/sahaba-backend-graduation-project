@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->boolean('is_sensitive_content')->default(0);
 //            $table->tinyInteger('creator_earnings');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

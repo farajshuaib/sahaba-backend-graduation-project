@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -13,14 +12,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('nfts_histories', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('nft_id')->constrained();
             $table->foreignId('buyer_id')->constrained('users');
             $table->foreignId('seller_id')->constrained('users');
-            $table->enum('type',['mint', 'buy']);
+            $table->enum('type', ['mint', 'buy']);
             $table->unsignedDecimal('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

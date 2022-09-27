@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->enum('type', ['spam', 'trouble', 'violence', 'other'])->default('other');
             $table->text('message');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pipeline\Pipeline;
 use Overtrue\LaravelLike\Traits\Likeable;
 
 class Nft extends Model
 {
-    use Likeable, HasFactory;
+    use Likeable, HasFactory, SoftDeletes;
 
 
     protected $fillable = ['title', 'description', 'collection_id', 'user_id', 'creator_address', 'file_path', 'price', 'is_for_sale', 'sale_end_at', 'file_type', 'nft_token_id'];
@@ -32,7 +33,7 @@ class Nft extends Model
                 \App\QueryFilters\Nfts\Category::class,
             ])
             ->thenReturn()
-            ->with('collection', 'user', 'user.likes.likeable')
+            ->with('collection', 'user', 'user.likes.likeable', 'transactions')
             ->orderBy('id', 'DESC')
             ->paginate(15);
     }
@@ -42,10 +43,6 @@ class Nft extends Model
         return $this->belongsTo(Collection::class);
     }
 
-    public function transfers(): HasMany
-    {
-        return $this->hasMany(NftHistory::class);
-    }
 
     public function user(): BelongsTo
     {
@@ -71,5 +68,11 @@ class Nft extends Model
     {
         return $this->morphMany(Report::class, 'reportable');
     }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'nft_id');
+    }
+
 
 }

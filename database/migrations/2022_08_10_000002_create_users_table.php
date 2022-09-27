@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->enum('status', ['enabled', 'pending'])->default('enabled');
             $table->boolean('is_verified')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

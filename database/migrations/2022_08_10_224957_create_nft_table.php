@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->boolean('is_for_sale')->default(false);
             $table->date('sale_end_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
