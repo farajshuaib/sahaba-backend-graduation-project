@@ -29,13 +29,12 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        if ($user->status != 'enabled')
-            return response()->json(['message' => 'user is suspended, profile can not be accessedÏ']);
-        return response()->json(UserResource::make($user->load('collections', 'followers', 'followings', 'likes.likeable')));
+        return response()->json(UserResource::make($user));
     }
 
     public function userCollections(User $user): JsonResponse
     {
+
         $collections = Collection::with('category', 'nfts', 'collaborators', 'user')->where('user_id', $user['id'])->paginate(10);
         return response()->json([
             'data' => CollectionResource::collection($collections),
@@ -44,9 +43,18 @@ class UserController extends Controller
     }
 
 
-    public function userNfts(User $user): JsonResponse
+    public function ownedNfts(User $user): JsonResponse
     {
-        $nfts = Nft::with('collection')->where('user_id', $user['id'])->paginate(10);
+        $nfts = Nft::with('collection', 'owner', 'creator')->where('owner_id', $user['id'])->paginate(10);
+        return response()->json([
+            'data' => NftResource::collection($nfts),
+            'meta' => PaginationMeta::getPaginationMeta($nfts)
+        ]);
+    }
+
+    public function createdNfts(User $user): JsonResponse
+    {
+        $nfts = Nft::with('collection', 'owner', 'creator')->where('creator_id', $user['id'])->paginate(10);
         return response()->json([
             'data' => NftResource::collection($nfts),
             'meta' => PaginationMeta::getPaginationMeta($nfts)

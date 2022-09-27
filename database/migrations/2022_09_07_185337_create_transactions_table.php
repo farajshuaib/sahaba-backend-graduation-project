@@ -15,9 +15,8 @@ return new class extends Migration {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('nft_id')->constrained();
-            $table->foreignId('buyer_id')->constrained('users');
-            $table->foreignId('seller_id')->constrained('users');
-            $table->enum('type', ['mint', 'buy']);
+            $table->foreignId('from')->constrained('users');
+            $table->foreignId('to')->constrained('users');
             $table->unsignedDecimal('price');
             $table->timestamps();
             $table->softDeletes();

@@ -4,28 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Transaction extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['nft_id', 'buyer_id', 'seller_id', 'type', 'price'];
-    protected $table = 'transactions';
+    protected $fillable = ['nft_id', 'from', 'to', 'price'];
 
 
-    public function seller()
+    public function from(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'seller_id');
+        return $this->belongsTo(User::class, 'from', 'id');
     }
 
-    public function buyer()
+    public function to(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'buyer_id');
+        return $this->belongsTo(User::class, 'to', 'id');
     }
 
-    public function nft()
+    public function nft(): BelongsTo
     {
-        return $this->belongsTo(Nft::class, 'nft_id');
+        return $this->belongsTo(Nft::class, 'nft_id', 'id');
     }
 }

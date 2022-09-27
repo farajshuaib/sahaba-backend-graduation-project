@@ -34,7 +34,8 @@ Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{user}', [UserController::class, 'show']);
     Route::get('/collections/{user}', [UserController::class, 'userCollections']);
-    Route::get('/nfts/{user}', [UserController::class, 'userNfts']);
+    Route::get('/owned-nfts/{user}', [UserController::class, 'ownedNfts']);
+    Route::get('/created-nfts/{user}', [UserController::class, 'createdNfts']);
     Route::get('/liked-nfts/{user}', [UserController::class, 'likedNfts']);
     Route::get('/following/{user}', [UserController::class, 'following']);
     Route::get('/followers/{user}', [UserController::class, 'followers']);
@@ -54,7 +55,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('nfts')->group(function () {
         Route::post('/', [NftController::class, 'store']);
-        Route::put('/{nft}', [NftController::class, 'update']);
+        Route::put('/{nft}/update-price', [NftController::class, 'updatePrice']);
+        Route::post('/buy/{nft}', [NftController::class, 'buyNft']);
         Route::post('/toggle-like/{nft}', [NftController::class, 'toggleLike']);
         Route::post('/report/{nft}', [NftController::class, 'report']);
     });

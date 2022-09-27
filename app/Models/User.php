@@ -43,9 +43,14 @@ class User extends Authenticatable implements HasMedia
     }
 
 
-    public function nfts(): HasMany
+    public function created_nfts(): HasMany
     {
-        return $this->hasMany(Nft::class);
+        return $this->hasMany(Nft::class, 'creator_id');
+    }
+
+    public function owned_nfts(): HasMany
+    {
+        return $this->hasMany(Nft::class, 'owner_id');
     }
 
     public function reports(): MorphMany
@@ -61,15 +66,5 @@ class User extends Authenticatable implements HasMedia
     public function scopeIsEnabled($query)
     {
         return $query->where('status', 'enabled');
-    }
-
-    public function sellings(): HasMany
-    {
-        return $this->hasMany(Transaction::class, 'seller_id');
-    }
-
-    public function buyings(): HasMany
-    {
-        return $this->hasMany(Transaction::class, 'buyer_id');
     }
 }

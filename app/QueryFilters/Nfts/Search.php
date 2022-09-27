@@ -11,7 +11,6 @@ class Search extends Filter
     {
         return $builder->where('title', 'LIKE', '%' . request($this->filterName()) . '%')
             ->orWhere('description', 'LIKE', '%' . request($this->filterName()) . '%')
-            ->orWhere('file_path', 'LIKE', '%' . request($this->filterName()) . '%')
-            ->orWhere('creator_address', 'LIKE', '%' . request($this->filterName()) . '%');
+            ->orWhere('file_path', 'LIKE', '%' . request($this->filterName()) . '%');
     }
 }

@@ -15,9 +15,11 @@ class TransactionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'seller' => UserResource::make($this->whenLoaded('seller')),
-            'buyer' => UserResource::make($this->whenLoaded('buyer')),
-            'nft' => NftResource::make($this->whenLoaded('nft'))
+            'to' => $this->to, // UserResource::make($this->whenLoaded('to')),
+            'from' => $this->from,// UserResource::make($this->whenLoaded('from')),
+            'nft' => NftResource::make($this->whenLoaded('nft')),
+            'price' => $this->price,
+            'created_at' => $this->created_at
         ];
     }
 }

@@ -11,12 +11,12 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('nft_token_id')->unique();
             $table->foreignId('collection_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('creator_id')->constrained('users');
+            $table->foreignId('owner_id')->constrained('users');
             $table->string('file_path');
             $table->enum('file_type', ['image', 'audio', 'video'])->default('image');
             $table->string('title');
             $table->string('description');
-            $table->string('creator_address');
             $table->unsignedDecimal('price');
             $table->enum('status', ['published', 'pending', 'canceled', 'deleted'])->default('published');
             $table->boolean('is_for_sale')->default(false);

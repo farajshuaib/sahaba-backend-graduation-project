@@ -19,7 +19,7 @@ class Nft extends Model
     use Likeable, HasFactory, SoftDeletes;
 
 
-    protected $fillable = ['title', 'description', 'collection_id', 'user_id', 'creator_address', 'file_path', 'price', 'is_for_sale', 'sale_end_at', 'file_type', 'nft_token_id'];
+    protected $fillable = ['title', 'description', 'collection_id', 'creator_id', 'owner_id', 'file_path', 'price', 'is_for_sale', 'sale_end_at', 'file_type', 'nft_token_id'];
 
     protected $casts = ['is_for_sale' => 'boolean'];
 
@@ -33,7 +33,7 @@ class Nft extends Model
                 \App\QueryFilters\Nfts\Category::class,
             ])
             ->thenReturn()
-            ->with('collection', 'user', 'user.likes.likeable', 'transactions')
+            ->with('collection', 'creator', 'owner')
             ->orderBy('id', 'DESC')
             ->paginate(15);
     }
@@ -44,9 +44,14 @@ class Nft extends Model
     }
 
 
-    public function user(): BelongsTo
+    public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function category(): HasOneThrough
@@ -54,14 +59,9 @@ class Nft extends Model
         return $this->hasOneThrough(Collection::class, Category::class);
     }
 
-    public function scopeIsPublished($query): Builder
+    public function transactions(): HasMany
     {
-        return $query->where('status', 'published');
-    }
-
-    public function scopeIsOwner($query): Builder
-    {
-        return $query->where('user_id', auth()->id());
+        return $this->hasMany(Transaction::class,);
     }
 
     public function reports(): MorphMany
@@ -69,10 +69,9 @@ class Nft extends Model
         return $this->morphMany(Report::class, 'reportable');
     }
 
-    public function transactions(): HasMany
+    public function scopeIsPublished($query): Builder
     {
-        return $this->hasMany(Transaction::class, 'nft_id');
+        return $query->where('status', 'published');
     }
-
 
 }
