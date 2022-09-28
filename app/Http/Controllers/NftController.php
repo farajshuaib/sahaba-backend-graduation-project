@@ -84,18 +84,17 @@ class NftController extends Controller
 
         $validator = Validator::make($request->all(), [
             'price' => ['required', 'numeric'],
-            'sale_end_at' => ['required', 'date']
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'error' => true,
                 'message' => $validator->errors()
-            ]);
+            ], 422);
         }
 
 
-        $nft->update(['price' => $request->price, 'sale_end_at' => $request->sale_end_at]);
+        $nft->update(['price' => $request->price]);
         return response()->json(['message' => 'nft updated successfully']);
     }
 
@@ -113,11 +112,13 @@ class NftController extends Controller
             return response()->json([
                 'error' => true,
                 'message' => $validator->errors()
-            ]);
+            ], 422);
         }
 
 
         $nft->update(['is_for_sale' => true, 'sale_end_at' => $request->sale_end_at]);
+
+        return response()->json(['message' => 'item listed successfully'], 200);
     }
 
 
@@ -127,6 +128,9 @@ class NftController extends Controller
             return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
 
         $nft->update(['is_for_sale' => false, 'sale_end_at' => null]);
+
+
+        return response()->json(['message' => 'item canceled listed successfully'], 200);
     }
 
 
