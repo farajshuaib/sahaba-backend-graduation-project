@@ -32,7 +32,6 @@ class CollectionRequest extends FormRequest
             'facebook_url' => ['nullable', 'url'],
             'twitter_url' => ['nullable', 'url'],
             'is_sensitive_content' => ['required'],
-            'collection_token_id' => ['required', 'int'],
             'category_id' => ['required', Rule::exists('categories', 'id')],
         ];
     }

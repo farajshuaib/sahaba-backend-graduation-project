@@ -18,7 +18,6 @@ class CollectionFactory extends Factory
             'description' => $this->faker->realText(50),
             'category_id' => Category::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
-            'collection_token_id' => $this->faker->unique()->numberBetween(1, 1000000),
             'facebook_url' => $this->faker->url,
             'twitter_url' => $this->faker->url,
             'is_sensitive_content' => $this->faker->boolean,

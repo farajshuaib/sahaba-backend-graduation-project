@@ -22,7 +22,7 @@ class NftResource extends JsonResource
             'price' => $this->price,
             'like_count' => $currentNft->likers()->count(),
             'is_for_sale' => $this->is_for_sale,
-            'nft_token_id' => $this->nft_token_id,
+            'token_id' => $this->token_id,
             'owner' => UserResource::make($this->whenLoaded('owner')),
             'transactions' => $this->transactions->load('from', 'to'), //TransactionResource::collection($this->transactions->load('from', 'to')),
             $this->mergeWhen($this->is_for_sale, function () {

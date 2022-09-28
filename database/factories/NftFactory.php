@@ -39,7 +39,7 @@ class NftFactory extends Factory
             'collection_id' => Collection::inRandomOrder()->first()->id,
             'creator_id' => User::inRandomOrder()->first()->id,
             'owner_id' => User::inRandomOrder()->first()->id,
-            'nft_token_id' => $this->faker->unique()->numberBetween(1, 100000000000),
+            'token_id' => $this->faker->unique()->sha256(),
             'description' => $this->faker->paragraph('2'),
             'file_path' => $images[round(0, count($images) - 1)],
             'file_type' => $file_type[round(0, 3)],

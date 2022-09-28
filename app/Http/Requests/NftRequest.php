@@ -28,7 +28,7 @@ class NftRequest extends FormRequest
             'title' => ['string', 'required'],
             'description' => ['string', 'required'],
             'file_path' => ['string', 'required'],
-            'nft_token_id' => ['required', 'int'],
+            'token_id' => ['required', 'string'],
             'file_type' => ['required', 'in:image,audio,video'],
             'collection_id' => ['required', 'int', Rule::exists('collections', 'id')],
             'price' => ['required', 'numeric'],
