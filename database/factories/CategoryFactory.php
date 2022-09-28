@@ -16,14 +16,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         $names = ["Arts", "Entertainment", "Music", "News", "Science", "Sports", "Technology",];
-        $icons = [
-            "http://127.0.0.1:8000/images/nfts/cat1.png",
-            "http://127.0.0.1:8000/images/nfts/cat2.png",
-            "http://127.0.0.1:8000/images/nfts/cat3.png",
-            "http://127.0.0.1:8000/images/nfts/cat4.png",
-            "http://127.0.0.1:8000//images/nfts/cat5.png",
-            "http://127.0.0.1:8000/images/nfts/cat6.png"
-        ];
+
         return [
             'name' => $names[rand(0, count($names) - 1)],
         ];

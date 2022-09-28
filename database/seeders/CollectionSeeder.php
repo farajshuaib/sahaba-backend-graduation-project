@@ -32,10 +32,8 @@ class CollectionSeeder extends Seeder
         ];
 
 
-        $images_url = 'https://picsum.photos/480/360';
-
-//        foreach ($collections as $collection) {
-//            $collection->addMediaFromUrl($images_url)->toMediaCollection('collection_logo_image');
-//        }
+        foreach ($collections as $collection) {
+            $collection->addMediaFromUrl($images[round(count($images) - 1)])->toMediaCollection('collection_logo_image');
+        }
     }
 }

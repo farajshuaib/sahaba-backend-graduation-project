@@ -32,8 +32,6 @@ class NftRequest extends FormRequest
             'file_type' => ['required', 'in:image,audio,video'],
             'collection_id' => ['required', 'int', Rule::exists('collections', 'id')],
             'price' => ['required', 'numeric'],
-            'sale_end_at' => ['nullable', 'date'],
-            'is_for_sale' => ['required', 'boolean'],
         ];
     }
 }
