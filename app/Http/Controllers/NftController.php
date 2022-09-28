@@ -83,7 +83,8 @@ class NftController extends Controller
             return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
 
         $validator = Validator::make($request->all(), [
-            'price' => ['required', 'numeric']
+            'price' => ['required', 'numeric'],
+            'sale_end_at' => ['required', 'date']
         ]);
 
         if ($validator->fails()) {
@@ -94,8 +95,38 @@ class NftController extends Controller
         }
 
 
-        $nft->update(['price' => $request->price]);
+        $nft->update(['price' => $request->price, 'sale_end_at' => $request->sale_end_at]);
         return response()->json(['message' => 'nft updated successfully']);
+    }
+
+
+    public function setForSale(Nft $nft, Request $request)
+    {
+        if ($nft->owner_id != auth()->id())
+            return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
+
+        $validator = Validator::make($request->all(), [
+            'sale_end_at' => ['required', 'date']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => true,
+                'message' => $validator->errors()
+            ]);
+        }
+
+
+        $nft->update(['is_for_sale' => true, 'sale_end_at' => $request->sale_end_at]);
+    }
+
+
+    public function stopSale(Nft $nft)
+    {
+        if ($nft->owner_id != auth()->id())
+            return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
+
+        $nft->update(['is_for_sale' => false, 'sale_end_at' => null]);
     }
 
 
