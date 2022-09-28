@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\NftController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,9 @@ Route::get('/collections/{collection}', [CollectionController::class, 'show']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
+
+
+Route::post('/contact', [ContactUsController::class, 'sendEmail']);
 
 
 Route::prefix('users')->group(function () {
