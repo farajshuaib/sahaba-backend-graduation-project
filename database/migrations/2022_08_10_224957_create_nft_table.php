@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->unsignedDecimal('price');
             $table->enum('status', ['published', 'pending', 'canceled', 'deleted'])->default('published');
             $table->boolean('is_for_sale')->default(false);
-            $table->date('sale_end_at')->nullable();
+            $table->timestamp('sale_end_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
