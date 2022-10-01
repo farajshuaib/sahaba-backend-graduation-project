@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/connect-wallet', [AuthController::class, 'connectWallet']);
 
 Route::get('/nfts', [NftController::class, 'index']);
+Route::get('/latest-nfts', [NftController::class, 'latest']);
 Route::get('/nfts/{nft}', [NftController::class, 'show']);
 
 Route::get('/collections', [CollectionController::class, 'index']);

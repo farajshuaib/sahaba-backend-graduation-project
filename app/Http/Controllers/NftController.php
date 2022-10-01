@@ -19,14 +19,20 @@ class NftController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-//        $nfts = Nft::with('user', 'user.likes.likeable', 'collection')->whereHas('collection', function ($query) use ($request) {
-//            $query->when($request->filled('collection_id'), function ($query) use ($request) {
-//                $query->where('id', '=', $request->collection_id);
-//            });
-//        })->orderBy('id', 'desc')->paginate(10);
+        $nfts = Nft::withFilters()->paginate(15);
+        return response()->json([
+            'data' => NftResource::collection($nfts),
+            'meta' => PaginationMeta::getPaginationMeta($nfts)
+        ]);
+    }
 
-        $nfts = Nft::withFilters();
-//        dd($nfts);
+    public function latest()
+    {
+        if (auth()->check()) {
+            $nfts = Nft::withFilters()->paginate(15);
+        } else {
+            $nfts = Nft::withFilters()->paginate(15);
+        }
         return response()->json([
             'data' => NftResource::collection($nfts),
             'meta' => PaginationMeta::getPaginationMeta($nfts)

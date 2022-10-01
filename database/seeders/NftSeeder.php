@@ -10,8 +10,8 @@ class NftSeeder extends Seeder
     public function run()
     {
 
-        Nft::factory()->count(100)->create();
+        Nft::factory()->count(10000)->create();
 
-       
+
     }
 }

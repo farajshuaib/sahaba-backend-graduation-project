@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\QueryFilters\Nfts\Search;
+use App\QueryFilters\Nfts\Type;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,13 +32,14 @@ class Nft extends Model
             ->send(Nft::query())
             ->through([
                 Search::class,
+                Type::class,
                 \App\QueryFilters\Nfts\Collection::class,
                 \App\QueryFilters\Nfts\Category::class,
             ])
             ->thenReturn()
             ->with('collection', 'creator', 'owner')
-            ->orderBy('id', 'DESC')
-            ->paginate(15);
+            ->orderBy('id', 'DESC');
+
     }
 
     public function collection(): BelongsTo
