@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Helpers\PaginationMeta;
 use App\Http\Requests\CollectionCollaboratorRequest;
 use App\Http\Requests\CollectionRequest;
-use App\Http\Requests\ReportRequest;
 use App\Http\Resources\CollectionResource;
 use App\Models\Collection;
 use App\Models\CollectionCollaborator;
@@ -86,13 +85,6 @@ class CollectionController extends Controller
         return response()->noContent();
     }
 
-
-    public function report(Collection $collection, ReportRequest $request)
-    {
-        $data = $request->validated();
-        $data['reporter_id'] = auth()->id();
-        $collection->reports()->create($data);
-    }
 
     public function addCollaboration(Collection $collection, CollectionCollaboratorRequest $request)
     {

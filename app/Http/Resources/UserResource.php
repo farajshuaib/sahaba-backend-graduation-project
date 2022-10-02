@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'twitter_url' => $this->twitter_url,
             'telegram_url' => $this->telegram_url,
             'is_verified' => $this->is_verified,
+            'is_subscribed' => !!$this->whenLoaded('subscribe'),
             $this->mergeWhen(auth()->check(), function () use ($currentUser) {
                 return ['is_followed' => auth()->user()->isFollowing($currentUser)];
             }),

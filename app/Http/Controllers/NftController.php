@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Helpers\PaginationMeta;
 use App\Http\Requests\NftRequest;
-use App\Http\Requests\ReportRequest;
 use App\Http\Resources\NftResource;
 use App\Models\Nft;
 use App\Models\Transaction;
@@ -159,13 +158,6 @@ class NftController extends Controller
             $user->like($nft);
             return response()->json(['message' => 'nft liked successfully'], 200);
         }
-    }
-
-    public function report(Nft $nft, ReportRequest $request)
-    {
-        $data = $request->validated();
-        $data['reporter_id'] = auth()->id();
-        $nft->reports()->create($data);
     }
 
 

@@ -5,6 +5,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\NftController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SubscribesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatchController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +36,7 @@ Route::get('/categories/{category}', [CategoryController::class, 'show']);
 
 
 Route::post('/contact', [ContactUsController::class, 'sendEmail']);
+Route::post('/subscribe', [SubscribesController::class, 'store']);
 
 
 Route::prefix('users')->group(function () {
@@ -53,9 +56,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::put('/my-profile', [AuthController::class, 'update']);
     Route::get('/my-collections', [CollectionController::class, 'myCollections']);
+    Route::get('/subscribed', [SubscribesController::class, 'index']);
 
 
-    Route::post('users/report/{user}', [UserController::class, 'report']);
+    Route::post('users/report/{user}', [ReportController::class, 'user_report']);
     Route::post('users/toggle-follow/{user}', [UserController::class, 'toggleFollow']);
 
 
@@ -64,7 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/update-price/{nft}', [NftController::class, 'updatePrice']);
         Route::post('/buy/{nft}', [NftController::class, 'buyNft']);
         Route::post('/toggle-like/{nft}', [NftController::class, 'toggleLike']);
-        Route::post('/report/{nft}', [NftController::class, 'report']);
+        Route::post('/report/{nft}', [ReportController::class, 'nft_report']);
         Route::put('/sale/{nft}', [NftController::class, 'setForSale']);
         Route::put('/stop-sale/{nft}', [NftController::class, 'stopSale']);
         Route::post('/watch', [WatchController::class, 'store']);
@@ -76,7 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{collection}', [CollectionController::class, 'update']);
         Route::delete('/{collection}', [CollectionController::class, 'destroy']);
         Route::post('/add-collaboration/{collection}', [CollectionController::class, 'addCollaboration']);
-        Route::post('/report/{collection}', [CollectionController::class, 'report']);
+        Route::post('/report/{collection}', [ReportController::class, 'collection_report']);
     });
 
 

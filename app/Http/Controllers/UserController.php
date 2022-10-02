@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\PaginationMeta;
-use App\Http\Requests\ReportRequest;
 use App\Http\Resources\CollectionResource;
 use App\Http\Resources\FollowableResource;
 use App\Http\Resources\LikedNftsResource;
@@ -100,12 +99,6 @@ class UserController extends Controller
         }
     }
 
-    public function report(User $user, ReportRequest $request)
-    {
-        $data = $request->validated();
-        $data['reporter_id'] = auth()->id();
-        $user->reports()->create($data);
-    }
 
     public function toggleFollow(User $user)
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Subscribe;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -28,7 +29,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $token,
-            'user' => UserResource::make($user)
+            'user' => UserResource::make($user->load('subscribe'))
         ]);
 
     }
@@ -60,12 +61,19 @@ class AuthController extends Controller
                 'twitter_url' => $request->twitter_url,
                 'website_url' => $request->website_url,
             ]);
+
+            if ($request->email) {
+                Subscribe::query()->updateOrCreate([
+                    'user_id' => auth()->id(),
+                    'email' => $request->email
+                ]);
+            }
             if ($request->hasFile('profile_photo')) {
                 $user->addMedia($request->profile_photo)->toMediaCollection('users_profile');
             }
 
             return response()->json([
-                'user' => UserResource::make($user),
+                'user' => UserResource::make($user->load('subscribe')),
                 'message' => 'update success'
             ],
                 200);
