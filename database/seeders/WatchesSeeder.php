@@ -2,16 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Nft;
+use App\Models\Watch;
 use Illuminate\Database\Seeder;
 
-class NftSeeder extends Seeder
+class WatchesSeeder extends Seeder
 {
     public function run()
     {
-
-        Nft::factory()->count(1000)->create();
-
-
+        Watch::factory()->count(10000)->create();
     }
 }

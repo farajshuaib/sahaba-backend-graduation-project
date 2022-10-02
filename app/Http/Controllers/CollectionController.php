@@ -98,11 +98,13 @@ class CollectionController extends Controller
     {
         try {
             DB::beginTransaction();
+            if ($collection->user_id != auth()->id())
+                return response()->json(['message' => 'you\'re not allowed to add collaboration to this collection'], 403);
             $user = User::where('wallet_address', $request->wallet_address)->first();
             if (!$user)
                 return response()->json(['message' => 'user with " ' . $request->wallet_address . ' " wallet address can\'t be found, please check it and try again'], 400);
 
-            $collaboration_exist = CollectionCollaborator::where('user_id', $user->id)->where('collection_id', $collection->id)->first();
+            $collaboration_exist = CollectionCollaborator::where('user_id', $user->id)->where('collection_id', $collection->id)->exists();
             if ($collaboration_exist)
                 return response()->json(['message' => 'this user already collaborated with this collection'], 403);
             $collection->collaborators()->attach($user->id);

@@ -32,7 +32,6 @@ class CollectionResource extends JsonResource
             'instagram_url' => $this->instagram_url,
             'telegram_url' => $this->telegram_url,
             'is_sensitive_content' => $this->is_sensitive_content,
-            'collection_token_id' => $this->collection_token_id,
             'category' => CategoryResource::make($this->whenLoaded('category')),
             'nfts' => NftResource::collection($this->whenLoaded('nfts')),
             'created_by' => UserResource::make($this->whenLoaded('user')),

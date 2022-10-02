@@ -9,7 +9,6 @@ class Search extends Filter
     protected function applyFilter($builder)
     {
         return $builder->where('name', 'LIKE', '%' . request($this->filterName()) . '%')
-            ->orWhere('description', 'LIKE', '%' . request($this->filterName()) . '%')
-            ->orWhere('collection_token_id', 'LIKE', '%' . request($this->filterName()) . '%');
+            ->orWhere('description', 'LIKE', '%' . request($this->filterName()) . '%');
     }
 }

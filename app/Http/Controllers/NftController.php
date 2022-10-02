@@ -8,6 +8,7 @@ use App\Http\Requests\ReportRequest;
 use App\Http\Resources\NftResource;
 use App\Models\Nft;
 use App\Models\Transaction;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ class NftController extends Controller
     public function latest()
     {
         if (auth()->check()) {
+            $followings = auth()->user()->followings()->withType(User::class)->with('followable');
             $nfts = Nft::withFilters()->paginate(15);
         } else {
             $nfts = Nft::withFilters()->paginate(15);

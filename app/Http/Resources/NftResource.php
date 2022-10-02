@@ -24,6 +24,7 @@ class NftResource extends JsonResource
             'is_for_sale' => $this->is_for_sale,
             'token_id' => $this->token_id,
             'owner' => UserResource::make($this->whenLoaded('owner')),
+            'watch_time' => $this->whenLoaded('watchers')->count(),
             'transactions' => $this->transactions->load('from', 'to'), //TransactionResource::collection($this->transactions->load('from', 'to')),
             $this->mergeWhen($this->is_for_sale, function () {
                 return ['sale_end_at' => $this->sale_end_at];

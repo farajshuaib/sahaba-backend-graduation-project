@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignId('nft_id')->constrained();
             $table->foreignId('from')->constrained('users');
             $table->foreignId('to')->constrained('users');
-            $table->unsignedDecimal('price');
+            $table->unsignedDecimal('price',);
             $table->timestamps();
             $table->softDeletes();
         });

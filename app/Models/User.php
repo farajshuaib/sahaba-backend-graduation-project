@@ -42,7 +42,6 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsToMany(Collection::class, 'collection_collaborators', 'user_id', 'collection_id');
     }
 
-
     public function created_nfts(): HasMany
     {
         return $this->hasMany(Nft::class, 'creator_id');
@@ -56,6 +55,11 @@ class User extends Authenticatable implements HasMedia
     public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');
+    }
+
+    public function watching(): HasMany
+    {
+        return $this->hasMany(Watch::class);
     }
 
     public function registerMediaCollections(): void

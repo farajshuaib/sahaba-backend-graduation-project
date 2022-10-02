@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Collection;
 use App\Models\Nft;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class NftFactory extends Factory
@@ -46,7 +47,7 @@ class NftFactory extends Factory
             'price' => $this->faker->numberBetween(1, 1000),
             'status' => $status[rand(0, 2)],
             'is_for_sale' => $this->faker->boolean,
-            'sale_end_at' => $this->faker->date,
+            'sale_end_at' => Carbon::now(),
         ];
     }
 }

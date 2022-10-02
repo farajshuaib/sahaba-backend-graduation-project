@@ -37,7 +37,9 @@ class Nft extends Model
                 \App\QueryFilters\Nfts\Category::class,
             ])
             ->thenReturn()
-            ->with('collection', 'creator', 'owner')
+            ->with(['collection', 'creator', 'owner', 'watchers' => function ($query) {
+                return $query->count();
+            }])
             ->orderBy('id', 'DESC');
 
     }
@@ -71,6 +73,11 @@ class Nft extends Model
     public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');
+    }
+
+    public function watchers(): HasMany
+    {
+        return $this->hasMany(Watch::class);
     }
 
     public function scopeIsPublished($query): Builder

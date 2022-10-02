@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->enum('file_type', ['image', 'audio', 'video'])->default('image');
             $table->string('title');
             $table->string('description');
-            $table->unsignedDecimal('price');
+            $table->unsignedDecimal('price',);
             $table->enum('status', ['published', 'pending', 'canceled', 'deleted'])->default('published');
             $table->boolean('is_for_sale')->default(false);
             $table->timestamp('sale_end_at')->nullable();
