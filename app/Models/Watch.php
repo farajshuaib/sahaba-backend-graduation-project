@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Watch extends Model
 {
+    protected $fillable = ['nft_id', 'user_id'];
     use HasFactory;
 
     public function watchers(): BelongsToMany

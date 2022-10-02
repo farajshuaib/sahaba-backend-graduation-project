@@ -6,6 +6,7 @@ use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\NftController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WatchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,6 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/report/{nft}', [NftController::class, 'report']);
         Route::put('/sale/{nft}', [NftController::class, 'setForSale']);
         Route::put('/stop-sale/{nft}', [NftController::class, 'stopSale']);
+        Route::post('/watch', [WatchController::class, 'store']);
     });
 
 
