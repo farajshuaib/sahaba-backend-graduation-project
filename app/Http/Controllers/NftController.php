@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class NftController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(): JsonResponse
     {
         $nfts = Nft::withFilters()->paginate(15);
         return response()->json([
@@ -26,7 +26,7 @@ class NftController extends Controller
         ]);
     }
 
-    public function latest()
+    public function latest(): JsonResponse
     {
         if (auth()->check()) {
             $followings = auth()->user()->followings()->withType(User::class)->with('followable');

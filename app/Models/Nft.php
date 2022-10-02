@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\QueryFilters\Nfts\IsVerified;
+use App\QueryFilters\Nfts\PriceRange;
 use App\QueryFilters\Nfts\Search;
+use App\QueryFilters\Nfts\SortBy;
 use App\QueryFilters\Nfts\Type;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,13 +36,14 @@ class Nft extends Model
             ->through([
                 Search::class,
                 Type::class,
+                PriceRange::class,
+                SortBy::class,
+                IsVerified::class,
                 \App\QueryFilters\Nfts\Collection::class,
                 \App\QueryFilters\Nfts\Category::class,
             ])
             ->thenReturn()
-            ->with(['collection', 'creator', 'owner', 'watchers' => function ($query) {
-                return $query->count();
-            }])
+            ->with('collection', 'creator', 'owner', 'watchers')
             ->orderBy('id', 'DESC');
 
     }
