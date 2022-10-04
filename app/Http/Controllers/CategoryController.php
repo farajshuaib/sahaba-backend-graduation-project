@@ -27,7 +27,7 @@ class CategoryController extends Controller
         if ($request->hasFile('icon')) {
             $category->addMedia($request->icon)->toMediaCollection('category_icon');
         }
-        return response()->json(CategoryResource::make($category->load('collections', 'nfts')));
+        return response()->json(CategoryResource::make($category));
     }
 
 

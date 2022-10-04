@@ -25,7 +25,9 @@ class AuthController extends Controller
             ]);
             $user->assignRole(2);
         }
+
         $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
+
 
         return response()->json([
             'token' => $token,
@@ -53,6 +55,8 @@ class AuthController extends Controller
                 return response()->json(['message' => 'you are not allowed to modify account'], 403);
 
             $user->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
                 'username' => $request->username,
                 'email' => $request->email,
                 'bio' => $request->bio,

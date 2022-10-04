@@ -23,7 +23,10 @@ class UserResource extends JsonResource
             'twitter_url' => $this->twitter_url,
             'telegram_url' => $this->telegram_url,
             'is_verified' => $this->is_verified,
+            'created_nfts' => NftResource::collection($this->whenLoaded('created_nfts')),
+            'owned_nfts' => NftResource::collection($this->whenLoaded('owned_nfts')),
             'is_subscribed' => $this->subscribe()->exists(),
+            'kyc_form' => $this->whenLoaded('kyc'),
             $this->mergeWhen(auth()->check(), function () use ($currentUser) {
                 return ['is_followed' => auth()->user()->isFollowing($currentUser)];
             }),

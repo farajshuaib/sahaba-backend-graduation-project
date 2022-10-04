@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
 
 class UserRequest extends FormRequest
 {
@@ -23,8 +24,13 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        Validator::extend('without_spaces', function ($attr, $value) {
+            return preg_match('/^\S*$/u', $value);
+        });
         return [
-            'username' => ['required', 'string'],
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'username' => ['required', 'string', 'without_spaces'],
             'email' => ['required', 'string', 'email', 'unique:users,email,' . auth()->id()],
             'bio' => ['nullable', 'string'],
             'profile_photo' => ['nullable', 'image'],

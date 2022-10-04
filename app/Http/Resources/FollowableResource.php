@@ -14,7 +14,7 @@ class FollowableResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'user' => UserResource::make($this->whenLoaded('followable'))
+            'user' => UserResource::make($this->whenLoaded('followable')),
         ];
     }
 }

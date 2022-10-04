@@ -26,7 +26,6 @@ class ReportRequest extends FormRequest
         return [
             'type' => ['string', 'required', 'in:spam,trouble,violence,other'],
             'message' => ['string', 'required']
-
         ];
     }
 }

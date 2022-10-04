@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\KYCsController;
 use App\Http\Controllers\NftController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SubscribesController;
@@ -88,6 +89,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/{category}', [CategoryController::class, 'update']);
         Route::delete('/{category}', [CategoryController::class, 'destroy']);
+    });
+
+    Route::prefix('kyc')->group(function () {
+        Route::get('/', [KYCsController::class, 'store']);
+        Route::post('/', [KYCsController::class, 'store']);
+        Route::put('/{kyc}', [KYCsController::class, 'update']);
     });
 
 

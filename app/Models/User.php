@@ -73,6 +73,11 @@ class User extends Authenticatable implements HasMedia
         return $this->hasOne(Subscribe::class);
     }
 
+    public function kyc(): HasOne
+    {
+        return $this->hasOne(Kyc::class);
+    }
+
     public function scopeIsEnabled($query)
     {
         return $query->where('status', 'enabled');

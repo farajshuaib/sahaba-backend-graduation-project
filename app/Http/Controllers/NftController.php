@@ -7,7 +7,6 @@ use App\Http\Requests\NftRequest;
 use App\Http\Resources\NftResource;
 use App\Models\Nft;
 use App\Models\Transaction;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,7 +28,14 @@ class NftController extends Controller
     public function latest(): JsonResponse
     {
         if (auth()->check()) {
-            $followings = auth()->user()->followings()->withType(User::class)->with('followable');
+//            $followings = auth()->user()->followings()->withType(User::class)->with('followable.created_nfts', 'followable.owned_nfts')->paginate(20);
+//            $followable = FollowableResource::collection($followings);
+//            $nfts = [];
+//            foreach ($followable as $follower) {
+//                array_push($nfts, $follower);
+//            }
+//            return response()->json($nfts);
+//            return response()->json(['nfts' => FollowableResource::collection($followings), 'meta' => PaginationMeta::getPaginationMeta($followings)]);
             $nfts = Nft::withFilters()->paginate(15);
         } else {
             $nfts = Nft::withFilters()->paginate(15);
