@@ -10,6 +10,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SubscribesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatchController;
+use App\Http\Middleware\CheckSaleStateMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,9 +26,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/connect-wallet', [AuthController::class, 'connectWallet']);
 
-Route::get('/nfts', [NftController::class, 'index']);
-Route::get('/latest-nfts', [NftController::class, 'latest']);
-Route::get('/nfts/{nft}', [NftController::class, 'show']);
+Route::middleware([CheckSaleStateMiddleware::class])->get('/nfts', [NftController::class, 'index']);
+Route::middleware([CheckSaleStateMiddleware::class])->get('/latest-nfts', [NftController::class, 'latest']);
+Route::middleware([CheckSaleStateMiddleware::class])->get('/nfts/{nft}', [NftController::class, 'show']);
 
 Route::get('/collections', [CollectionController::class, 'index']);
 Route::get('/collections/{collection}', [CollectionController::class, 'show']);

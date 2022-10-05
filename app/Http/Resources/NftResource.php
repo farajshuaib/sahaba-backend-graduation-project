@@ -17,21 +17,21 @@ class NftResource extends JsonResource
             'description' => $this->description,
             'file_path' => $this->file_path,
             'file_type' => $this->file_type,
-            'collection' => CollectionResource::make($this->whenLoaded('collection')),
-            'creator' => UserResource::make($this->whenLoaded('creator')),
             'price' => $this->price,
             'like_count' => $currentNft->likers()->count(),
+            'watch_time' => $this->watchers()->count(),
             'is_for_sale' => $this->is_for_sale,
             'token_id' => $this->token_id,
-            'owner' => UserResource::make($this->whenLoaded('owner')),
-            'watch_time' => $this->watchers()->count(),
-            'transactions' => $this->transactions->load('from', 'to'), //TransactionResource::collection($this->transactions->load('from', 'to')),
             $this->mergeWhen($this->is_for_sale, function () {
                 return ['sale_end_at' => $this->sale_end_at];
             }),
             $this->mergeWhen(auth()->check(), function () use ($currentNft) {
                 return ['is_liked' => auth()->user()->hasLiked($currentNft)];
             }),
+            'collection' => CollectionResource::make($this->whenLoaded('collection')),
+            'creator' => UserResource::make($this->whenLoaded('creator')),
+            'owner' => UserResource::make($this->whenLoaded('owner')),
+            'transactions' => $this->transactions->load('from', 'to'), //TransactionResource::collection($this->transactions->load('from', 'to')),
         ];
     }
 }
