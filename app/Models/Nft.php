@@ -23,7 +23,7 @@ class Nft extends Model
     use Likeable, HasFactory, SoftDeletes;
 
 
-    protected $fillable = ['title', 'description', 'collection_id', 'creator_id', 'owner_id', 'file_path', 'price', 'is_for_sale', 'sale_end_at', 'file_type', 'token_id'];
+    protected $fillable = ['title', 'description', 'collection_id', 'creator_id', 'owner_id', 'file_path', 'price', 'is_for_sale', 'sale_end_at', 'token_id'];
 
     protected $casts = ['is_for_sale' => 'boolean',
         'price' => 'float',
@@ -35,7 +35,6 @@ class Nft extends Model
             ->send(Nft::query())
             ->through([
                 Search::class,
-                Type::class,
                 PriceRange::class,
                 SortBy::class,
                 IsVerified::class,
@@ -43,8 +42,8 @@ class Nft extends Model
                 \App\QueryFilters\Nfts\Category::class,
             ])
             ->thenReturn()
-            ->with('collection', 'creator', 'owner', 'watchers')
-            ->orderBy('id', 'DESC');
+            ->withCount('likers')
+            ->with('collection', 'creator', 'owner', 'watchers');
 
     }
 

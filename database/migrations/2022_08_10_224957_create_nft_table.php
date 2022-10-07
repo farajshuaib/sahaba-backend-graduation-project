@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->foreignId('creator_id')->constrained('users');
             $table->foreignId('owner_id')->constrained('users');
             $table->string('file_path');
-            $table->enum('file_type', ['image', 'audio', 'video'])->default('image');
             $table->string('title');
             $table->string('description');
             $table->unsignedDecimal('price',);

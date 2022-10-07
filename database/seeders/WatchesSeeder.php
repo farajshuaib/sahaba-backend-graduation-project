@@ -9,6 +9,6 @@ class WatchesSeeder extends Seeder
 {
     public function run()
     {
-        Watch::factory()->count(10000)->create();
+        Watch::factory()->count(100)->create();
     }
 }

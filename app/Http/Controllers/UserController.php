@@ -63,7 +63,7 @@ class UserController extends Controller
     public function likedNfts(User $user): JsonResponse
     {
         try {
-            $liked_nfts = $user->likes()->withType(Nft::class)->with('likeable.user', 'likeable.collection')->paginate(10);
+            $liked_nfts = $user->likes()->withType(Nft::class)->with('likeable.creator', 'likeable.owner', 'likeable.collection')->paginate(10);
             return response()->json([
                 'data' => LikedNftsResource::collection($liked_nfts),
                 'meta' => PaginationMeta::getPaginationMeta($liked_nfts)

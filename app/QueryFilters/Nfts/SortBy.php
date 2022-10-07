@@ -13,7 +13,7 @@ class SortBy extends Filter
             'Ending-soon' => $builder->orderBy('sale_end_at', 'desc'),
             'Price-low-high' => $builder->orderBy('price', 'asc'),
             'Price-high-low' => $builder->orderBy('price', 'desc'),
-            'Most-favorite' => $builder->orderBy('id', 'asc'),
+            'Most-favorite' => $builder->orderBy('likers_count', 'desc'),
             default => $builder->orderBy('id', 'desc'),
         };
     }

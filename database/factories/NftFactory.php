@@ -15,7 +15,6 @@ class NftFactory extends Factory
     public function definition(): array
     {
         $status = ['published', 'pending', 'canceled', 'deleted'];
-        $file_type = ['image', 'audio', 'video'];
         $images = [
             "http://127.0.0.1:8000/images/nfts/1.png",
             "http://127.0.0.1:8000/images/nfts/2.png",
@@ -42,8 +41,7 @@ class NftFactory extends Factory
             'owner_id' => User::inRandomOrder()->first()->id,
             'token_id' => $this->faker->unique()->sha256(),
             'description' => $this->faker->paragraph('2'),
-            'file_path' => $images[array_rand($file_type, 1)],
-            'file_type' => $file_type[array_rand($file_type, 1)],
+            'file_path' => $images[array_rand($images, 1)],
             'price' => $this->faker->numberBetween(1, 1000),
             'status' => $status[rand(0, 2)],
             'is_for_sale' => $this->faker->boolean,
