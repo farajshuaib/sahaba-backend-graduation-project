@@ -36,7 +36,7 @@ class NftController extends Controller
 //            }
 //            return response()->json($nfts);
 //            return response()->json(['nfts' => FollowableResource::collection($followings), 'meta' => PaginationMeta::getPaginationMeta($followings)]);
-            $nfts = Nft::withFilters()->paginate(15);
+            $nfts = Nft::withFilters()->orderBy('created_at', 'desc')->paginate(15);
         } else {
             $nfts = Nft::withFilters()->paginate(15);
         }
@@ -54,12 +54,21 @@ class NftController extends Controller
     public function store(NftRequest $request): JsonResponse
     {
         try {
+            DB::beginTransaction();
             $data = $request->validated();
             $data['creator_id'] = auth()->id();
             $data['owner_id'] = auth()->id();
             $nft = Nft::create($data);
+            Transaction::query()->create([
+                'nft_id' => $nft->id,
+                'to' => auth()->id(),
+                'price' => $nft->price,
+                'type' => 'mint'
+            ]);
+            DB::commit();
             return response()->json(['nft' => NftResource::make($nft), 'message' => 'nft created successfully']);
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->json(['message' => $e], 500);
         }
 
@@ -74,11 +83,12 @@ class NftController extends Controller
 
         DB::beginTransaction();
         try {
-            Transaction::create([
+            Transaction::query()->create([
                 'nft_id' => $nft->id,
                 'from' => $nft->owner_id,
                 'to' => auth()->id(),
                 'price' => $nft->price,
+                'type' => 'sale'
             ]);
             $nft->update(['owner_id' => auth()->id()]);
             DB::commit();
@@ -106,9 +116,24 @@ class NftController extends Controller
             ], 422);
         }
 
+        try {
+            DB::beginTransaction();
+            $nft->update(['price' => $request->price]);
+            Transaction::query()->create([
+                'nft_id' => $nft->id,
+                'from' => $nft->owner_id,
+                'to' => auth()->id(),
+                'price' => $nft->price,
+                'type' => 'update_price'
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'nft updated successfully'], 201);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => $e], 500);
+        }
 
-        $nft->update(['price' => $request->price]);
-        return response()->json(['message' => 'nft updated successfully']);
+
     }
 
 
@@ -128,10 +153,24 @@ class NftController extends Controller
             ], 422);
         }
 
+        try {
+            DB::beginTransaction();
+            $nft->update(['is_for_sale' => true, 'sale_end_at' => $request->sale_end_at]);
+            Transaction::query()->create([
+                'nft_id' => $nft->id,
+                'from' => $nft->owner_id,
+                'to' => auth()->id(),
+                'price' => $nft->price,
+                'type' => 'set_for_sale'
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'item listed successfully'], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => $e], 500);
+        }
 
-        $nft->update(['is_for_sale' => true, 'sale_end_at' => $request->sale_end_at]);
 
-        return response()->json(['message' => 'item listed successfully'], 200);
     }
 
 
