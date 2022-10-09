@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->string('telegram_url')->nullable();
             $table->enum('status', ['enabled', 'pending'])->default('enabled');
             $table->boolean('is_verified')->default(false);
+            $table->string('fcm_token')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -21,10 +21,13 @@ class AuthController extends Controller
 
         if (!$user) {
             $user = User::create([
-                'wallet_address' => $request->wallet_address
+                'wallet_address' => $request->wallet_address,
             ]);
             $user->assignRole(2);
         }
+
+        $user->fcm_token = $request->fcm_token;
+        $user->save();
 
         $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
 

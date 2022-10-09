@@ -37,6 +37,11 @@ class User extends Authenticatable implements HasMedia
         'is_verified' => 'boolean'
     ];
 
+    public function routeNotificationForFcm()
+    {
+        return $this->fcm_token;
+    }
+
 
     public function collections(): BelongsToMany
     {
@@ -78,8 +83,14 @@ class User extends Authenticatable implements HasMedia
         return $this->hasOne(Kyc::class);
     }
 
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
     public function scopeIsEnabled($query)
     {
         return $query->where('status', 'enabled');
     }
+
 }

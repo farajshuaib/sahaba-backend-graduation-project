@@ -6,6 +6,7 @@ use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\KYCsController;
 use App\Http\Controllers\NftController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SubscribesController;
 use App\Http\Controllers\UserController;
@@ -96,6 +97,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [KYCsController::class, 'store']);
         Route::post('/', [KYCsController::class, 'store']);
         Route::put('/{kyc}', [KYCsController::class, 'update']);
+    });
+
+
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationsController::class, 'index']);
+        Route::put('/', [NotificationsController::class, 'markAllAsRead']);
+        Route::put('/{id}', [NotificationsController::class, 'markAsRead']);
     });
 
 

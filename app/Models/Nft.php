@@ -29,6 +29,8 @@ class Nft extends Model
         'price' => 'float',
     ];
 
+    protected $dates = ['sale_end_at'];
+
     public static function withFilters()
     {
         return app(Pipeline::class)

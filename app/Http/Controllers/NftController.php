@@ -7,10 +7,12 @@ use App\Http\Requests\NftRequest;
 use App\Http\Resources\NftResource;
 use App\Models\Nft;
 use App\Models\Transaction;
+use App\Notifications\FollowerCreateNewNft;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -61,10 +63,13 @@ class NftController extends Controller
             $nft = Nft::create($data);
             Transaction::query()->create([
                 'nft_id' => $nft->id,
+                'from' => auth()->id(),
                 'to' => auth()->id(),
                 'price' => $nft->price,
                 'type' => 'mint'
             ]);
+            $followers = auth()->user()->followers()->with('followable');
+            Notification::send($followers['followable'], new FollowerCreateNewNft($nft, auth()->user()));
             DB::commit();
             return response()->json(['nft' => NftResource::make($nft), 'message' => 'nft created successfully']);
         } catch (Exception $e) {
