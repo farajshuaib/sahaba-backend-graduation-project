@@ -68,8 +68,7 @@ class NftController extends Controller
                 'price' => $nft->price,
                 'type' => 'mint'
             ]);
-            $followers = auth()->user()->followers()->with('followable');
-            Notification::send($followers['followable'], new FollowerCreateNewNft($nft, auth()->user()));
+            Notification::send(auth()->user()->followers()->get(), new FollowerCreateNewNft($nft, auth()->user()));
             DB::commit();
             return response()->json(['nft' => NftResource::make($nft), 'message' => 'nft created successfully']);
         } catch (Exception $e) {

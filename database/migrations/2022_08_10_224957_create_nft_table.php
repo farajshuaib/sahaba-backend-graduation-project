@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('file_path');
             $table->string('title');
             $table->string('description');
-            $table->unsignedDecimal('price',);
+            $table->unsignedDouble('price',);
             $table->enum('status', ['published', 'pending', 'canceled', 'deleted'])->default('published');
             $table->boolean('is_for_sale')->default(false);
             $table->timestamp('sale_end_at')->nullable();

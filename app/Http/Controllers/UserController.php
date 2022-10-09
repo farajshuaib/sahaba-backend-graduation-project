@@ -89,9 +89,9 @@ class UserController extends Controller
     public function followers(User $user): JsonResponse
     {
         try {
-            $followers = $user->followers()->with('followable')->paginate(10);
+            $followers = $user->followers()->paginate(10);
             return response()->json([
-                'data' => FollowableResource::collection($followers),
+                'data' => UserResource::collection($followers),
                 'meta' => PaginationMeta::getPaginationMeta($followers)
             ]);
         } catch (Exception $e) {
