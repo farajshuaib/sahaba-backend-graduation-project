@@ -13,6 +13,8 @@ class UserResource extends JsonResource
         $currentUser = User::where('id', $this->id)->first();
         return [
             'id' => $this->id,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
             'username' => $this->username,
             'email' => $this->email,
             'bio' => $this->bio,
@@ -23,8 +25,8 @@ class UserResource extends JsonResource
             'twitter_url' => $this->twitter_url,
             'telegram_url' => $this->telegram_url,
             'is_verified' => $this->is_verified,
-            'created_nfts' => NftResource::collection($this->whenLoaded('created_nfts')),
-            'owned_nfts' => NftResource::collection($this->whenLoaded('owned_nfts')),
+            'created_nfts_count' => $this->created_nfts_count,
+            'owned_nfts_count' => $this->owned_nfts_count,
             'is_subscribed' => $this->subscribe()->exists(),
             'kyc_form' => $this->whenLoaded('kyc'),
             $this->mergeWhen(auth()->check(), function () use ($currentUser) {

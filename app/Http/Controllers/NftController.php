@@ -30,14 +30,6 @@ class NftController extends Controller
     public function latest(): JsonResponse
     {
         if (auth()->check()) {
-//            $followings = auth()->user()->followings()->withType(User::class)->with('followable.created_nfts', 'followable.owned_nfts')->paginate(20);
-//            $followable = FollowableResource::collection($followings);
-//            $nfts = [];
-//            foreach ($followable as $follower) {
-//                array_push($nfts, $follower);
-//            }
-//            return response()->json($nfts);
-//            return response()->json(['nfts' => FollowableResource::collection($followings), 'meta' => PaginationMeta::getPaginationMeta($followings)]);
             $nfts = Nft::withFilters()->orderBy('created_at', 'desc')->paginate(15);
         } else {
             $nfts = Nft::withFilters()->paginate(15);

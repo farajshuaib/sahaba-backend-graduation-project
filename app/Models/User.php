@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\QueryFilters\Users\Search;
+use App\QueryFilters\Users\SortBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Pipeline\Pipeline;
 use Laravel\Sanctum\HasApiTokens;
 use Overtrue\LaravelFollow\Traits\Followable;
 use Overtrue\LaravelFollow\Traits\Follower;
@@ -37,11 +40,27 @@ class User extends Authenticatable implements HasMedia
         'is_verified' => 'boolean'
     ];
 
+    public static function withFilters()
+    {
+        return app(Pipeline::class)
+            ->send(User::query())
+            ->through([
+                Search::class,
+                SortBy::class,
+            ])
+            ->thenReturn()
+            ->withCount('created_nfts')
+            ->withCount('owned_nfts')
+            ->with(['collections', 'followers', 'followings', 'likes.likeable', 'followables.follower'])
+            ->orderBy('id', 'DESC')
+            ->paginate(15);
+    }
+
+
     public function routeNotificationForFcm()
     {
         return $this->fcm_token;
     }
-
 
     public function collections(): BelongsToMany
     {

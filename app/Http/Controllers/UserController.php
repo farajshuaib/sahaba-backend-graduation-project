@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with('collections', 'followers', 'followings', 'likes.likeable', 'followables.follower')->isEnabled()->paginate(10);
+        $users = User::withFilters();
         return response()->json([
             'data' => UserResource::collection($users),
             'meta' => PaginationMeta::getPaginationMeta($users)
