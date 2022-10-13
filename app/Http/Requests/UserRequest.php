@@ -34,6 +34,7 @@ class UserRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'unique:users,email,' . auth()->id()],
             'bio' => ['nullable', 'string'],
             'profile_photo' => ['nullable', 'image'],
+            'banner_photo' => ['nullable', 'image'],
             'website_url' => ['nullable', 'string'],
             'facebook_url' => ['nullable', 'string'],
             'twitter_url' => ['nullable', 'string'],

@@ -79,6 +79,10 @@ class AuthController extends Controller
                 $user->addMedia($request->profile_photo)->toMediaCollection('users_profile');
             }
 
+            if ($request->hasFile('banner_photo')) {
+                $user->addMedia($request->profile_photo)->toMediaCollection('users_banner');
+            }
+
             return response()->json([
                 'user' => UserResource::make($user->load('subscribe')),
                 'message' => 'update success'

@@ -20,6 +20,7 @@ class UserResource extends JsonResource
             'bio' => $this->bio,
             'wallet_address' => $this->wallet_address,
             'profile_photo' => !!$this->getFirstMedia('users_profile') ? $this->getFirstMedia('users_profile')->getUrl() : null,
+            'banner_photo' => !!$this->getFirstMedia('users_banner') ? $this->getFirstMedia('users_banner')->getUrl() : null,
             'website_url' => $this->website_url,
             'facebook_url' => $this->facebook_url,
             'twitter_url' => $this->twitter_url,
