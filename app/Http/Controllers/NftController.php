@@ -184,6 +184,8 @@ class NftController extends Controller
 
     public function destroy(Nft $nft)
     {
+        if ($nft->owner_id != auth()->id())
+            return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
         $nft->delete();
         return response()->noContent();
     }

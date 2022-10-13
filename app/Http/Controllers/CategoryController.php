@@ -7,7 +7,6 @@ use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -50,10 +49,5 @@ class CategoryController extends Controller
             200);
     }
 
-    public function destroy(Category $category): Response
-    {
-        $category->delete();
-        return response()->noContent();
-    }
 
 }

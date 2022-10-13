@@ -11,7 +11,6 @@ use App\Models\CollectionCollaborator;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class CollectionController extends Controller
@@ -77,12 +76,6 @@ class CollectionController extends Controller
             $collection->addMedia($request->banner_image)->toMediaCollection('collection_banner_image');
         }
         return response()->json(['data' => CollectionResource::make($collection->load('category', 'nfts', 'user')), 'message' => 'collection updated successfully'], 200);
-    }
-
-    public function destroy(Collection $collection): Response
-    {
-        $collection->delete();
-        return response()->noContent();
     }
 
 

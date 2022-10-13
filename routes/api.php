@@ -75,13 +75,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/sale/{nft}', [NftController::class, 'setForSale']);
         Route::put('/stop-sale/{nft}', [NftController::class, 'stopSale']);
         Route::post('/watch', [WatchController::class, 'store']);
+        Route::delete('/burn/{nft}', [NftController::class, 'destroy']);
     });
 
 
     Route::prefix('collections')->group(function () {
         Route::post('/', [CollectionController::class, 'store']);
         Route::put('/{collection}', [CollectionController::class, 'update']);
-        Route::delete('/{collection}', [CollectionController::class, 'destroy']);
         Route::post('/add-collaboration/{collection}', [CollectionController::class, 'addCollaboration']);
         Route::post('/report/{collection}', [ReportController::class, 'collection_report']);
     });
@@ -90,7 +90,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('categories')->group(function () {
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/{category}', [CategoryController::class, 'update']);
-        Route::delete('/{category}', [CategoryController::class, 'destroy']);
     });
 
     Route::prefix('kyc')->group(function () {
