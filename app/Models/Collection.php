@@ -18,7 +18,7 @@ class Collection extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'category_id', 'facebook_url', 'twitter_url', 'is_sensitive_content', 'user_id'];
+    protected $fillable = ['name', 'description', 'category_id', 'facebook_url', 'telegram_url', 'twitter_url', 'is_sensitive_content', 'user_id'];
 
     protected $casts = ['is_sensitive_content' => 'boolean'];
 
@@ -32,7 +32,7 @@ class Collection extends Model implements HasMedia
                 \App\QueryFilters\Collections\Category::class,
             ])
             ->thenReturn()
-            ->with(['category', 'user', 'nfts' => function ($query) {
+            ->with(['category', 'user', 'collaborators', 'nfts' => function ($query) {
                 $query->orderBy('id', 'DESC')->limit(3);
             }])
             ->orderBy('id', 'DESC')

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\PaginationMeta;
 use App\Http\Requests\CollectionCollaboratorRequest;
 use App\Http\Requests\CollectionRequest;
+use App\Http\Requests\UpdateCollectionRequest;
 use App\Http\Resources\CollectionResource;
 use App\Models\Collection;
 use App\Models\CollectionCollaborator;
@@ -57,7 +58,7 @@ class CollectionController extends Controller
     }
 
 
-    public function update(Collection $collection, CollectionRequest $request): JsonResponse
+    public function update(Collection $collection, UpdateCollectionRequest $request): JsonResponse
     {
         $collection->update([
             'name' => $request->name,
@@ -75,7 +76,7 @@ class CollectionController extends Controller
         if ($request->hasFile('banner_image')) {
             $collection->addMedia($request->banner_image)->toMediaCollection('collection_banner_image');
         }
-        return response()->json(['data' => CollectionResource::make($collection->load('category', 'nfts', 'user')), 'message' => 'collection updated successfully'], 200);
+        return response()->json(['data' => CollectionResource::make($collection), 'message' => 'collection updated successfully'], 200);
     }
 
 

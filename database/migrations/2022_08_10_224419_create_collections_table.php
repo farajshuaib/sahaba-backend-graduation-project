@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained();
             $table->string('facebook_url')->nullable();
             $table->string('twitter_url')->nullable();
+            $table->string('telegram_url')->nullable();
             $table->boolean('is_sensitive_content')->default(0);
             $table->timestamps();
             $table->softDeletes();

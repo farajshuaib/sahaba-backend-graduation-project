@@ -22,15 +22,15 @@ class CollectionResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'logo_image' => $this->getFirstMedia('collection_logo_image') ? $this->getFirstMedia('collection_logo_image')->getUrl() : null,
-            'banner_image' => $this->getFirstMedia('collection_banner_image') ? $this->getFirstMedia('collection_banner_image')->getUrl() : null,
-            'website_url' => $this->website_url,
-            'facebook_url' => $this->facebook_url,
-            'twitter_url' => $this->twitter_url,
-            'instagram_url' => $this->instagram_url,
-            'telegram_url' => $this->telegram_url,
+            'name' => $this->name ?? "",
+            'description' => $this->description ?? "",
+            'logo_image' => $this->getFirstMedia('collection_logo_image') ? $this->getFirstMedia('collection_logo_image')->getUrl() : "",
+            'banner_image' => $this->getFirstMedia('collection_banner_image') ? $this->getFirstMedia('collection_banner_image')->getUrl() : "",
+            'website_url' => $this->website_url ?? "",
+            'facebook_url' => $this->facebook_url ?? "",
+            'twitter_url' => $this->twitter_url ?? "",
+            'instagram_url' => $this->instagram_url ?? "",
+            'telegram_url' => $this->telegram_url ?? "",
             'is_sensitive_content' => $this->is_sensitive_content,
             'category' => CategoryResource::make($this->whenLoaded('category')),
             'nfts' => NftResource::collection($this->whenLoaded('nfts')),
@@ -39,6 +39,7 @@ class CollectionResource extends JsonResource
             'volume' => $this->nfts()->sum('price'),
             'min_price' => $this->nfts()->min('price'),
             'max_price' => $this->nfts()->max('price'),
+            'collaborators' => $this->collaborators
         ];
     }
 }
