@@ -80,7 +80,7 @@ class AuthController extends Controller
             }
 
             if ($request->hasFile('banner_photo')) {
-                $user->addMedia($request->profile_photo)->toMediaCollection('users_banner');
+                $user->addMedia($request->banner_photo)->toMediaCollection('users_banner');
             }
 
             return response()->json([
