@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('password');
             $table->string('email');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

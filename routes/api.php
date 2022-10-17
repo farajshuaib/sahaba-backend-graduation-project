@@ -9,9 +9,11 @@ use App\Http\Controllers\NftController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SubscribesController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatchController;
 use App\Http\Middleware\CheckSaleStateMiddleware;
+use App\Http\Middleware\IsAdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/connect-wallet', [AuthController::class, 'connectWallet']);
+Route::post('/login', [AuthController::class, 'adminLogin']);
 
 Route::middleware([CheckSaleStateMiddleware::class])->get('/nfts', [NftController::class, 'index']);
 Route::middleware([CheckSaleStateMiddleware::class])->get('/latest-nfts', [NftController::class, 'latest']);
@@ -58,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::put('/my-profile', [AuthController::class, 'update']);
+    Route::get('/me', [AuthController::class, 'IsLoggedIn']);
     Route::get('/my-collections', [CollectionController::class, 'myCollections']);
     Route::get('/subscribed', [SubscribesController::class, 'index']);
 
@@ -99,15 +103,17 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [NotificationsController::class, 'markAsRead']);
     });
 
-    Route::get('/me', [AuthController::class, 'IsLoggedIn']);
 
-    Route::group(['prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
-        Route::post('/login', [AuthController::class, 'adminLogin']);
+    Route::middleware([IsAdminMiddleware::class])->group(function () {
         Route::post('/create-admin', [AuthController::class, 'createAdmin']);
 
         Route::prefix('categories')->group(function () {
             Route::post('/', [CategoryController::class, 'store']);
             Route::put('/{category}', [CategoryController::class, 'update']);
+        });
+
+        Route::prefix('transactions')->group(function () {
+            Route::get('/', [TransactionController::class, 'index']);
         });
 
         Route::prefix('kyc')->group(function () {

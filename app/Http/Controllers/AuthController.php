@@ -46,14 +46,16 @@ class AuthController extends Controller
         $credentials = ['email' => $request->email, 'password' => $request->password];
         if ($user = Admin::whereEmail($request->email)->first()) {
             if (Hash::check($request->password, $user->password)) {
-                if (Auth::attempt($credentials)) {
-                    return response()->json(['message' => 'success', 'user' => Auth::user()]);
-                }
-                return response()->json(['login faild'], 401);
+                $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
+                return response()->json([
+                    'token' => $token,
+                    'user' => $user
+                ], 200);
+                return response()->json(['message' => 'login faild'], 401);
             }
-            return response()->json(['unvalid password'], 403);
+            return response()->json(['message' => 'unvalid password'], 403);
         }
-        return response()->json(['email not exist'], 404);
+        return response()->json(['message' => 'email not exist'], 404);
     }
 
 

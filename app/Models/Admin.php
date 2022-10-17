@@ -30,4 +30,9 @@ class Admin extends Model
         'is_verified' => 'boolean'
     ];
 
+    public function guardName()
+    {
+        return 'web';
+    }
+
 }
