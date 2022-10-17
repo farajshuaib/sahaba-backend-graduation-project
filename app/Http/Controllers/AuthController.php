@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Admin;
 use App\Models\Subscribe;
 use App\Models\User;
 use Exception;
+use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +25,7 @@ class AuthController extends Controller
             $user = User::create([
                 'wallet_address' => $request->wallet_address,
             ]);
-            $user->assignRole(2);
+            $user->assignRole('author');
         }
 
         $user->fcm_token = $request->fcm_token;
@@ -35,9 +37,51 @@ class AuthController extends Controller
         return response()->json([
             'token' => $token,
             'user' => UserResource::make($user->load('subscribe'))
-        ]);
+        ], 200);
 
     }
+
+    public function adminLogin(Request $request): JsonResponse
+    {
+        $credentials = ['email' => $request->email, 'password' => $request->password];
+        if ($user = Admin::whereEmail($request->email)->first()) {
+            if (Hash::check($request->password, $user->password)) {
+                if (Auth::attempt($credentials)) {
+                    return response()->json(['message' => 'success', 'user' => Auth::user()]);
+                }
+                return response()->json(['login faild'], 401);
+            }
+            return response()->json(['unvalid password'], 403);
+        }
+        return response()->json(['email not exist'], 404);
+    }
+
+
+    public function createAdmin(Request $request): JsonResponse
+    {
+        $credentials = ['username' => $request->username, 'email' => $request->email, 'password' => Hash::make($request->password)];
+        $admin = Admin::create($credentials);
+        $admin->assignRole('admin');
+        $admin->save();
+
+        $token = $admin->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
+
+
+        return response()->json([
+            'token' => $token,
+            'user' => $admin
+        ], 200);
+
+    }
+
+    public function IsLoggedIn(): JsonResponse
+    {
+        if (auth()->check()) {
+            return response()->json(['message' => 'success', 'user' => auth()->user()]);
+        }
+        return response()->json(['message' => 'failed'], 401);
+    }
+
 
     public function logout(): Response
     {

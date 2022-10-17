@@ -87,13 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
-    Route::prefix('categories')->group(function () {
-        Route::post('/', [CategoryController::class, 'store']);
-        Route::put('/{category}', [CategoryController::class, 'update']);
-    });
-
     Route::prefix('kyc')->group(function () {
-        Route::get('/', [KYCsController::class, 'store']);
         Route::post('/', [KYCsController::class, 'store']);
         Route::put('/{kyc}', [KYCsController::class, 'update']);
     });
@@ -103,6 +97,22 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [NotificationsController::class, 'index']);
         Route::put('/', [NotificationsController::class, 'markAllAsRead']);
         Route::put('/{id}', [NotificationsController::class, 'markAsRead']);
+    });
+
+    Route::get('/me', [AuthController::class, 'IsLoggedIn']);
+
+    Route::group(['prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
+        Route::post('/login', [AuthController::class, 'adminLogin']);
+        Route::post('/create-admin', [AuthController::class, 'createAdmin']);
+
+        Route::prefix('categories')->group(function () {
+            Route::post('/', [CategoryController::class, 'store']);
+            Route::put('/{category}', [CategoryController::class, 'update']);
+        });
+
+        Route::prefix('kyc')->group(function () {
+            Route::get('/', [KYCsController::class, 'index']);
+        });
     });
 
 

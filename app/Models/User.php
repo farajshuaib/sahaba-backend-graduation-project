@@ -56,6 +56,10 @@ class User extends Authenticatable implements HasMedia
             ->paginate(15);
     }
 
+    public function guardName()
+    {
+        return "web";
+    }
 
     public function routeNotificationForFcm()
     {
