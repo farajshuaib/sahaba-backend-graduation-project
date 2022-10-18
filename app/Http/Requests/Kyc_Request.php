@@ -9,11 +9,11 @@ class Kyc_Request extends FormRequest
     public function rules(): array
     {
         return [
-            'gender' => ['string', 'required'],
+            'gender' => ['string', 'required', 'in:male,female'],
             'country' => ['string', 'required'],
             'city' => ['string', 'required'],
             'address' => ['string', 'required'],
-            'phone_number' => ['string', 'required'],
+            'phone_number' => ['string', 'required', 'unique:kycs,phone_number'],
             'author_type' => ['string', 'required'],
             'author_art_type' => ['string', 'required'],
             'passport_id' => ['file', 'required'],

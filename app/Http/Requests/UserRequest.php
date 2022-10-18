@@ -35,10 +35,6 @@ class UserRequest extends FormRequest
             'bio' => ['nullable', 'string'],
             'profile_photo' => ['nullable', 'image'],
             'banner_photo' => ['nullable', 'image'],
-            'website_url' => ['nullable', 'string'],
-            'facebook_url' => ['nullable', 'string'],
-            'twitter_url' => ['nullable', 'string'],
-            'telegram_url' => ['nullable', 'string'],
         ];
     }
 

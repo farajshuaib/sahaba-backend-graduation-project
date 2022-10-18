@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string("address");
             $table->enum("author_type", ['creator', 'collector']);
             $table->string("author_art_type");
-            $table->string("phone_number");
+            $table->string("phone_number")->unique();
             $table->foreignId("user_id")->unique()->constrained();
             $table->timestamps();
             $table->softDeletes();

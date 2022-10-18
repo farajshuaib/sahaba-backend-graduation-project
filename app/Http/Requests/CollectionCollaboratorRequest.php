@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CollectionCollaboratorRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class CollectionCollaboratorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'wallet_address' => ['string', 'required']
+            'wallet_address' => ['string', 'required', Rule::exists('users', 'wallet_address')]
         ];
     }
 }

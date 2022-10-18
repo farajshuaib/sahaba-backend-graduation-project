@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateAdminRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Admin;
@@ -12,6 +13,7 @@ use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 
@@ -36,7 +38,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $token,
-            'user' => UserResource::make($user->load('subscribe'))
+            'user' => UserResource::make($user->load('subscribe', 'socialLinks', 'subscribe', 'kyc'))
         ], 200);
 
     }
@@ -59,10 +61,9 @@ class AuthController extends Controller
     }
 
 
-    public function createAdmin(Request $request): JsonResponse
+    public function createAdmin(CreateAdminRequest $request): JsonResponse
     {
-        $credentials = ['username' => $request->username, 'email' => $request->email, 'password' => Hash::make($request->password)];
-        $admin = Admin::create($credentials);
+        $admin = Admin::create(['username' => $request->username, 'email' => $request->email, 'password' => Hash::make($request->password)];);
         $admin->assignRole('admin');
         $admin->save();
 
@@ -98,6 +99,7 @@ class AuthController extends Controller
      */
     public function update(UserRequest $request): JsonResponse
     {
+        DB::beginTransaction();
         try {
             $user = auth()->user();
             if (!$user)
@@ -109,10 +111,6 @@ class AuthController extends Controller
                 'username' => $request->username,
                 'email' => $request->email,
                 'bio' => $request->bio,
-                'facebook_url' => $request->facebook_url,
-                'telegram_url' => $request->telegram_url,
-                'twitter_url' => $request->twitter_url,
-                'website_url' => $request->website_url,
             ]);
 
             if ($request->email) {
@@ -121,6 +119,10 @@ class AuthController extends Controller
                     'email' => $request->email
                 ]);
             }
+
+            $socialLinks = $request->only(['facebook_url', 'twitter_url', 'telegram_url', 'website_url']);
+            $user->socialLinks()->updateOrCreate($socialLinks);
+
             if ($request->hasFile('profile_photo')) {
                 $user->addMedia($request->profile_photo)->toMediaCollection('users_profile');
             }
@@ -129,12 +131,14 @@ class AuthController extends Controller
                 $user->addMedia($request->banner_photo)->toMediaCollection('users_banner');
             }
 
+            DB::commit();
             return response()->json([
-                'user' => UserResource::make($user->load('subscribe')),
+                'user' => UserResource::make($user->load('subscribe', 'socialLinks', 'subscribe', 'kyc')),
                 'message' => 'update success'
             ],
                 200);
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 400);
         }
 

@@ -21,15 +21,12 @@ class UserResource extends JsonResource
             'wallet_address' => $this->wallet_address,
             'profile_photo' => !!$this->getFirstMedia('users_profile') ? $this->getFirstMedia('users_profile')->getUrl() : null,
             'banner_photo' => !!$this->getFirstMedia('users_banner') ? $this->getFirstMedia('users_banner')->getUrl() : null,
-            'website_url' => $this->website_url ?? "",
-            'facebook_url' => $this->facebook_url ?? "",
-            'twitter_url' => $this->twitter_url ?? "",
-            'telegram_url' => $this->telegram_url ?? "",
             'is_verified' => $this->is_verified,
             'created_nfts_count' => $this->created_nfts_count,
             'owned_nfts_count' => $this->owned_nfts_count,
             'is_subscribed' => $this->subscribe()->exists(),
             'kyc_form' => $this->whenLoaded('kyc'),
+            'social_links' => $this->whenLoaded('socialLinks'),
             $this->mergeWhen(auth()->check(), function () use ($currentUser) {
                 return ['is_followed' => auth()->user()->isFollowing($currentUser)];
             }),

@@ -51,7 +51,7 @@ class User extends Authenticatable implements HasMedia
             ->thenReturn()
             ->withCount('created_nfts')
             ->withCount('owned_nfts')
-            ->with(['collections', 'followers', 'followings', 'likes.likeable', 'followables.follower'])
+            ->with(['collections', 'followers', 'followings', 'likes.likeable', 'followables.follower', 'socialLinks'])
             ->orderBy('id', 'DESC')
             ->paginate(15);
     }
@@ -60,7 +60,7 @@ class User extends Authenticatable implements HasMedia
     {
         return 'web';
     }
-    
+
 
     public function routeNotificationForFcm()
     {
@@ -85,6 +85,11 @@ class User extends Authenticatable implements HasMedia
     public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');
+    }
+
+    public function socialLinks()
+    {
+        return $this->morphOne(SocialLink::class, 'socialable');
     }
 
     public function watching(): HasMany

@@ -20,10 +20,6 @@ return new class extends Migration {
             $table->string('email')->nullable()->unique();
             $table->string('bio')->nullable();
             $table->string('wallet_address')->unique();
-            $table->string('website_url')->nullable();
-            $table->string('facebook_url')->nullable();
-            $table->string('twitter_url')->nullable();
-            $table->string('telegram_url')->nullable();
             $table->enum('status', ['enabled', 'pending'])->default('enabled');
             $table->boolean('is_verified')->default(false);
             $table->string('fcm_token')->nullable();

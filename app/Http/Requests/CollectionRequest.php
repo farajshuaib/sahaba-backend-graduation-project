@@ -29,9 +29,6 @@ class CollectionRequest extends FormRequest
             'description' => ['required', 'string'],
             'logo_image' => ['required', 'image'],
             'banner_image' => ['nullable', 'image'],
-            'facebook_url' => ['nullable', 'url'],
-            'twitter_url' => ['nullable', 'url'],
-            'telegram_url' => ['nullable', 'url'],
             'is_sensitive_content' => ['required'],
             'category_id' => ['required', Rule::exists('categories', 'id')],
         ];
