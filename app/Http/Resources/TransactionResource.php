@@ -15,8 +15,8 @@ class TransactionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'to' => $this->to, // UserResource::make($this->whenLoaded('to')),
-            'from' => $this->from,// UserResource::make($this->whenLoaded('from')),
+            'to' => $this->whenLoaded('to'), // UserResource::make($this->whenLoaded('to')),
+            'from' => $this->whenLoaded('from'),// UserResource::make($this->whenLoaded('from')),
             'nft' => NftResource::make($this->whenLoaded('nft')),
             'price' => $this->price,
             'type' => $this->type,

@@ -5,11 +5,13 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\QueryFilters\Users\Search;
 use App\QueryFilters\Users\SortBy;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,7 +24,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements HasMedia
+
+class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, Liker, HasRoles, Follower, Followable, InteractsWithMedia, SoftDeletes;
 
@@ -51,12 +54,15 @@ class User extends Authenticatable implements HasMedia
             ->thenReturn()
             ->withCount('created_nfts')
             ->withCount('owned_nfts')
-            ->with(['collections', 'followers', 'followings', 'likes.likeable', 'followables.follower', 'socialLinks'])
+            ->withCount('followers')
+            ->withCount('followings')
+            ->withCount('collections')
+            ->with(['socialLinks', 'kyc'])
             ->orderBy('id', 'DESC')
             ->paginate(15);
     }
 
-    public function guardName()
+    public function guardName(): string
     {
         return 'web';
     }
@@ -87,7 +93,7 @@ class User extends Authenticatable implements HasMedia
         return $this->morphMany(Report::class, 'reportable');
     }
 
-    public function socialLinks()
+    public function socialLinks(): MorphOne
     {
         return $this->morphOne(SocialLink::class, 'socialable');
     }
@@ -115,6 +121,11 @@ class User extends Authenticatable implements HasMedia
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'from');
     }
 
     public function scopeIsEnabled($query)

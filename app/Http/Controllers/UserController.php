@@ -7,9 +7,11 @@ use App\Http\Resources\CollectionResource;
 use App\Http\Resources\FollowableResource;
 use App\Http\Resources\LikedNftsResource;
 use App\Http\Resources\NftResource;
+use App\Http\Resources\TransactionResource;
 use App\Http\Resources\UserResource;
 use App\Models\Collection;
 use App\Models\Nft;
+use App\Models\Transaction;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -28,7 +30,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return response()->json(UserResource::make($user));
+        return response()->json(UserResource::make($user->load('subscribe', 'socialLinks', 'kyc')->loadCount('owned_nfts', 'created_nfts', 'followers', 'followings', 'collections')));
     }
 
     public function userCollections(User $user): JsonResponse
@@ -38,6 +40,16 @@ class UserController extends Controller
         return response()->json([
             'data' => CollectionResource::collection($collections),
             'meta' => PaginationMeta::getPaginationMeta($collections)
+        ]);
+    }
+
+    public function userTransactions(User $user): JsonResponse
+    {
+
+        $transactions = Transaction::with('to', 'nft')->where('from', $user['id'])->paginate(10);
+        return response()->json([
+            'data' => TransactionResource::collection($transactions),
+            'meta' => PaginationMeta::getPaginationMeta($transactions)
         ]);
     }
 
@@ -111,5 +123,33 @@ class UserController extends Controller
             $user->acceptFollowRequestFrom($current_user);
             return response()->json(['message' => 'author followed successfully'], 200);
         }
+    }
+
+
+    public function toggleStatus(User $user)
+    {
+        if ($user->isEnabled()) {
+            $user->status = 'suspended';
+            $user->save();
+            return response()->json(['message' => 'user suspended successfully'], 200);
+        } else {
+            $user->status = 'enabled';
+            $user->save();
+            return response()->json(['message' => 'user blocked successfully'], 200);
+        }
+    }
+
+
+    public function verifyAccount(User $user)
+    {
+        try {
+            $user->is_verified = true;
+            $user->save();
+            return response()->json(['message' => 'user verified successfully'], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
+
     }
 }

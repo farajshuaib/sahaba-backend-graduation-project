@@ -15,17 +15,14 @@ class UserFactory extends Factory
 
     public function definition(): array
     {
-        $status = ['enabled', 'pending'];
         return [
+            'first_name' => fake()->name(),
+            'last_name' => fake()->name(),
             'username' => fake()->name(),
             'email' => fake()->safeEmail(),
-            'bio' => fake()->title,
+            'bio' => fake()->text,
             'wallet_address' => $this->faker->unique()->numberBetween(1, 10000000000),
-            'website_url' => $this->faker->url,
-            'facebook_url' => $this->faker->url,
-            'twitter_url' => $this->faker->url,
-            'telegram_url' => $this->faker->url,
-            'status' => $status[rand(0, 1)],
+            'status' => 'enabled',
             'is_verified' => $this->faker->boolean,
         ];
     }

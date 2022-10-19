@@ -20,9 +20,11 @@ return new class extends Migration {
             $table->string('email')->nullable()->unique();
             $table->string('bio')->nullable();
             $table->string('wallet_address')->unique();
-            $table->enum('status', ['enabled', 'pending'])->default('enabled');
+            $table->enum('status', ['enabled', 'suspended'])->default('enabled');
             $table->boolean('is_verified')->default(false);
             $table->string('fcm_token')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });

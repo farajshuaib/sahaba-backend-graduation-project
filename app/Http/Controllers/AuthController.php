@@ -46,7 +46,7 @@ class AuthController extends Controller
     public function adminLogin(Request $request): JsonResponse
     {
         $credentials = ['email' => $request->email, 'password' => $request->password];
-        if ($user = Admin::whereEmail($request->email)->first()) {
+        if ($user = Admin::query()->whereEmail($request->email)->first()) {
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
                 return response()->json([
@@ -63,7 +63,11 @@ class AuthController extends Controller
 
     public function createAdmin(CreateAdminRequest $request): JsonResponse
     {
-        $admin = Admin::create(['username' => $request->username, 'email' => $request->email, 'password' => Hash::make($request->password)];);
+        $admin = Admin::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
         $admin->assignRole('admin');
         $admin->save();
 

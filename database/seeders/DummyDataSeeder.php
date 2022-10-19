@@ -11,8 +11,8 @@ class DummyDataSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(CollectionSeeder::class);
         $this->call(NftSeeder::class);
-        $this->call(TransactionSeeder::class);
         $this->call(WatchesSeeder::class);
         $this->call(CollectionCollaboratorSeeder::class);
+        $this->call(TransactionSeeder::class);
     }
 }

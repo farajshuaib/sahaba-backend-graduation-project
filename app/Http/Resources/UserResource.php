@@ -24,10 +24,15 @@ class UserResource extends JsonResource
             'is_verified' => $this->is_verified,
             'created_nfts_count' => $this->created_nfts_count,
             'owned_nfts_count' => $this->owned_nfts_count,
+            'collections_count' => $this->collections_count,
+            'followings_count' => $this->followings_count,
+            'followers_count' => $this->followers_count,
             'is_subscribed' => $this->subscribe()->exists(),
             'kyc_form' => $this->whenLoaded('kyc'),
-            'social_links' => $this->whenLoaded('socialLinks'),
-            $this->mergeWhen(auth()->check(), function () use ($currentUser) {
+            "status" => $this->status,
+            "transactions" => TransactionResource::collection($this->whenLoaded('transactions')),
+            'social_links' => SocialLinkResource::make($this->whenLoaded('socialLinks')),
+            $this->mergeWhen(auth()->check() && auth()->user()->hasRole('author'), function () use ($currentUser) {
                 return ['is_followed' => auth()->user()->isFollowing($currentUser)];
             }),
         ];

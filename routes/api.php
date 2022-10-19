@@ -54,6 +54,7 @@ Route::prefix('users')->group(function () {
     Route::get('/liked-nfts/{user}', [UserController::class, 'likedNfts']);
     Route::get('/following/{user}', [UserController::class, 'following']);
     Route::get('/followers/{user}', [UserController::class, 'followers']);
+    Route::get('/transactions/{user}', [UserController::class, 'userTransactions']);
 
 });
 
@@ -114,11 +115,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('transactions')->group(function () {
             Route::get('/', [TransactionController::class, 'index']);
+            Route::get('/{transaction}', [TransactionController::class, 'show']);
         });
 
         Route::prefix('kyc')->group(function () {
             Route::get('/', [KYCsController::class, 'index']);
         });
+
+        Route::prefix('users')->group(function () {
+            Route::post('/toggle-status/{user}', [UserController::class, 'toggleStatus']);
+            Route::post('/verify-account/{user}', [UserController::class, 'verifyAccount']);
+        });
+
     });
 
 
