@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\QueryFilters\Nfts\Creator;
 use App\QueryFilters\Nfts\IsVerified;
+use App\QueryFilters\Nfts\Owner;
 use App\QueryFilters\Nfts\PriceRange;
 use App\QueryFilters\Nfts\Search;
 use App\QueryFilters\Nfts\SortBy;
@@ -42,6 +44,8 @@ class Nft extends Model
                 IsVerified::class,
                 \App\QueryFilters\Nfts\Collection::class,
                 \App\QueryFilters\Nfts\Category::class,
+                Creator::class,
+                Owner::class,
             ])
             ->thenReturn()
             ->withCount('likers')
