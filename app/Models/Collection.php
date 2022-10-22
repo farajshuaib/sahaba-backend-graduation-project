@@ -32,7 +32,7 @@ class Collection extends Model implements HasMedia
                 \App\QueryFilters\Collections\Category::class,
             ])
             ->thenReturn()
-            ->with(['category', 'user', 'collaborators', 'socialLinks', 'nfts' => function ($query) {
+            ->with(['category', 'user', 'nfts' => function ($query) {
                 $query->orderBy('id', 'DESC')->limit(3);
             }])
             ->orderBy('id', 'DESC')

@@ -24,7 +24,7 @@ class Category extends Model implements HasMedia
 
     public function nfts(): HasManyThrough
     {
-        return $this->hasManyThrough(Collection::class, Nft::class, 'collection_id', 'category_id', 'id', 'id');
+        return $this->hasManyThrough(Nft::class, Collection::class, 'category_id', 'collection_id', 'id', 'id');
     }
 
     public function registerMediaCollections(): void

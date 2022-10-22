@@ -13,7 +13,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::query()->with(['from', 'to', 'nft'])->paginate(20);
+        $transactions = Transaction::query()->with(['fromUser', 'toUser', 'nft'])->paginate(20);
         return response()->json([
             'data' => TransactionResource::collection($transactions),
             'meta' => PaginationMeta::getPaginationMeta($transactions)
@@ -23,7 +23,7 @@ class TransactionController extends Controller
     public function show(Transaction $transaction): JsonResponse
     {
         try {
-            return response()->json(TransactionResource::make($transaction->load(['from', 'to', 'nft'])), 200);
+            return response()->json(TransactionResource::make($transaction->load(['fromUser', 'toUser', 'nft'])), 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'transaction not found'], 404);
         }

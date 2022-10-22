@@ -13,7 +13,7 @@ class CategoryController extends Controller
 
     public function index(): JsonResponse
     {
-        $categories = Category::with('collections', 'nfts')->orderBy('id', 'desc')->get();
+        $categories = Category::withCount('collections', 'nfts')->orderBy('id', 'desc')->get();
 //        dd($categories);
         return response()->json(CategoryResource::collection($categories));
     }
@@ -32,7 +32,7 @@ class CategoryController extends Controller
 
     public function show(Category $category): JsonResponse
     {
-        return response()->json(CategoryResource::make($category->load('collections', 'nfts')));
+        return response()->json(CategoryResource::make($category->load('nfts')->loadCount('collections', 'nfts')));
     }
 
 
@@ -43,7 +43,7 @@ class CategoryController extends Controller
             $category->addMedia($request->icon)->toMediaCollection('category_icon');
         }
         return response()->json([
-            'user' => CategoryResource::make($category->load('collections', 'nfts')),
+            'category' => CategoryResource::make($category),
             'message' => 'update success'
         ],
             200);

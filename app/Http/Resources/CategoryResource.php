@@ -21,8 +21,8 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'icon' => $this->getFirstMedia('category_icon') ? $this->getFirstMedia('category_icon')->getUrl() : null,
-            'collections_count' => $this->collections()->count(),
-            'nfts_count' => $this->nfts()->count(),
+            'collections_count' => $this->collections_count,
+            'nfts_count' => $this->nfts_count,
         ];
     }
 }

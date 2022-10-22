@@ -58,7 +58,7 @@ class CollectionController extends Controller
 
     public function show(Collection $collection): JsonResponse
     {
-        return response()->json(CollectionResource::make($collection->load(['category', 'user', 'socialLinks'])));
+        return response()->json(CollectionResource::make($collection->load(['category', 'user', 'socialLinks', 'reports.user'])));
     }
 
 

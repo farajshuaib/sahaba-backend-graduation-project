@@ -109,6 +109,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create-admin', [AuthController::class, 'createAdmin']);
 
         Route::prefix('categories')->group(function () {
+            Route::get('/{category}', [CategoryController::class, 'show']);
             Route::post('/', [CategoryController::class, 'store']);
             Route::put('/{category}', [CategoryController::class, 'update']);
         });
@@ -125,6 +126,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('users')->group(function () {
             Route::post('/toggle-status/{user}', [UserController::class, 'toggleStatus']);
             Route::post('/verify-account/{user}', [UserController::class, 'verifyAccount']);
+        });
+
+        Route::prefix('reports')->group(function () {
+            Route::get('/', [ReportController::class, 'index']);
         });
 
     });

@@ -3,12 +3,34 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Pipeline\Pipeline;
 
 class Report extends Model
 {
     protected $guarded = [];
-    public function reportable(): \Illuminate\Database\Eloquent\Relations\MorphTo
+
+    public static function withFilters()
+    {
+        return app(Pipeline::class)
+            ->send(Report::query())
+            ->through([
+
+            ])
+            ->thenReturn()
+            ->with('user')->paginate(10);
+
+    }
+
+
+    public function reportable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'reporter_id');
     }
 }

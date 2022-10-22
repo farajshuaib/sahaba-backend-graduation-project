@@ -30,7 +30,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return response()->json(UserResource::make($user->load('subscribe', 'socialLinks', 'kyc')->loadCount('owned_nfts', 'created_nfts', 'followers', 'followings', 'collections')));
+        return response()->json(UserResource::make($user->load('subscribe', 'socialLinks', 'kyc', 'reports')->loadCount('owned_nfts', 'created_nfts', 'followers', 'followings', 'collections')));
     }
 
     public function userCollections(User $user): JsonResponse
@@ -128,14 +128,14 @@ class UserController extends Controller
 
     public function toggleStatus(User $user)
     {
-        if ($user->isEnabled()) {
+        if ($user->status == 'enabled') {
             $user->status = 'suspended';
             $user->save();
             return response()->json(['message' => 'user suspended successfully'], 200);
         } else {
             $user->status = 'enabled';
             $user->save();
-            return response()->json(['message' => 'user blocked successfully'], 200);
+            return response()->json(['message' => 'user activated successfully'], 200);
         }
     }
 

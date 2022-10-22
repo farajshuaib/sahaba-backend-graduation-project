@@ -15,12 +15,12 @@ class Transaction extends Model
     protected $fillable = ['nft_id', 'from', 'to', 'price', 'type'];
 
 
-    public function from(): BelongsTo
+    public function fromUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'from', 'id');
     }
 
-    public function to(): BelongsTo
+    public function toUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'to', 'id');
     }
