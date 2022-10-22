@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('description');
             $table->unsignedDouble('price',);
-            $table->enum('status', ['published', 'pending', 'canceled', 'deleted'])->default('published');
+            $table->enum('status', ['published', 'hidden'])->default('published');
             $table->boolean('is_for_sale')->default(false);
             $table->timestamp('sale_end_at')->nullable();
             $table->timestamps();

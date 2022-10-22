@@ -42,7 +42,7 @@ class NftController extends Controller
 
     public function show(Nft $nft): JsonResponse
     {
-        return response()->json(NftResource::make($nft->load(['creator', 'owner', 'collection', 'transactions.from', 'transactions.to', 'watchers', 'reports'])));
+        return response()->json(NftResource::make($nft->load(['creator', 'owner', 'collection', 'transactions', 'watchers'])));
     }
 
     public function store(NftRequest $request): JsonResponse

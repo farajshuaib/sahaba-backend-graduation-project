@@ -19,7 +19,7 @@ class UserFactory extends Factory
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
             'username' => fake()->name(),
-            'email' => fake()->safeEmail(),
+            'email' => $this->faker->unique()->email(),
             'bio' => fake()->text,
             'wallet_address' => $this->faker->unique()->numberBetween(1, 10000000000),
             'status' => 'enabled',

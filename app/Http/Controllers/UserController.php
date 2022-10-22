@@ -30,7 +30,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return response()->json(UserResource::make($user->load('subscribe', 'socialLinks', 'kyc', 'reports')->loadCount('owned_nfts', 'created_nfts', 'followers', 'followings', 'collections')));
+        return response()->json(UserResource::make($user->load('subscribe', 'socialLinks', 'kyc')->loadCount('owned_nfts', 'created_nfts', 'followers', 'followings', 'collections')));
     }
 
     public function userCollections(User $user): JsonResponse

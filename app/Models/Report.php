@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\QueryFilters\Reports\Reportable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -16,7 +17,7 @@ class Report extends Model
         return app(Pipeline::class)
             ->send(Report::query())
             ->through([
-
+                Reportable::class,
             ])
             ->thenReturn()
             ->with('user')->paginate(10);

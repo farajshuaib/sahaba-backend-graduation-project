@@ -19,6 +19,7 @@ class ReportResource extends JsonResource
             'type' => $this->type,
             'message' => $this->message,
             'created_at' => $this->created_at,
+            'reportable_type' => $this->reportable_type,
         ];
     }
 }

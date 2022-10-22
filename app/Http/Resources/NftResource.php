@@ -33,6 +33,7 @@ class NftResource extends JsonResource
             'reports' => ReportResource::collection($this->reports->load('user')),
             'transactions' => TransactionResource::collection($this->transactions->load('fromUser', 'toUser')), //TransactionResource::collection($this->transactions->load('from', 'to')),
             'created_at' => $this->created_at,
+            'status' => $this->status,
         ];
     }
 }

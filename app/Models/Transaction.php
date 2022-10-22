@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Pipeline\Pipeline;
 
 
 class Transaction extends Model
@@ -13,6 +14,20 @@ class Transaction extends Model
     use HasFactory, SoftDeletes, HasFactory;
 
     protected $fillable = ['nft_id', 'from', 'to', 'price', 'type'];
+
+    public static function withFilters()
+    {
+        return app(Pipeline::class)
+            ->send(Transaction::query())
+            ->through([
+                \App\QueryFilters\Transactions\Nft::class,
+                \App\QueryFilters\Transactions\From::class,
+                \App\QueryFilters\Transactions\To::class,
+            ])
+            ->thenReturn()
+            ->with('fromUser', 'toUser', 'nft');
+
+    }
 
 
     public function fromUser(): BelongsTo

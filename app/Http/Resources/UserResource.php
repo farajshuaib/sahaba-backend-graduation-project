@@ -30,9 +30,7 @@ class UserResource extends JsonResource
             'is_subscribed' => $this->subscribe()->exists(),
             'kyc_form' => $this->whenLoaded('kyc'),
             "status" => $this->status,
-            "transactions" => TransactionResource::collection($this->transactions->load('nft', 'toUser')),
             'social_links' => SocialLinkResource::make($this->whenLoaded('socialLinks')),
-            'reports' => ReportResource::collection($this->reports->load('user')),
             $this->mergeWhen(auth()->check() && auth()->user()->hasRole('author'), function () use ($currentUser) {
                 return ['is_followed' => auth()->user()->isFollowing($currentUser)];
             }),

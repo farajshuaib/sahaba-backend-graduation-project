@@ -13,7 +13,7 @@ class KYCsController extends Controller
 {
     public function index()
     {
-        $users = User::whereHas('kyc')->paginate(20);
+        $users = User::with('kyc')->whereHas('kyc')->paginate(20);
         return response()->json([
             'data' => UserResource::collection($users),
             'meta' => PaginationMeta::getPaginationMeta($users)

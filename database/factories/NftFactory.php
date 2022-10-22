@@ -14,7 +14,7 @@ class NftFactory extends Factory
 
     public function definition(): array
     {
-        $status = ['published', 'pending', 'canceled', 'deleted'];
+        $status = ['published', 'hidden'];
         $images = [
             "http://127.0.0.1:8000/images/nfts/1.png",
             "http://127.0.0.1:8000/images/nfts/2.png",
@@ -43,7 +43,7 @@ class NftFactory extends Factory
             'description' => $this->faker->paragraph('2'),
             'file_path' => $images[array_rand($images, 1)],
             'price' => $this->faker->numberBetween(1, 1000),
-            'status' => $status[rand(0, 2)],
+            'status' => $status[rand(0, 1)],
             'is_for_sale' => $this->faker->boolean,
             'sale_end_at' => Carbon::now(),
         ];

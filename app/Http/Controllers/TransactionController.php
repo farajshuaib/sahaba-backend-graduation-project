@@ -13,7 +13,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::query()->with(['fromUser', 'toUser', 'nft'])->paginate(20);
+        $transactions = Transaction::withFilters()->paginate(20);
         return response()->json([
             'data' => TransactionResource::collection($transactions),
             'meta' => PaginationMeta::getPaginationMeta($transactions)

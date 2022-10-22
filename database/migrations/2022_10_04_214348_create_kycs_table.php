@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string("city");
             $table->string("address");
             $table->enum("author_type", ['creator', 'collector']);
+            $table->enum("status", ['on_review', 'approved', 'rejected', 'pending'])->default('on_review');
             $table->string("author_art_type");
             $table->string("phone_number")->unique();
             $table->foreignId("user_id")->unique()->constrained();
