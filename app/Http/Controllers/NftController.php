@@ -165,7 +165,17 @@ class NftController extends Controller
             DB::rollBack();
             return response()->json(['message' => $e], 500);
         }
+    }
 
+    public function changeNFTStatus(Nft $nft, Request $request)
+    {
+        try {
+            $nft->status == 'published' ? $nft->status = 'hidden' : $nft->status = 'published';
+            $nft->save();
+            return response()->json(['message' => 'nft has been ' . $nft->status . ' successfully'], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e], 500);
+        }
 
     }
 

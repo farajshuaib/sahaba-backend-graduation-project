@@ -135,6 +135,10 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/', [ReportController::class, 'index']);
         });
 
+        Route::prefix('nfts')->group(function () {
+            Route::put('/change-status/{nft}', [NftController::class, 'changeNFTStatus']);
+        });
+
     });
 
 
