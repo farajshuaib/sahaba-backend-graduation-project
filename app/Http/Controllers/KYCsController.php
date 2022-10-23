@@ -42,6 +42,19 @@ class KYCsController extends Controller
     {
     }
 
+    public function changeAccountStatus(Kyc $kyc, Request $request)
+    {
+        $statuses = ['on_review', 'approved', 'rejected', 'pending'];
+        if (in_array($request->status, $statuses)) {
+            $kyc->status = $request->status;
+            $kyc->save();
+            return response()->json([
+                'message' => 'account status updated successfully',
+                'user' => UserResource::make(User::query()->with('kyc')->find($kyc->user_id))]);
+
+        }
+        return response()->json(['message' => 'invalid status'], 422);
+    }
 
     public function update(Kyc $kys, Request $request)
     {

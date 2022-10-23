@@ -30,8 +30,6 @@ class NftResource extends JsonResource
             'collection' => CollectionResource::make($this->whenLoaded('collection')),
             'creator' => UserResource::make($this->whenLoaded('creator')),
             'owner' => UserResource::make($this->whenLoaded('owner')),
-            'reports' => ReportResource::collection($this->reports->load('user')),
-            'transactions' => TransactionResource::collection($this->transactions->load('fromUser', 'toUser')), //TransactionResource::collection($this->transactions->load('from', 'to')),
             'created_at' => $this->created_at,
             'status' => $this->status,
         ];

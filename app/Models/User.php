@@ -128,9 +128,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->hasMany(Transaction::class, 'from');
     }
 
-    public function scopeIsEnabled($query)
+    public function scopeIsActive($query)
     {
-        return $query->where('status', 'enabled');
+        return $query->where('status', 'active');
     }
 
 }

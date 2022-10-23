@@ -13,7 +13,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::withFilters()->paginate(20);
+        $transactions = Transaction::withFilters()->paginate(5);
         return response()->json([
             'data' => TransactionResource::collection($transactions),
             'meta' => PaginationMeta::getPaginationMeta($transactions)

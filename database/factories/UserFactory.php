@@ -22,8 +22,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->email(),
             'bio' => fake()->text,
             'wallet_address' => $this->faker->unique()->numberBetween(1, 10000000000),
-            'status' => 'enabled',
-            'is_verified' => $this->faker->boolean,
+            'status' => 'active',
         ];
     }
 

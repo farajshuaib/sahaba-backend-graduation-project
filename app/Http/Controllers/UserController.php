@@ -128,28 +128,16 @@ class UserController extends Controller
 
     public function toggleStatus(User $user)
     {
-        if ($user->status == 'enabled') {
+        if ($user->status == 'active') {
             $user->status = 'suspended';
             $user->save();
             return response()->json(['message' => 'user suspended successfully'], 200);
         } else {
-            $user->status = 'enabled';
+            $user->status = 'active';
             $user->save();
             return response()->json(['message' => 'user activated successfully'], 200);
         }
     }
 
 
-    public function verifyAccount(User $user)
-    {
-        try {
-            $user->is_verified = true;
-            $user->save();
-            return response()->json(['message' => 'user verified successfully'], 200);
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-
-
-    }
 }

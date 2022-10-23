@@ -21,7 +21,6 @@ class UserResource extends JsonResource
             'wallet_address' => $this->wallet_address,
             'profile_photo' => !!$this->getFirstMedia('users_profile') ? $this->getFirstMedia('users_profile')->getUrl() : null,
             'banner_photo' => !!$this->getFirstMedia('users_banner') ? $this->getFirstMedia('users_banner')->getUrl() : null,
-            'is_verified' => $this->is_verified,
             'created_nfts_count' => $this->created_nfts_count,
             'owned_nfts_count' => $this->owned_nfts_count,
             'collections_count' => $this->collections_count,
