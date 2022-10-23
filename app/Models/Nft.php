@@ -94,5 +94,10 @@ class Nft extends Model
         return $query->where('status', 'published');
     }
 
+    public function scopeIsHidden($query): Builder
+    {
+        return $query->where('status', 'hidden');
+    }
+
 
 }

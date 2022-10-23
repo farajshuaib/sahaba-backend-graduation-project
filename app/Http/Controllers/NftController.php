@@ -30,7 +30,7 @@ class NftController extends Controller
     public function latest(): JsonResponse
     {
         if (auth()->check()) {
-            $nfts = Nft::withFilters()->orderBy('created_at', 'desc')->paginate(15);
+            $nfts = Nft::withFilters()->isPublished()->orderBy('created_at', 'desc')->paginate(15);
         } else {
             $nfts = Nft::withFilters()->paginate(15);
         }
