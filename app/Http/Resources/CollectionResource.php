@@ -34,7 +34,7 @@ class CollectionResource extends JsonResource
             'volume' => $this->nfts()->sum('price'),
             'min_price' => $this->nfts()->min('price'),
             'max_price' => $this->nfts()->max('price'),
-            'collaborators' => $this->collaborators,
+            'collaborators' => CollectionCollaboratorResource::collection($this->whenLoaded('collaborators')),
             'social_links' => SocialLinkResource::make($this->whenLoaded('socialLinks')),
         ];
     }

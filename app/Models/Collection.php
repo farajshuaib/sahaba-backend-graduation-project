@@ -6,9 +6,9 @@ use App\QueryFilters\Collections\Search;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pipeline\Pipeline;
 use Spatie\MediaLibrary\HasMedia;
@@ -55,14 +55,14 @@ class Collection extends Model implements HasMedia
         return $this->morphMany(Report::class, 'reportable');
     }
 
-    public function socialLinks()
+    public function socialLinks(): MorphOne
     {
         return $this->morphOne(SocialLink::class, 'socialable');
     }
 
-    public function collaborators(): BelongsToMany
+    public function collaborators(): HasMany
     {
-        return $this->belongsToMany(User::class, 'collection_collaborators', 'collection_id', 'user_id');
+        return $this->hasMany(CollectionCollaborator::class, 'collection_id',);
     }
 
 
@@ -77,4 +77,6 @@ class Collection extends Model implements HasMedia
         $this->addMediaCollection('collection_banner_image')->singleFile();
         $this->addMediaCollection('collection_logo_image')->singleFile();
     }
+
+
 }

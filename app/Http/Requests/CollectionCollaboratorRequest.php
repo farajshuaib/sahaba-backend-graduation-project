@@ -25,7 +25,8 @@ class CollectionCollaboratorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'wallet_address' => ['string', 'required', Rule::exists('users', 'wallet_address')]
+            'wallet_address' => ['string', 'required', Rule::exists('users', 'wallet_address')],
+            'collection_id' => ['integer', 'required', Rule::exists('collections', 'id')],
         ];
     }
 }

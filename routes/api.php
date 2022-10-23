@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CollectionCollaboratorsController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\KYCsController;
@@ -89,8 +90,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('collections')->middleware([IsActiveUserMiddleware::class])->group(function () {
         Route::post('/', [CollectionController::class, 'store']);
         Route::put('/{collection}', [CollectionController::class, 'update']);
-        Route::post('/add-collaboration/{collection}', [CollectionController::class, 'addCollaboration']);
         Route::post('/report/{collection}', [ReportController::class, 'collection_report']);
+        Route::post('/add-collaboration/{collection}', [CollectionCollaboratorsController::class, 'store']);
+        Route::delete('/delete-collaborator', [CollectionCollaboratorsController::class, 'destroy']);
+    });
+
+    Route::prefix('collections-collaborators')->middleware([IsActiveUserMiddleware::class])->group(function () {
+        Route::post('/', [CollectionCollaboratorsController::class, 'store']);
+        Route::delete('/{collaboration}', [CollectionCollaboratorsController::class, 'destroy']);
     });
 
 
@@ -137,6 +144,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('nfts')->group(function () {
             Route::put('/change-status/{nft}', [NftController::class, 'changeNFTStatus']);
+        });
+
+        Route::prefix('collections-collaborators')->group(function () {
+            Route::get('/', [CollectionCollaboratorsController::class, 'index']);
+            Route::get('/{collaboration}', [CollectionCollaboratorsController::class, 'show']);
         });
 
     });
