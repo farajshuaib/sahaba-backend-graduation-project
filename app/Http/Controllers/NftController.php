@@ -212,6 +212,4 @@ class NftController extends Controller
             return response()->json(['message' => 'nft liked successfully'], 200);
         }
     }
-
-
 }

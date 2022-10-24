@@ -61,6 +61,7 @@ Route::prefix('users')->group(function () {
 
 });
 
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -119,8 +120,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/subscribed', [SubscribesController::class, 'index']);
 
         Route::prefix('categories')->group(function () {
-            Route::get('/{category}', [CategoryController::class, 'show']);
             Route::post('/', [CategoryController::class, 'store']);
+
+            Route::get('/{category}', [CategoryController::class, 'show']);
             Route::put('/{category}', [CategoryController::class, 'update']);
         });
 
@@ -130,7 +132,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('kyc')->group(function () {
             Route::get('/', [KYCsController::class, 'index']);
-            Route::post('/change-account-status/{kyc}', [KYCsController::class, 'changeAccountStatus']);
+
+            Route::put('/change-account-status/{kyc}', [KYCsController::class, 'changeAccountStatus']);
         });
 
         Route::prefix('users')->group(function () {
@@ -149,6 +152,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('collections-collaborators')->group(function () {
             Route::get('/', [CollectionCollaboratorsController::class, 'index']);
             Route::get('/{collaboration}', [CollectionCollaboratorsController::class, 'show']);
+        });
+
+
+        Route::prefix('statistics')->group(function () {
+            Route::get('/categories-nfts', [CategoryController::class, 'statistics']);
+            Route::get('/transactions', [TransactionController::class, 'statistics']);
+            Route::get('/kyc', [KYCsController::class, 'statistics']);
         });
 
     });

@@ -71,7 +71,7 @@ class Nft extends Model
 
     public function category(): HasOneThrough
     {
-        return $this->hasOneThrough(Collection::class, Category::class);
+        return $this->hasOneThrough(Category::class, Collection::class, 'category_id', 'id', 'collection_id', 'id');
     }
 
     public function transactions(): HasMany
@@ -88,6 +88,7 @@ class Nft extends Model
     {
         return $this->hasMany(Watch::class);
     }
+
 
     public function scopeIsPublished($query): Builder
     {

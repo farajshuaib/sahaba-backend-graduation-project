@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\QueryFilters\Transactions\From;
+use App\QueryFilters\Transactions\To;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,14 +17,18 @@ class Transaction extends Model
 
     protected $fillable = ['nft_id', 'from', 'to', 'price', 'type'];
 
+    protected $casts = [
+        'price' => 'float'
+    ];
+
     public static function withFilters()
     {
         return app(Pipeline::class)
             ->send(Transaction::query())
             ->through([
                 \App\QueryFilters\Transactions\Nft::class,
-                \App\QueryFilters\Transactions\From::class,
-                \App\QueryFilters\Transactions\To::class,
+                From::class,
+                To::class,
             ])
             ->thenReturn()
             ->with('fromUser', 'toUser', 'nft');
