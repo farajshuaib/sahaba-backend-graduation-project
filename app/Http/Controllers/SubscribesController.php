@@ -3,19 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\PaginationMeta;
+use App\Http\Requests\SendEmailRequest;
 use App\Http\Resources\SubscribeResource;
+use App\Mail\SendEmail;
 use App\Models\Subscribe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class SubscribesController extends Controller
 {
     public function index()
     {
-        $subscribed = Subscribe::query()->with('subscriber')->paginate(20);
+        $subscribers = Subscribe::query()->with('subscriber')->paginate(20);
         return response()->json([
-            'subscribed' => SubscribeResource::collection($subscribed),
-            'meta' => PaginationMeta::getPaginationMeta($subscribed)]);
+            'data' => SubscribeResource::collection($subscribers),
+            'meta' => PaginationMeta::getPaginationMeta($subscribers)]);
     }
 
     public function store(Request $request)
@@ -42,8 +45,13 @@ class SubscribesController extends Controller
         return response()->json(['message' => 'thank you for you\'re subscription '], 200);
     }
 
-    public function create()
+    public function sendEmail(SendEmailRequest $request)
     {
+        $subscribers = Subscribe::query()->get();
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email)->send(new SendEmail($request->validated()));
+        }
+        return response()->json(['message' => 'email sent successfully'], 200);
     }
 
     public function show(Subscribe $subscribe)

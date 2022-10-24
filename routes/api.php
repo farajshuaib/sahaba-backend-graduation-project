@@ -117,7 +117,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware([IsAdminMiddleware::class])->group(function () {
         Route::post('/create-admin', [AuthController::class, 'createAdmin']);
-        Route::get('/subscribed', [SubscribesController::class, 'index']);
+
+        Route::prefix('subscribers')->group(function () {
+            Route::get('/subscribers', [SubscribesController::class, 'index']);
+            Route::post('/send-email', [SubscribesController::class, 'sendEmail']);
+        });
+
 
         Route::prefix('categories')->group(function () {
             Route::post('/', [CategoryController::class, 'store']);
