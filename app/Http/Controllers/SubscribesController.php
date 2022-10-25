@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\PaginationMeta;
 use App\Http\Requests\SendEmailRequest;
 use App\Http\Resources\SubscribeResource;
+use App\Mail\NewsMail;
 use App\Mail\SendEmail;
 use App\Models\Subscribe;
 use Illuminate\Http\Request;
@@ -47,10 +48,9 @@ class SubscribesController extends Controller
 
     public function sendEmail(SendEmailRequest $request)
     {
+
         $subscribers = Subscribe::query()->get();
-        foreach ($subscribers as $subscriber) {
-            Mail::to($subscriber->email)->send(new SendEmail($request->validated()));
-        }
+        Mail::to($subscribers)->send(new NewsMail($request->validated()));
         return response()->json(['message' => 'email sent successfully'], 200);
     }
 

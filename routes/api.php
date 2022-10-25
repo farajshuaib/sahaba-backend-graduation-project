@@ -31,6 +31,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/connect-wallet', [AuthController::class, 'connectWallet']);
 Route::post('/login', [AuthController::class, 'adminLogin']);
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->middleware('guest')->name('password.email');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.update');
 
 Route::middleware([CheckSaleStateMiddleware::class])->get('/nfts', [NftController::class, 'index']);
 Route::middleware([CheckSaleStateMiddleware::class])->get('/latest-nfts', [NftController::class, 'latest']);

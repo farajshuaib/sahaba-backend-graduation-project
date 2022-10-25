@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAdminRequest;
+use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\SendResetLinkRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\ForgotPasswordMail;
 use App\Models\Admin;
 use App\Models\Subscribe;
 use App\Models\User;
@@ -14,8 +17,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Throwable;
-
 
 class AuthController extends Controller
 {
@@ -144,8 +149,40 @@ class AuthController extends Controller
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 400);
         }
+    }
 
 
+    public function sendResetLink(SendResetLinkRequest $request)
+    {
+        $status = Password::sendResetLink($request->only('email'), function ($notifiable, $token) {
+            Mail::to($notifiable->email)->send(new ForgotPasswordMail($token, $notifiable->email));
+        });
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return response()->json(['message' => 'link sent to your email successfully'], 200);
+        }
+
+        return response()->json(['error' => trans($status)], 400);
+    }
+
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return response()->noContent(200);
+        }
+        return response()->json(['error' => $status], 400);
     }
 
 }
