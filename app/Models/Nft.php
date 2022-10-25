@@ -49,7 +49,7 @@ class Nft extends Model
             ])
             ->thenReturn()
             ->withCount('likers')
-            ->with('collection', 'creator', 'owner.kyc', 'watchers');
+            ->with('collection', 'creator', 'creator.kyc', 'watchers');
 
     }
 

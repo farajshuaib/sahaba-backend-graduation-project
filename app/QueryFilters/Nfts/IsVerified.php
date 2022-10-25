@@ -9,7 +9,7 @@ class IsVerified extends Filter
     protected function applyFilter($builder)
     {
         if (request($this->filterName())) {
-            return $builder->whereHas('owner.kyc', function ($query) {
+            return $builder->whereHas('creator.kyc', function ($query) {
                 $query->where('status', 'approved');
             });
         } else {
