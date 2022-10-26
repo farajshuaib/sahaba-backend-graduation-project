@@ -31,7 +31,7 @@ class Nft extends Model
         'price' => 'float',
     ];
 
-    protected $dates = ['sale_end_at'];
+    protected $dates = ['sale_end_at', 'created_at', 'updated_at', 'deleted_at'];
 
     public static function withFilters()
     {

@@ -42,7 +42,7 @@ class NftFactory extends Factory
             'token_id' => $this->faker->unique()->sha256(),
             'description' => $this->faker->paragraph('2'),
             'file_path' => $images[array_rand($images, 1)],
-            'price' => $this->faker->numberBetween(1, 1000),
+            'price' => $this->faker->numberBetween(0.01, 5.0),
             'status' => $status[rand(0, 1)],
             'is_for_sale' => $this->faker->boolean,
             'sale_end_at' => Carbon::now(),

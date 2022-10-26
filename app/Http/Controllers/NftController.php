@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Validator;
 
 class NftController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $nfts = Nft::withFilters()->paginate(15);
         return response()->json([
@@ -29,9 +29,7 @@ class NftController extends Controller
 
     public function latest(): JsonResponse
     {
-
         $nfts = Nft::withFilters()->isPublished()->orderBy('created_at', 'desc')->paginate(15);
-
         return response()->json([
             'data' => NftResource::collection($nfts),
             'meta' => PaginationMeta::getPaginationMeta($nfts)

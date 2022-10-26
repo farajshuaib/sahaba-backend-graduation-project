@@ -8,13 +8,11 @@ class IsVerified extends Filter
 {
     protected function applyFilter($builder)
     {
-        if (request($this->filterName())) {
+        if (request($this->filterName()))
             return $builder->whereHas('creator.kyc', function ($query) {
-                $query->where('status', 'approved');
+                $query->where('status', request($this->filterName()));
             });
-        } else {
-            return $builder->orderBy('id', 'desc');
-        }
+        return $builder->orderBy('id', 'desc');
     }
 
 }
