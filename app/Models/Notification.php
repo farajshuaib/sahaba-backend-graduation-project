@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\QueryFilters\Notifications\Read;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pipeline\Pipeline;
 
 class Notification extends Model
 {
@@ -13,6 +15,17 @@ class Notification extends Model
 
     protected $dates = ['read_at'];
 
+    public static function withFilters()
+    {
+        return app(Pipeline::class)
+            ->send(Notification::query())
+            ->through([
+                Read::class,
+            ])
+            ->thenReturn()
+            ->where('user_id', auth()->id())
+            ->orderBy('id', 'DESC');
+    }
 
     public function notifiable()
     {

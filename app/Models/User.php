@@ -73,6 +73,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->fcm_token;
     }
 
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
     public function collections(): BelongsToMany
     {
         return $this->belongsToMany(Collection::class, 'collection_collaborators', 'user_id', 'collection_id');
@@ -117,11 +122,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         return $this->hasOne(Kyc::class);
     }
-
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class);
-    }
+    
 
     public function transactions(): HasMany
     {
