@@ -8,6 +8,10 @@ use App\Http\Resources\NftResource;
 use App\Models\Nft;
 use App\Models\Transaction;
 use App\Notifications\FollowerCreateNewNft;
+use App\Notifications\UserBuyNftNotification;
+use App\Notifications\UserSetNftForSaleNotification;
+use App\Notifications\UserStopNftSaleNotification;
+use App\Notifications\UserUpdateNftPriceNotification;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -83,6 +87,7 @@ class NftController extends Controller
                 'type' => 'sale'
             ]);
             $nft->update(['owner_id' => auth()->id()]);
+            Notification::send(auth()->user()->followers()->get(), new UserBuyNftNotification($nft, auth()->user()));
             DB::commit();
             return response()->json(['nft' => NftResource::make($nft->load('collection', 'owner', 'creator')), 'message' => 'purchase successfully done'], 200);
         } catch (Exception $e) {
@@ -118,6 +123,7 @@ class NftController extends Controller
                 'price' => $nft->price,
                 'type' => 'update_price'
             ]);
+            Notification::send(auth()->user()->followers()->get(), new UserUpdateNftPriceNotification($nft, auth()->user()));
             DB::commit();
             return response()->json(['message' => __('nft_updated_successfully')], 201);
         } catch (Exception $e) {
@@ -155,6 +161,7 @@ class NftController extends Controller
                 'price' => $nft->price,
                 'type' => 'set_for_sale'
             ]);
+            Notification::send(auth()->user()->followers()->get(), new UserSetNftForSaleNotification($nft, auth()->user()));
             DB::commit();
             return response()->json(['message' => __('nft_listed_successfully')], 200);
         } catch (Exception $e) {
@@ -183,6 +190,7 @@ class NftController extends Controller
 
         $nft->update(['is_for_sale' => false, 'sale_end_at' => null]);
 
+        Notification::send(auth()->user()->followers()->get(), new UserStopNftSaleNotification($nft, auth()->user()));
 
         return response()->json(['message' => __('item_canceled_listed_successfully')], 200);
     }
