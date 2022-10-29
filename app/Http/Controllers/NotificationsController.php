@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
 
 class NotificationsController extends Controller
@@ -14,7 +15,7 @@ class NotificationsController extends Controller
 
     public function markAsRead($id)
     {
-        $notification = Auth::user()->notifications()->where('id', $id)->firstOrFail();
+        $notification = auth()->user()->notifications()->where('id', $id)->firstOrFail();
         if (!$notification->read_at) {
             $notification->read_at = now();
             $notification->save();

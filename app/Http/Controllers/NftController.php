@@ -58,7 +58,7 @@ class NftController extends Controller
             ]);
             Notification::send(auth()->user()->followers()->get(), new FollowerCreateNewNft($nft, auth()->user()));
             DB::commit();
-            return response()->json(['nft' => NftResource::make($nft), 'message' => 'nft created successfully']);
+            return response()->json(['nft' => NftResource::make($nft), 'message' => __('nft_created_successfully')]);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e], 500);
@@ -70,7 +70,7 @@ class NftController extends Controller
     {
 
         if ($nft->owner_id == auth()->id()) {
-            return response()->json(['message' => 'what the fuck you\'re trying to do dude, it\'s your nft'], 403);
+            return response()->json(['message' => __('you_are_trying_to_buy_your_own_nft')], 403);
         }
 
         DB::beginTransaction();
@@ -95,7 +95,7 @@ class NftController extends Controller
     public function updatePrice(Nft $nft, Request $request)
     {
         if ($nft->owner_id != auth()->id())
-            return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
+            return response()->json(['message' => __('you_do_not_have_permission_to_maintain_on_this_NFT')], 403);
 
         $validator = Validator::make($request->all(), [
             'price' => ['required', 'numeric'],
@@ -119,7 +119,7 @@ class NftController extends Controller
                 'type' => 'update_price'
             ]);
             DB::commit();
-            return response()->json(['message' => 'nft updated successfully'], 201);
+            return response()->json(['message' => __('nft_updated_successfully')], 201);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e], 500);
@@ -132,7 +132,7 @@ class NftController extends Controller
     public function setForSale(Nft $nft, Request $request)
     {
         if ($nft->owner_id != auth()->id())
-            return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
+            return response()->json(['message' => __('you_do_not_have_permission_to_maintain_on_this_NFT')], 403);
 
         $validator = Validator::make($request->all(), [
             'sale_end_at' => ['required', 'date']
@@ -156,7 +156,7 @@ class NftController extends Controller
                 'type' => 'set_for_sale'
             ]);
             DB::commit();
-            return response()->json(['message' => 'item listed successfully'], 200);
+            return response()->json(['message' => __('nft_listed_successfully')], 200);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e], 500);
@@ -179,19 +179,19 @@ class NftController extends Controller
     public function stopSale(Nft $nft)
     {
         if ($nft->owner_id != auth()->id())
-            return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
+            return response()->json(['message' => __('you_do_not_have_permission_to_maintain_on_this_NFT')], 403);
 
         $nft->update(['is_for_sale' => false, 'sale_end_at' => null]);
 
 
-        return response()->json(['message' => 'item canceled listed successfully'], 200);
+        return response()->json(['message' => __('item_canceled_listed_successfully')], 200);
     }
 
 
     public function destroy(Nft $nft)
     {
         if ($nft->owner_id != auth()->id())
-            return response()->json(['message' => 'you don\'t have permission to maintain on this NFT'], 403);
+            return response()->json(['message' => __('you_do_not_have_permission_to_maintain_on_this_NFT')], 403);
         $nft->delete();
         return response()->noContent();
     }
@@ -202,10 +202,10 @@ class NftController extends Controller
         $user = auth()->user();
         if ($user->hasLiked($nft)) {
             $user->unlike($nft);
-            return response()->json(['message' => 'nft unliked successfully'], 200);
+            return response()->json(['message' => __('nft_unliked_successfully')], 200);
         } else {
             $user->like($nft);
-            return response()->json(['message' => 'nft liked successfully'], 200);
+            return response()->json(['message' => __('nft_liked_successfully')], 200);
         }
     }
 }

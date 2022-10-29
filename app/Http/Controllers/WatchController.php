@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 
 class WatchController extends Controller
 {
-    public function index()
-    {
-
-    }
+    
 
     public function store(Request $request)
     {

@@ -50,7 +50,7 @@ class KYCsController extends Controller
             $kyc->status = $request->status;
             $kyc->save();
             return response()->json([
-                'message' => 'account status updated successfully',
+                'message' => __('account_status_updated_successfully'),
                 'user' => UserResource::make(User::query()->with('kyc')->find($kyc->user_id))]);
 
         }

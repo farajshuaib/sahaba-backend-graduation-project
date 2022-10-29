@@ -36,14 +36,14 @@ class SubscribesController extends Controller
         }
 
         if (Subscribe::query()->where('email', '=', $request->email)->exists())
-            return response()->json(['message' => 'user with this email already subscribed'], 403);
+            return response()->json(['message' => __('user_with_this_email_already_subscribed')], 403);
 
         Subscribe::query()->create([
             'user_id' => auth()->check() ? auth()->id() : null,
             'email' => $request->email
         ]);
 
-        return response()->json(['message' => 'thank you for you\'re subscription '], 200);
+        return response()->json(['message' => __('thank_you_for_you_are_subscription')], 200);
     }
 
     public function sendEmail(SendEmailRequest $request)

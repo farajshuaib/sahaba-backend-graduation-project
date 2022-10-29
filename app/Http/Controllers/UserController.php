@@ -117,11 +117,11 @@ class UserController extends Controller
         $current_user = auth()->user();
         if ($current_user->isFollowing($user)) {
             $current_user->unfollow($user);
-            return response()->json(['message' => 'author unfollowed successfully'], 200);
+            return response()->json(['message' => __('author_unfollowed_successfully')], 200);
         } else {
             $current_user->follow($user);
             $user->acceptFollowRequestFrom($current_user);
-            return response()->json(['message' => 'author followed successfully'], 200);
+            return response()->json(['message' => __('author_followed_successfully')], 200);
         }
     }
 

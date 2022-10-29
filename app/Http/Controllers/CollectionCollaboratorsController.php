@@ -33,10 +33,10 @@ class CollectionCollaboratorsController extends Controller
             $collection = Collection::query()->findOrFail($request->collection_id);
 
             if (!$collection)
-                return response()->json(['message' => 'collection not found'], 404);
+                return response()->json(['message' => __('collection_not_found')], 404);
 
             if ($collection->user_id != auth()->id())
-                return response()->json(['message' => 'you\'re not allowed to add collaboration to this collection'], 403);
+                return response()->json(['message' => __("you_are_not_allowed_to_add_collaboration_to_this_collection")], 403);
 
             $user = User::where('wallet_address', $request->wallet_address)->first();
 
@@ -45,7 +45,7 @@ class CollectionCollaboratorsController extends Controller
 
             $collaboration_exist = CollectionCollaborator::where('user_id', $user->id)->where('collection_id', $collection->id)->exists();
             if ($collaboration_exist)
-                return response()->json(['message' => 'this user already collaborated with this collection'], 403);
+                return response()->json(['message' => __("this_user_already_collaborated_with_this_collection")], 403);
 
             CollectionCollaborator::query()->create([
                 'collection_id' => $collection->id,
@@ -63,10 +63,10 @@ class CollectionCollaboratorsController extends Controller
     {
         try {
             if ($collaboration->collection->user_id != auth()->id())
-                return response()->json(['message' => 'you\'re not allowed to delete this collaboration'], 403);
+                return response()->json(['message' => __('you_are_not_allowed_to_remove_collaboration_from_this_collection')], 403);
             $collaboration->delete();
             $collaboration->collection->refresh();
-            return response()->json(['message' => 'collaboration deleted successfully'], 200);
+            return response()->json(['message' => __('collaboration_deleted_successfully')], 200);
 
         } catch (Exception $e) {
             return response()->json(['message' => $e], 500);

@@ -46,7 +46,7 @@ class CollectionController extends Controller
             }
             CollectionCollaborator::create(['collection_id' => $collection->id, 'user_id' => auth()->id()]);
             DB::commit();
-            return response()->json(['data' => CollectionResource::make($collection->load('category', 'socialLinks', 'nfts', 'user')), 'message' => 'collection created successfully'], 200);
+            return response()->json(['data' => CollectionResource::make($collection->load('category', 'socialLinks', 'nfts', 'user')), 'message' => __('collection_created_successfully')], 200);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e]);
@@ -79,10 +79,10 @@ class CollectionController extends Controller
                 $collection->addMedia($request->banner_image)->toMediaCollection('collection_banner_image');
             }
             DB::commit();
-            return response()->json(['data' => CollectionResource::make($collection->load('socialLinks')), 'message' => 'collection updated successfully'], 200);
+            return response()->json(['data' => CollectionResource::make($collection->load('socialLinks')), 'message' => __('collection_updated_successfully')], 200);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => $e, 'message' => 'collection updated faild'], 500);
+            return response()->json(['error' => $e, 'message' => __('collection_updated_failed')], 500);
         }
 
     }

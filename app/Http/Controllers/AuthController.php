@@ -59,9 +59,9 @@ class AuthController extends Controller
                     'user' => $user
                 ], 200);
             }
-            return response()->json(['message' => 'invalid password'], 403);
+            return response()->json(['message' => __('auth.password')], 403);
         }
-        return response()->json(['message' => 'email not exist'], 404);
+        return response()->json(['message' => __('passwords.user')], 404);
     }
 
 
@@ -111,7 +111,7 @@ class AuthController extends Controller
         try {
             $user = auth()->user();
             if (!$user)
-                return response()->json(['message' => 'you are not allowed to modify account'], 403);
+                return response()->json(['message' => __('you_are_not_allowed_to_modify_account')], 403);
 
             $user->update([
                 'first_name' => $request->first_name,
@@ -142,7 +142,7 @@ class AuthController extends Controller
             DB::commit();
             return response()->json([
                 'user' => UserResource::make($user->load('subscribe', 'socialLinks', 'subscribe', 'kyc')),
-                'message' => 'update success'
+                'message' => __('user_updated_successfully')
             ],
                 200);
         } catch (Exception $e) {
@@ -159,7 +159,7 @@ class AuthController extends Controller
         });
 
         if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => 'link sent to your email successfully'], 200);
+            return response()->json(['message' => __('passwords.sent')], 200);
         }
 
         return response()->json(['error' => trans($status)], 400);
