@@ -25,7 +25,7 @@ class NotificationsController extends Controller
 
     public function markAllAsRead()
     {
-        $notifications = Auth::user()->notifications;
+        $notifications = auth()->user()->notifications;
         foreach ($notifications as $notification) {
             $notification->read_at = now();
             $notification->save();
