@@ -53,20 +53,4 @@ class SubscribesController extends Controller
         Mail::to($subscribers)->send(new NewsMail($request->validated()));
         return response()->json(['message' => 'email sent successfully'], 200);
     }
-
-    public function show(Subscribe $subscribe)
-    {
-    }
-
-    public function edit(Subscribe $subscribe)
-    {
-    }
-
-    public function update(Request $request, Subscribe $subscribe)
-    {
-    }
-
-    public function destroy(Subscribe $subscribe)
-    {
-    }
 }

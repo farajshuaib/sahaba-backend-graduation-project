@@ -9,7 +9,7 @@ class SetLocaleMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        app()->setLocale($request->get('locale') || 'en');
+        app()->setLocale($request->get('locale') ?? 'en');
         return $next($request);
     }
 }
