@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAdminRequest;
+use App\Http\Requests\Profile\UpdateUserProfileRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\SendResetLinkRequest;
 use App\Http\Requests\UserRequest;
@@ -102,6 +103,54 @@ class AuthController extends Controller
         return response()->noContent(204);
     }
 
+    public function sendResetLink(SendResetLinkRequest $request)
+    {
+        $status = Password::sendResetLink($request->only('email'), function ($notifiable, $token) {
+            Mail::to($notifiable->email)->send(new ForgotPasswordMail($token, $notifiable->email));
+        });
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return response()->json(['message' => __('passwords.sent')], 200);
+        }
+
+        return response()->json(['error' => trans($status)], 400);
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return response()->noContent(200);
+        }
+        return response()->json(['error' => $status], 400);
+    }
+
+    public function updateAdminPassword(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = auth()->user();
+            $user->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+        } catch (Exception $error) {
+            DB::rollBack();
+            return response()->json(['message' => $error->getMessage()], 400);
+        }
+        DB::commit();
+        return response()->noContent();
+    }
+
     /**
      * @throws Throwable
      */
@@ -149,40 +198,6 @@ class AuthController extends Controller
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 400);
         }
-    }
-
-
-    public function sendResetLink(SendResetLinkRequest $request)
-    {
-        $status = Password::sendResetLink($request->only('email'), function ($notifiable, $token) {
-            Mail::to($notifiable->email)->send(new ForgotPasswordMail($token, $notifiable->email));
-        });
-
-        if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => __('passwords.sent')], 200);
-        }
-
-        return response()->json(['error' => trans($status)], 400);
-    }
-
-
-    public function resetPassword(ResetPasswordRequest $request)
-    {
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
-
-                $user->save();
-            }
-        );
-
-        if ($status === Password::PASSWORD_RESET) {
-            return response()->noContent(200);
-        }
-        return response()->json(['error' => $status], 400);
     }
 
 }

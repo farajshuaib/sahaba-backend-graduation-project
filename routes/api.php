@@ -119,6 +119,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware([IsAdminMiddleware::class])->group(function () {
         Route::post('/create-admin', [AuthController::class, 'createAdmin']);
+        Route::put('/update-password', [AuthController::class, 'updateAdminPassword']);
 
         Route::prefix('subscribers')->group(function () {
             Route::get('/subscribers', [SubscribesController::class, 'index']);
