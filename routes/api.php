@@ -122,7 +122,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/update-password', [AuthController::class, 'updateAdminPassword']);
 
         Route::prefix('subscribers')->group(function () {
-            Route::get('/subscribers', [SubscribesController::class, 'index']);
+            Route::get('/', [SubscribesController::class, 'index']);
             Route::post('/send-email', [SubscribesController::class, 'sendEmail']);
         });
 
