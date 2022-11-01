@@ -21,7 +21,8 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request): JsonResponse
     {
         $category = Category::create([
-            'name' => $request->name
+            'name_ar' => $request->name_ar,
+            'name_en' => $request->name_en,
         ]);
         if ($request->hasFile('icon')) {
             $category->addMedia($request->icon)->toMediaCollection('category_icon');
@@ -32,13 +33,16 @@ class CategoryController extends Controller
 
     public function show(Category $category): JsonResponse
     {
-        return response()->json(CategoryResource::make($category->load('nfts')->loadCount('collections', 'nfts')));
+        return response()->json(['data' => $category, 'icon' => $category->getFirstMedia('category_icon')->getUrl()]);
     }
 
 
     public function update(Category $category, Request $request): JsonResponse
     {
-        $category->update(['name' => $request->name]);
+        $category->update([
+            'name_ar' => $request->name_ar,
+            'name_en' => $request->name_en,
+        ]);
         if ($request->hasFile('icon')) {
             $category->addMedia($request->icon)->toMediaCollection('category_icon');
         }
@@ -54,7 +58,7 @@ class CategoryController extends Controller
         $categoriesCount = Category::query()->withCount('nfts')->get();
         return response()->json([
             'data' => [
-                'labels' => $categoriesCount->pluck('name'),
+                'labels' => $categoriesCount->pluck('name_en'),
                 'data' => $categoriesCount->pluck('nfts_count')
             ]
         ], 200);

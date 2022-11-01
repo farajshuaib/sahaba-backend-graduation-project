@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\App;
 use JsonSerializable;
 
 class CategoryResource extends JsonResource
@@ -19,7 +20,7 @@ class CategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => App::getLocale() == 'ar' ? $this->name_ar : $this->name_en,
             'icon' => $this->getFirstMedia('category_icon') ? $this->getFirstMedia('category_icon')->getUrl() : null,
             'collections_count' => $this->collections_count,
             'nfts_count' => $this->nfts_count,

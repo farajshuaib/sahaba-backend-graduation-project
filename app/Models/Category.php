@@ -14,7 +14,7 @@ class Category extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
 
-    protected $fillable = ['name', 'icon'];
+    protected $fillable = ['name_ar', 'name_en', 'icon'];
 
 
     public function collections(): HasMany
