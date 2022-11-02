@@ -36,7 +36,7 @@ class UserUpdateNftPriceNotification extends Notification
 
     public function via(mixed $notifiable): array
     {
-        return ['database', FcmChannel::class];
+        return ['database', FcmChannel::class, 'mail'];
     }
 
 
@@ -69,7 +69,7 @@ class UserUpdateNftPriceNotification extends Notification
     {
         return [
             'title' => 'NFT price updated',
-            'message' => $this->user->username . 'has update NFT price.',
+            'message' => $this->user->username . ' has update NFT price.',
             'nft' => NftResource::make($this->nft)
         ];
     }

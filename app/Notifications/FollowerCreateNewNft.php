@@ -43,7 +43,7 @@ class FollowerCreateNewNft extends Notification
      */
     public function via(mixed $notifiable): array
     {
-        return ['database', FcmChannel::class];
+        return ['database', FcmChannel::class, 'mail'];
     }
 
 

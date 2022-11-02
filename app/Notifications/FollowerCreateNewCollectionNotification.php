@@ -31,7 +31,7 @@ class FollowerCreateNewCollectionNotification extends Notification
 
     public function via($notifiable): array
     {
-        return ['database', FcmChannel::class];
+        return ['database', FcmChannel::class, 'mail'];
     }
 
     public function toMail($notifiable): MailMessage
@@ -59,7 +59,7 @@ class FollowerCreateNewCollectionNotification extends Notification
                     ->setFcmOptions(ApnsFcmOptions::create()->setAnalyticsLabel('analytics_ios')));
     }
 
-    public function toArray(mixed $notifiable): array
+    public function toDatabase(mixed $notifiable): array
     {
         return [
             'title' => 'new Collection created',
