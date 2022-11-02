@@ -14,13 +14,13 @@ class CategorySeeder extends Seeder
         $names_ar = ["فن", "تسلية", "موسيقى", "أخبار", "علوم", "رياضة", "تقنية",];
 
         $icons = [
-            "http://127.0.0.1:8000/images/nfts/cat1.png",
-            "http://127.0.0.1:8000/images/nfts/cat2.png",
-            "http://127.0.0.1:8000/images/nfts/cat3.png",
-            "http://127.0.0.1:8000/images/nfts/cat4.png",
-            "http://127.0.0.1:8000/images/nfts/cat5.png",
-            "http://127.0.0.1:8000/images/nfts/cat5.png",
-            "http://127.0.0.1:8000/images/nfts/cat6.png"
+            env('APP_URL') . "/images/nfts/cat1.png",
+            env('APP_URL') . "/images/nfts/cat2.png",
+            env('APP_URL') . "/images/nfts/cat3.png",
+            env('APP_URL') . "/images/nfts/cat4.png",
+            env('APP_URL') . "/images/nfts/cat5.png",
+            env('APP_URL') . "/images/nfts/cat5.png",
+            env('APP_URL') . "/images/nfts/cat6.png"
         ];
 
         for ($index = 0; $index <= count($icons) - 1; $index += 1) {

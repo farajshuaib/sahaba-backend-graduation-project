@@ -16,22 +16,22 @@ class NftFactory extends Factory
     {
         $status = ['published', 'hidden'];
         $images = [
-            "http://127.0.0.1:8000/images/nfts/1.png",
-            "http://127.0.0.1:8000/images/nfts/2.png",
-            "http://127.0.0.1:8000/images/nfts/3.png",
-            "http://127.0.0.1:8000/images/nfts/4.png",
-            "http://127.0.0.1:8000/images/nfts/5.png",
-            "http://127.0.0.1:8000/images/nfts/6.png",
-            "http://127.0.0.1:8000/images/nfts/7.png",
-            "http://127.0.0.1:8000/images/images/nfts/8.png",
-            "http://127.0.0.1:8000/images/nfts/9.png",
-            "http://127.0.0.1:8000/images/nfts/10.png",
-            "http://127.0.0.1:8000/images/nfts/11.png",
-            "http://127.0.0.1:8000/images/nfts/12.png",
-            "http://127.0.0.1:8000/images/nfts/13.png",
-            "http://127.0.0.1:8000/images/nfts/14.png",
-            "http://127.0.0.1:8000/images/nfts/15.png",
-            "http://127.0.0.1:8000/images/nfts/16.png",
+            env('APP_URL') . "/images/nfts/1.png",
+            env('APP_URL') . "/images/nfts/2.png",
+            env('APP_URL') . "/images/nfts/3.png",
+            env('APP_URL') . "/images/nfts/4.png",
+            env('APP_URL') . "/images/nfts/5.png",
+            env('APP_URL') . "/images/nfts/6.png",
+            env('APP_URL') . "/images/nfts/7.png",
+            env('APP_URL') . "/images/nfts/8.png",
+            env('APP_URL') . "/images/nfts/9.png",
+            env('APP_URL') . "/images/nfts/10.png",
+            env('APP_URL') . "/images/nfts/11.png",
+            env('APP_URL') . "/images/nfts/12.png",
+            env('APP_URL') . "/images/nfts/13.png",
+            env('APP_URL') . "/images/nfts/14.png",
+            env('APP_URL') . "/images/nfts/15.png",
+            env('APP_URL') . "/images/nfts/16.png",
         ];
 
         return [
