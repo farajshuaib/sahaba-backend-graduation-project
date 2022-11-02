@@ -139,7 +139,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('kyc')->group(function () {
             Route::get('/', [KYCsController::class, 'index']);
-
             Route::put('/change-account-status/{kyc}', [KYCsController::class, 'changeAccountStatus']);
         });
 
