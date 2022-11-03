@@ -49,7 +49,7 @@ Route::get('/transactions', [TransactionController::class, 'index']);
 
 Route::post('/contact', [ContactUsController::class, 'sendEmail']);
 Route::post('/subscribe', [SubscribesController::class, 'store']);
-Route::get('general-statistics', [StatisticsController::class, 'general']);
+Route::get('/general-statistics', [StatisticsController::class, 'general']);
 
 
 Route::prefix('users')->group(function () {

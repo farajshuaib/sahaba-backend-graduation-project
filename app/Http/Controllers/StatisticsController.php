@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Collection;
 use App\Models\Kyc;
 use App\Models\Nft;
 use App\Models\Transaction;
@@ -19,11 +20,10 @@ class StatisticsController extends Controller
         return response()->json([
             'nfts' => Nft::count(),
             'users' => User::count(),
+            'collections' => Collection::count(),
             'transactions' => Transaction::count(),
             'sales' => Transaction::where('type', 'sale')->count(),
-            'purchases' => Transaction::where('type', 'purchase')->count(),
-            'total_sales' => Transaction::where('type', 'sale')->sum('amount'),
-            'total_purchases' => Transaction::where('type', 'purchase')->sum('amount'),
+            'total_sales' => Transaction::where('type', 'sale')->sum('price'),
         ]);
     }
 
