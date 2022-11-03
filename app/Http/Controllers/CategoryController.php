@@ -53,15 +53,5 @@ class CategoryController extends Controller
             200);
     }
 
-    public function statistics(): JsonResponse
-    {
-        $categoriesCount = Category::query()->withCount('nfts')->get();
-        return response()->json([
-            'data' => [
-                'labels' => $categoriesCount->pluck('name_en'),
-                'data' => $categoriesCount->pluck('nfts_count')
-            ]
-        ], 200);
-    }
 
 }

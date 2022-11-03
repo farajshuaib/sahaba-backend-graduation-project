@@ -9,6 +9,7 @@ use App\Http\Controllers\KYCsController;
 use App\Http\Controllers\NftController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\SubscribesController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -48,6 +49,7 @@ Route::get('/transactions', [TransactionController::class, 'index']);
 
 Route::post('/contact', [ContactUsController::class, 'sendEmail']);
 Route::post('/subscribe', [SubscribesController::class, 'store']);
+Route::get('general-statistics', [StatisticsController::class, 'general']);
 
 
 Route::prefix('users')->group(function () {
@@ -162,9 +164,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
         Route::prefix('statistics')->group(function () {
-            Route::get('/categories-nfts', [CategoryController::class, 'statistics']);
-            Route::get('/transactions', [TransactionController::class, 'statistics']);
-            Route::get('/kyc', [KYCsController::class, 'statistics']);
+            Route::get('/categories-nfts', [StatisticsController::class, 'categoriesNfts']);
+            Route::get('/transactions', [StatisticsController::class, 'transactions']);
+            Route::get('/kyc', [StatisticsController::class, 'kyc']);
         });
 
     });

@@ -7,7 +7,6 @@ use App\Http\Requests\Kyc_Request;
 use App\Http\Resources\UserResource;
 use App\Models\Kyc;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class KYCsController extends Controller
@@ -75,58 +74,5 @@ class KYCsController extends Controller
         return response()->json(UserResource::make(User::query()->find($request->user_id)->load('kyc')));
     }
 
-    public function statistics()
-    {
-        $onReviewStatistics = Kyc::query()
-            ->whereMonth('created_at', '>=', Carbon::now()->subMonth()->month)
-            ->where('status', 'on_review')
-            ->groupBy('label')
-            ->selectRaw('count(*) as count, DATE(created_at) as label')
-            ->get();
 
-        $approvedStatistics = Kyc::query()
-            ->whereMonth('created_at', '>=', Carbon::now()->subMonth()->month)
-            ->where('status', 'approved')
-            ->groupBy('label')
-            ->selectRaw('count(*) as count, DATE(created_at) as label')
-            ->get();
-
-        $rejectedStatistics = Kyc::query()
-            ->whereMonth('created_at', '>=', Carbon::now()->subMonth()->month)
-            ->where('status', 'rejected')
-            ->groupBy('label')
-            ->selectRaw('count(*) as count, DATE(created_at) as label')
-            ->get();
-
-        $pendingStatistics = Kyc::query()
-            ->whereMonth('created_at', '>=', Carbon::now()->subMonth()->month)
-            ->where('status', 'pending')
-            ->groupBy('label')
-            ->selectRaw('count(*) as count, DATE(created_at) as label')
-            ->get();
-
-
-        $labels = [];
-        $labels = array_merge($labels, $onReviewStatistics->pluck('label')->toArray(), $approvedStatistics->pluck('label')->toArray(), $rejectedStatistics->pluck('label')->toArray(), $pendingStatistics->pluck('label')->toArray());
-
-        return response()->json([
-            'data' => [
-                'count' => [
-                    'total' => Kyc::query()->count(),
-                    'on_review' => Kyc::query()->where('status', 'on_review')->count(),
-                    'approved' => Kyc::query()->where('status', 'approved')->count(),
-                    'rejected' => Kyc::query()->where('status', 'rejected')->count(),
-                    'pending' => Kyc::query()->where('status', 'pending')->count(),
-                ],
-                'statistics' => [
-                    'labels' => array_unique($labels),
-                    'on_review' => $onReviewStatistics->pluck('count', 'label'),
-                    'approved' => $approvedStatistics->pluck('count', 'label'),
-                    'rejected' => $rejectedStatistics->pluck('count', 'label'),
-                    'pending' => $pendingStatistics->pluck('count', 'label'),
-                ]
-
-            ]
-        ], 200);
-    }
 }
