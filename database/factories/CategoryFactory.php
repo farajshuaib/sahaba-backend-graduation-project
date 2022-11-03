@@ -15,8 +15,8 @@ class CategoryFactory extends Factory
 
     public function definition(): array
     {
-        $names_en = ["Arts", "Entertainment", "Music", "News", "Science", "Sports", "Technology",];
-        $names_ar = ["فن", "تسلية", "موسيقى", "أخبار", "علوم", "رياضة", "تقنية",];
+        $names_en = ["Arts", "Entertainment", "Music", "Science", "Sports", "Technology",];
+        $names_ar = ["فن", "تسلية", "موسيقى", "علوم", "رياضة", "تقنية",];
 
         return [
             'name_en' => $names_en[rand(0, count($names_en) - 1)],
