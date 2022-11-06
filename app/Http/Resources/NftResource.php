@@ -20,7 +20,6 @@ class NftResource extends JsonResource
             'like_count' => $this->likers()->count(),
             'watch_time' => $this->watchers()->count(),
             'is_for_sale' => $this->is_for_sale,
-            'token_id' => $this->token_id,
             $this->mergeWhen($this->is_for_sale, function () {
                 return ['sale_end_at' => $this->sale_end_at];
             }),

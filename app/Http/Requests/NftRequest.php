@@ -25,10 +25,10 @@ class NftRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => ['required', 'integer', 'unique:nfts'],
             'title' => ['string', 'required'],
             'description' => ['string', 'required'],
             'file_path' => ['string', 'required'],
-            'token_id' => ['required', 'string', 'unique:nfts,token_id'],
             'collection_id' => ['required', 'int', Rule::exists('collections', 'id')],
             'price' => ['required', 'numeric'],
         ];

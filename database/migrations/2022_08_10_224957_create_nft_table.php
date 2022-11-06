@@ -8,8 +8,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('nfts', function (Blueprint $table) {
-            $table->id();
-            $table->string('token_id')->unique();
+            $table->unsignedBigInteger('id')->unique()->primary();
             $table->foreignId('collection_id')->constrained();
             $table->foreignId('creator_id')->constrained('users');
             $table->foreignId('owner_id')->constrained('users');
