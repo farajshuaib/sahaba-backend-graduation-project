@@ -22,8 +22,8 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => App::getLocale() == 'ar' ? $this->name_ar : $this->name_en,
             'icon' => $this->getFirstMedia('category_icon') ? $this->getFirstMedia('category_icon')->getUrl() : null,
-            'collections_count' => $this->collections_count,
-            'nfts_count' => $this->nfts_count,
+            'collections_count' => $this->whenLoaded('collections_count'),
+            'nfts_count' => $this->whenLoaded('nfts_count'),
         ];
     }
 }
