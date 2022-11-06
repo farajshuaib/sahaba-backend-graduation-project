@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('collections', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->unique()->primary();
+            $table->primary('id');
             $table->string('name');
             $table->text('description');
             $table->foreignId('category_id')->constrained();
