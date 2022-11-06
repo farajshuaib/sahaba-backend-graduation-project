@@ -27,8 +27,10 @@ class Nft extends Model
 
     protected $fillable = ['title', 'description', 'collection_id', 'creator_id', 'owner_id', 'file_path', 'price', 'is_for_sale', 'sale_end_at', 'token_id'];
 
-    protected $casts = ['is_for_sale' => 'boolean',
+    protected $casts = [
+        'is_for_sale' => 'boolean',
         'price' => 'float',
+        'token_id' => 'integer',
     ];
 
     protected $dates = ['sale_end_at', 'created_at', 'updated_at', 'deleted_at'];

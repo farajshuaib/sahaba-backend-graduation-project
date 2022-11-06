@@ -23,7 +23,7 @@ class NftResource extends JsonResource
             'watch_time' => $this->watchers()->count(),
             'is_for_sale' => $this->is_for_sale,
             $this->mergeWhen($this->is_for_sale, function () {
-                return ['sale_end_at' => $this->sale_end_at];
+                return ['sale_end_at' => $this->whenLoaded('sale_end_at')];
             }),
             $this->mergeWhen(auth()->check() && auth()->user()->hasRole('author'), function () use ($currentNft) {
                 return ['is_liked' => auth()->user()->hasLiked($currentNft)];
