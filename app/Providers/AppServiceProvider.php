@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
             'Collection' => 'App\Models\Collection',
             'User' => 'App\Models\User'
         ]);
+        Model::shouldBeStrict(!app()->environment('production'));
     }
 }

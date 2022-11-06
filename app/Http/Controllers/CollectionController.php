@@ -30,11 +30,11 @@ class CollectionController extends Controller
         DB::beginTransaction();
         try {
             $collection = Collection::create([
+                'id' => $request->id,
                 'user_id' => auth()->id(),
                 'name' => $request->name,
                 'description' => $request->description,
                 'is_sensitive_content' => $request->is_sensitive_content == 'true',
-                'collection_token_id' => $request->collection_token_id,
                 'category_id' => $request->category_id,
             ]);
             $socialLinks = $request->only(['facebook_url', 'twitter_url', 'telegram_url', 'website_url']);

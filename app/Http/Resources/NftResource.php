@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Nft;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin Nft */
 class NftResource extends JsonResource
 {
     public function toArray($request): array
