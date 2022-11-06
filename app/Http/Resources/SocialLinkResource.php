@@ -14,11 +14,11 @@ class SocialLinkResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'facebook_url' => $this->facebook_url,
-            'twitter_url' => $this->twiiter_url,
-            'instagram_url' => $this->instagram_url,
-            'telegram_url' => $this->telegram_url,
-            'website_url' => $this->website_url,
+            'facebook_url' => $this->whenLoaded('facebook_url'),
+            'twitter_url' => $this->whenLoaded('twiiter_url'),
+            'instagram_url' => $this->whenLoaded('instagram_url'),
+            'telegram_url' => $this->whenLoaded('telegram_url'),
+            'website_url' => $this->whenLoaded('website_url'),
         ];
     }
 }
