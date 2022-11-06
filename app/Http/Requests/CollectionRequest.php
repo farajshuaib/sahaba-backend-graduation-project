@@ -25,7 +25,7 @@ class CollectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'unique:collections'],
+            'collection_id' => ['required', 'integer', 'unique:collections'],
             'name' => ['required'],
             'description' => ['required', 'string'],
             'logo_image' => ['required', 'image'],

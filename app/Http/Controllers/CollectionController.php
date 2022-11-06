@@ -30,7 +30,7 @@ class CollectionController extends Controller
         DB::beginTransaction();
         try {
             $collection = Collection::create([
-                'id' => $request->id,
+                'collection_id' => $request->collection_id,
                 'user_id' => auth()->id(),
                 'name' => $request->name,
                 'description' => $request->description,

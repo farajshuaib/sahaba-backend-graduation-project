@@ -25,7 +25,7 @@ class NftRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'unique:nfts'],
+            'token_id' => ['required', 'integer', 'unique:nfts'],
             'title' => ['string', 'required'],
             'description' => ['string', 'required'],
             'file_path' => ['string', 'required'],

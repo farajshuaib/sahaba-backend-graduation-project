@@ -18,6 +18,7 @@ class CollectionFactory extends Factory
             'description' => $this->faker->realText(50),
             'category_id' => Category::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
+            'collection_id' => $this->faker->unique()->uuid(),
             'is_sensitive_content' => $this->faker->boolean,
         ];
     }

@@ -18,7 +18,7 @@ class Collection extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
 
-    protected $fillable = ['id', 'name', 'description', 'category_id', 'is_sensitive_content', 'user_id'];
+    protected $fillable = ['collection_id', 'name', 'description', 'category_id', 'is_sensitive_content', 'user_id'];
 
     protected $casts = ['is_sensitive_content' => 'boolean'];
 

@@ -14,6 +14,7 @@ class NftResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'token_id' => $this->token_id,
             'title' => $this->title,
             'description' => $this->description,
             'file_path' => $this->file_path,
