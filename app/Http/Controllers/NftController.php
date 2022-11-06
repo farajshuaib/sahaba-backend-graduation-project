@@ -10,7 +10,6 @@ use App\Models\Transaction;
 use App\Notifications\FollowerCreateNewNft;
 use App\Notifications\UserBuyNftNotification;
 use App\Notifications\UserSetNftForSaleNotification;
-use App\Notifications\UserStopNftSaleNotification;
 use App\Notifications\UserUpdateNftPriceNotification;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -135,25 +134,16 @@ class NftController extends Controller
     }
 
 
-    public function setForSale(Nft $nft, Request $request)
+    public function toggleForSale(Nft $nft, Request $request)
     {
         if ($nft->owner_id != auth()->id())
             return response()->json(['message' => __('you_do_not_have_permission_to_maintain_on_this_NFT')], 403);
 
-        $validator = Validator::make($request->all(), [
-            'sale_end_at' => ['required', 'date']
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => true,
-                'message' => $validator->errors()
-            ], 422);
-        }
 
         try {
             DB::beginTransaction();
-            $nft->update(['is_for_sale' => true, 'sale_end_at' => $request->sale_end_at]);
+            $nft->is_for_sale = !$nft->is_for_sale;
+            $nft->save();
             Transaction::query()->create([
                 'nft_id' => $nft->id,
                 'from' => $nft->owner_id,
@@ -180,19 +170,6 @@ class NftController extends Controller
             return response()->json(['message' => $e], 500);
         }
 
-    }
-
-
-    public function stopSale(Nft $nft)
-    {
-        if ($nft->owner_id != auth()->id())
-            return response()->json(['message' => __('you_do_not_have_permission_to_maintain_on_this_NFT')], 403);
-
-        $nft->update(['is_for_sale' => false, 'sale_end_at' => null]);
-
-        Notification::send(auth()->user()->followers()->get(), new UserStopNftSaleNotification($nft, auth()->user()));
-
-        return response()->json(['message' => __('item_canceled_listed_successfully')], 200);
     }
 
 

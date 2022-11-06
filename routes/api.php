@@ -84,8 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/buy/{nft}', [NftController::class, 'buyNft']);
         Route::post('/toggle-like/{nft}', [NftController::class, 'toggleLike']);
         Route::post('/report/{nft}', [ReportController::class, 'nft_report']);
-        Route::put('/sale/{nft}', [NftController::class, 'setForSale']);
-        Route::put('/stop-sale/{nft}', [NftController::class, 'stopSale']);
+        Route::put('/toggle-sale/{nft}', [NftController::class, 'toggleForSale']);
         Route::delete('/burn/{nft}', [NftController::class, 'destroy']);
     });
 
