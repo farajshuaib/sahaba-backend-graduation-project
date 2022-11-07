@@ -16,9 +16,13 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Collection extends Model implements HasMedia
 {
+
+    public $incrementing = false;
+
+
     use HasFactory, InteractsWithMedia, SoftDeletes;
 
-    protected $fillable = ['collection_id', 'name', 'description', 'category_id', 'is_sensitive_content', 'user_id'];
+    protected $fillable = ['name', 'description', 'category_id', 'is_sensitive_content', 'user_id', 'id'];
 
     protected $casts = ['is_sensitive_content' => 'boolean', 'collection_id' => 'integer'];
 

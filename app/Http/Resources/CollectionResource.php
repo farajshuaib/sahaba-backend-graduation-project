@@ -24,7 +24,6 @@ class CollectionResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'collection_id' => $this->collection_id,
             'name' => $this->name ?? "",
             'description' => $this->description ?? "",
             'logo_image' => $this->getFirstMedia('collection_logo_image') ? $this->getFirstMedia('collection_logo_image')->getUrl() : "",
