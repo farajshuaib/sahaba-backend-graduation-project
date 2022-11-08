@@ -52,6 +52,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
                 SortBy::class,
             ])
             ->thenReturn()
+            ->where('id', '!=', auth()->id())
             ->withCount('created_nfts')
             ->withCount('owned_nfts')
             ->withCount('followers')
@@ -122,7 +123,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         return $this->hasOne(Kyc::class);
     }
-    
+
 
     public function transactions(): HasMany
     {
