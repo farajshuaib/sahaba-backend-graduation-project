@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->foreignId('creator_id')->constrained('users');
             $table->foreignId('owner_id')->constrained('users');
             $table->string('file_path');
+            $table->string('file_type');
             $table->string('title');
             $table->string('description');
             $table->unsignedDouble('price',);

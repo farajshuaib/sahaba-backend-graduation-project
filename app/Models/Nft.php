@@ -26,7 +26,7 @@ class Nft extends Model
 
     public $incrementing = false;
 
-    protected $fillable = ['title', 'description', 'collection_id', 'creator_id', 'owner_id', 'file_path', 'price', 'is_for_sale', 'sale_end_at', 'id'];
+    protected $fillable = ['title', 'description', 'collection_id', 'creator_id', 'owner_id', 'file_path', 'file_type', 'price', 'is_for_sale', 'sale_end_at', 'id'];
 
     protected $casts = [
         'is_for_sale' => 'boolean',

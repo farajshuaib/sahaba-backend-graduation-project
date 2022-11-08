@@ -29,6 +29,7 @@ class NftRequest extends FormRequest
             'title' => ['string', 'required'],
             'description' => ['string', 'required'],
             'file_path' => ['string', 'required'],
+            'file_type' => ['string'],
             'collection_id' => ['required', 'int', Rule::exists('collections', 'id')],
             'price' => ['required', 'numeric'],
         ];
