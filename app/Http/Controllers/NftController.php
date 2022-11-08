@@ -46,17 +46,20 @@ class NftController extends Controller
 
     public function store(NftRequest $request): JsonResponse
     {
+        DB::beginTransaction();
+
         try {
-            DB::beginTransaction();
             $data = $request->validated();
             $data['creator_id'] = auth()->id();
             $data['owner_id'] = auth()->id();
             $nft = Nft::create($data);
+
             Transaction::query()->create([
                 'nft_id' => $nft->id,
                 'from' => auth()->id(),
                 'to' => auth()->id(),
                 'price' => $nft->price,
+                'tx_hash' => $request->tx_hash,
                 'type' => 'mint'
             ]);
             Notification::send(auth()->user()->followers()->get(), new FollowerCreateNewNft($nft, auth()->user()));
@@ -69,7 +72,7 @@ class NftController extends Controller
 
     }
 
-    public function buyNft(Nft $nft): JsonResponse
+    public function buyNft(Nft $nft, Request $request): JsonResponse
     {
 
         if ($nft->owner_id == auth()->id()) {
@@ -83,7 +86,8 @@ class NftController extends Controller
                 'from' => $nft->owner_id,
                 'to' => auth()->id(),
                 'price' => $nft->price,
-                'type' => 'sale'
+                'type' => 'sale',
+                'tx_hash' => $request->tx_hash
             ]);
             $nft->update(['owner_id' => auth()->id()]);
             Notification::send(auth()->user()->followers()->get(), new UserBuyNftNotification($nft, auth()->user()));
@@ -120,7 +124,8 @@ class NftController extends Controller
                 'from' => $nft->owner_id,
                 'to' => auth()->id(),
                 'price' => $nft->price,
-                'type' => 'update_price'
+                'type' => 'update_price',
+                'tx_hash' => $request->tx_hash
             ]);
             Notification::send(auth()->user()->followers()->get(), new UserUpdateNftPriceNotification($nft, auth()->user()));
             DB::commit();
@@ -140,17 +145,18 @@ class NftController extends Controller
             return response()->json(['message' => __('you_do_not_have_permission_to_maintain_on_this_NFT')], 403);
 
 
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
             $nft->is_for_sale = !$nft->is_for_sale;
-            $nft->save();
             Transaction::query()->create([
                 'nft_id' => $nft->id,
                 'from' => $nft->owner_id,
                 'to' => auth()->id(),
                 'price' => $nft->price,
-                'type' => 'set_for_sale'
+                'type' => $nft->is_for_sale ? 'cancel_sale' : 'set_for_sale',
+                'tx_hash' => $request->tx_hash
             ]);
+            $nft->save();
             Notification::send(auth()->user()->followers()->get(), new UserSetNftForSaleNotification($nft, auth()->user()));
             DB::commit();
             return response()->json(['message' => __('nft_listed_successfully')], 200);
@@ -173,12 +179,18 @@ class NftController extends Controller
     }
 
 
-    public function destroy(Nft $nft)
+    public function destroy(Nft $nft, Request $request)
     {
         if ($nft->owner_id != auth()->id())
             return response()->json(['message' => __('you_do_not_have_permission_to_maintain_on_this_NFT')], 403);
-        $nft->delete();
-        return response()->noContent();
+        
+        try {
+            $nft->delete();
+            return response()->noContent();
+        } catch (Exception $e) {
+            return response()->json(['message' => $e], 500);
+        }
+
     }
 
 

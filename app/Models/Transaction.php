@@ -15,7 +15,7 @@ class Transaction extends Model
 {
     use HasFactory, SoftDeletes, HasFactory;
 
-    protected $fillable = ['nft_id', 'from', 'to', 'price', 'type'];
+    protected $fillable = ['nft_id', 'from', 'to', 'price', 'type', 'tx_hash'];
 
     protected $casts = [
         'price' => 'float'
