@@ -6,6 +6,7 @@ use App\Http\Resources\NftResource;
 use App\Models\Nft;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Fcm\FcmChannel;
@@ -16,7 +17,7 @@ use NotificationChannels\Fcm\Resources\AndroidNotification;
 use NotificationChannels\Fcm\Resources\ApnsConfig;
 use NotificationChannels\Fcm\Resources\ApnsFcmOptions;
 
-class UserBuyNftNotification extends Notification
+class UserBuyNftNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

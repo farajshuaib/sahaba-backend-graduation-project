@@ -6,6 +6,7 @@ use App\Http\Resources\CollectionResource;
 use App\Models\Collection;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Fcm\FcmChannel;
@@ -16,7 +17,7 @@ use NotificationChannels\Fcm\Resources\AndroidNotification;
 use NotificationChannels\Fcm\Resources\ApnsConfig;
 use NotificationChannels\Fcm\Resources\ApnsFcmOptions;
 
-class FollowerCreateNewCollectionNotification extends Notification
+class FollowerCreateNewCollectionNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

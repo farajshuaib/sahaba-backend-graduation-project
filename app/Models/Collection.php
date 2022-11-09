@@ -24,7 +24,7 @@ class Collection extends Model implements HasMedia
 
     protected $fillable = ['name', 'description', 'category_id', 'is_sensitive_content', 'user_id', 'id'];
 
-    protected $casts = ['is_sensitive_content' => 'boolean', 'collection_id' => 'integer'];
+    protected $casts = ['is_sensitive_content' => 'boolean'];
 
 
     public static function withFilters()

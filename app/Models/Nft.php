@@ -31,7 +31,6 @@ class Nft extends Model
     protected $casts = [
         'is_for_sale' => 'boolean',
         'price' => 'float',
-        'token_id' => 'integer',
     ];
 
     protected $dates = ['sale_end_at', 'created_at', 'updated_at', 'deleted_at'];
