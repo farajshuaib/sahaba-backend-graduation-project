@@ -35,7 +35,7 @@ class CollectionController extends Controller
                 'user_id' => auth()->id(),
                 'name' => $request->name,
                 'description' => $request->description,
-                'is_sensitive_content' => $request->is_sensitive_content == 'true',
+                'is_sensitive_content' => (bool)$request->is_sensitive_content,
                 'category_id' => $request->category_id,
             ]);
             $socialLinks = $request->only(['facebook_url', 'twitter_url', 'telegram_url', 'website_url']);
@@ -53,7 +53,7 @@ class CollectionController extends Controller
             return response()->json(['data' => CollectionResource::make($collection->load('category', 'socialLinks', 'user')), 'message' => __('collection_created_successfully')], 200);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['message' => $e], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 

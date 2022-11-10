@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\NotificationResource;
-use App\Models\Notification;
 
 class NotificationsController extends Controller
 {
     public function index()
     {
-        $notifications = Notification::withFilters()->paginate(10);
+        $notifications = auth()->user()->notifications()->paginate(10);
         return NotificationResource::collection($notifications);
     }
 
