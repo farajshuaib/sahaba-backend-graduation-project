@@ -67,7 +67,8 @@ class UserUpdateNftPriceNotification extends Notification
         return [
             'title' => 'NFT price updated',
             'message' => $this->user->username . ' has update NFT price.',
-            'nft' => NftResource::make($this->nft)
+            'nft' => NftResource::make($this->nft),
+            'created_at' => now()
         ];
     }
 }

@@ -68,7 +68,8 @@ class UserStopNftSaleNotification extends Notification
         return [
             'title' => 'NFT stop sale',
             'message' => $this->user->username . 'has stop selling NFT',
-            'nft' => NftResource::make($this->nft)
+            'nft' => NftResource::make($this->nft),
+            'created_at' => now()
         ];
     }
 }

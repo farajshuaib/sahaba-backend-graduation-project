@@ -67,7 +67,8 @@ class UserSetNftForSaleNotification extends Notification
         return [
             'title' => 'NFT for sale',
             'message' => $this->user->username . 'has set NFT for sale',
-            'nft' => NftResource::make($this->nft)
+            'nft' => NftResource::make($this->nft),
+            'created_at' => now()
         ];
     }
 }
