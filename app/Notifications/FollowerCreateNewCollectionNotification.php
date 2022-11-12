@@ -35,15 +35,15 @@ class FollowerCreateNewCollectionNotification extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
+            ->line('new Collection created.')
             ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line($this->user->username . 'has created new Collection');
     }
 
     public function toFcm($notifiable): FcmMessage
     {
         return FcmMessage::create()
-            ->setData(['data' => $this->collection])
+            ->setData(['data' => json_encode($this->collection)])
             ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
                 ->setTitle('new Collection created')
                 ->setBody($this->user->username . 'has created new Collection.')

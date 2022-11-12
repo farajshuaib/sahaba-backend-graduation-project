@@ -41,7 +41,7 @@ class UserBuyNftNotification extends Notification
     public function toFcm($notifiable): FcmMessage
     {
         return FcmMessage::create()
-            ->setData(['data' => $this->nft])
+            ->setData(['data' => json_encode($this->nft)])
             ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
                 ->setTitle('NFT sold')
                 ->setBody($this->user->username . 'has bought new NFT.')

@@ -47,7 +47,7 @@ class FollowerCreateNewNft extends Notification
     public function toFcm($notifiable): FcmMessage
     {
         return FcmMessage::create()
-            ->setData(['data' => $this->nft])
+            ->setData(['data' => json_encode($this->nft)])
             ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
                 ->setTitle('new NFT created')
                 ->setBody($this->user->username . 'has created new NFT.')
