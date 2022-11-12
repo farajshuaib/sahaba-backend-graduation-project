@@ -62,7 +62,7 @@ class NftController extends Controller
                 'tx_hash' => $request->tx_hash,
                 'type' => 'mint'
             ]);
-            Notification::send(auth()->user()->followers()->get(), new FollowerCreateNewNft($nft, auth()->user()));
+            Notification::sendNow(auth()->user()->followers()->get(), new FollowerCreateNewNft($nft, auth()->user()));
             DB::commit();
             return response()->json(['nft' => NftResource::make($nft), 'message' => __('nft_created_successfully')]);
         } catch (Exception $e) {
@@ -90,7 +90,7 @@ class NftController extends Controller
                 'tx_hash' => $request->tx_hash
             ]);
             $nft->update(['owner_id' => auth()->id()]);
-            Notification::send(auth()->user()->followers()->get(), new UserBuyNftNotification($nft, auth()->user()));
+            Notification::sendNow(auth()->user()->followers()->get(), new UserBuyNftNotification($nft, auth()->user()));
             DB::commit();
             return response()->json(['nft' => NftResource::make($nft->load('collection', 'owner', 'creator')), 'message' => 'purchase successfully done'], 200);
         } catch (Exception $e) {
@@ -127,7 +127,7 @@ class NftController extends Controller
                 'type' => 'update_price',
                 'tx_hash' => $request->tx_hash
             ]);
-            Notification::send(auth()->user()->followers()->get(), new UserUpdateNftPriceNotification($nft, auth()->user()));
+            Notification::sendNow(auth()->user()->followers()->get(), new UserUpdateNftPriceNotification($nft, auth()->user()));
             DB::commit();
             return response()->json(['message' => __('nft_updated_successfully')], 201);
         } catch (Exception $e) {
@@ -157,7 +157,7 @@ class NftController extends Controller
                 'tx_hash' => $request->tx_hash
             ]);
             $nft->save();
-            Notification::send(auth()->user()->followers()->get(), new UserSetNftForSaleNotification($nft, auth()->user()));
+            Notification::sendNow(auth()->user()->followers()->get(), new UserSetNftForSaleNotification($nft, auth()->user()));
             DB::commit();
             return response()->json(['message' => __('nft_listed_successfully')], 200);
         } catch (Exception $e) {
@@ -183,7 +183,7 @@ class NftController extends Controller
     {
         if ($nft->owner_id != auth()->id())
             return response()->json(['message' => __('you_do_not_have_permission_to_maintain_on_this_NFT')], 403);
-        
+
         try {
             $nft->delete();
             return response()->noContent();
