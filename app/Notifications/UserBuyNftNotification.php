@@ -69,7 +69,6 @@ class UserBuyNftNotification extends Notification
             'title' => 'NFT sold',
             'message' => $this->user->username . 'has bought new NFT',
             'nft' => NftResource::make($this->nft),
-            'created_at' => now()
         ];
     }
 }

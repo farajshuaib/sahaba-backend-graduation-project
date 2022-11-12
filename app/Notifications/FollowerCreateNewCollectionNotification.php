@@ -63,7 +63,6 @@ class FollowerCreateNewCollectionNotification extends Notification
             'title' => 'new Collection created',
             'message' => $this->user->username . 'has created new Collection',
             'collection' => CollectionResource::make($this->collection),
-            'created_at' => now()
         ];
     }
 }

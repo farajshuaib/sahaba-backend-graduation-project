@@ -87,7 +87,6 @@ class FollowerCreateNewNft extends Notification
             'title' => 'new NFT created',
             'message' => $this->user->username . 'has created new NFT',
             'nft' => NftResource::make($this->nft),
-            'created_at' => now()
         ];
     }
 }
