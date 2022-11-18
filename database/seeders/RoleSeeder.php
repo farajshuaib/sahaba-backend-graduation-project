@@ -10,7 +10,7 @@ class RoleSeeder extends Seeder
     public function run()
     {
         Role::create([
-            'name' => 'author',
+            'name' => 'user',
             'guard_name' => 'web'
         ]);
 

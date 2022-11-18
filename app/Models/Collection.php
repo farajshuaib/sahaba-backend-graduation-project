@@ -54,6 +54,11 @@ class Collection extends Model implements HasMedia
         return $this->belongsTo(Category::class);
     }
 
+    public function blockchain(): BelongsTo
+    {
+        return $this->belongsTo(Blockchain::class);
+    }
+
     public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');

@@ -86,6 +86,7 @@ class Nft extends Model
         return $this->morphMany(Report::class, 'reportable');
     }
 
+
     public function watchers(): HasMany
     {
         return $this->hasMany(Watch::class);
