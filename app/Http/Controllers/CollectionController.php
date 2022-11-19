@@ -37,6 +37,7 @@ class CollectionController extends Controller
                 'description' => $request->description,
                 'is_sensitive_content' => (bool)$request->is_sensitive_content,
                 'category_id' => $request->category_id,
+                'blockchain_id' => $request->blockchain_id,
             ]);
             $socialLinks = $request->only(['facebook_url', 'twitter_url', 'telegram_url', 'website_url']);
             $collection->socialLinks()->updateOrCreate($socialLinks);

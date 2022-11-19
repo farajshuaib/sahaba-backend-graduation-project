@@ -27,10 +27,7 @@ class AuthController extends Controller
 {
     public function connectWallet(Request $request): JsonResponse
     {
-        $user = User::firstOrCreate(['wallet_address', $request->wallet_address]);
-
-        if (!$user->hasExactRoles('user'))
-            $user->assignRole('user');
+        $user = User::firstOrCreate(['wallet_address' => $request->wallet_address]);
 
         $user->fcm_token = $request->fcm_token;
         $user->save();

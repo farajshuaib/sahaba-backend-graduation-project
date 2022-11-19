@@ -32,6 +32,7 @@ class CollectionRequest extends FormRequest
             'banner_image' => ['nullable', 'image'],
             'is_sensitive_content' => ['required'],
             'category_id' => ['required', Rule::exists('categories', 'id')],
+            'blockchain_id' => ['required', Rule::exists('blockchains', 'id')],
         ];
     }
 }

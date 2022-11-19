@@ -10,7 +10,12 @@ class RoleSeeder extends Seeder
     public function run()
     {
         Role::create([
-            'name' => 'user',
+            'name' => 'creator',
+            'guard_name' => 'web'
+        ]);
+
+        Role::create([
+            'name' => 'collector',
             'guard_name' => 'web'
         ]);
 
@@ -18,6 +23,16 @@ class RoleSeeder extends Seeder
             'name' => 'admin',
             'guard_name' => 'web'
         ]);
+
+        $system_manager = Role::create([
+            'name' => 'super-admin',
+            'guard_name' => 'web'
+        ]);
+
+//        $system_manager->givePermissionTo(
+//            Permissios::all()
+//        );
+
 
     }
 }

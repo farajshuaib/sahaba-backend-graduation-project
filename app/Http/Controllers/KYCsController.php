@@ -31,7 +31,7 @@ class KYCsController extends Controller
             'author_type' => $request->author_type,
             'author_art_type' => $request->author_art_type,
             'user_id' => auth()->id(),
-        ]);
+        ])->assignRole($request->author_type);
         if ($request->hasFile('passport_id')) {
             $kys->addMedia($request->passport_id)->toMediaCollection('passport_id');
         }
@@ -40,6 +40,8 @@ class KYCsController extends Controller
 
     public function show(Kyc $KYC)
     {
+        //
+
     }
 
     public function changeAccountStatus(Kyc $kyc, Request $request)
