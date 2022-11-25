@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAdminRequest;
-use App\Http\Requests\Profile\UpdateUserProfileRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\SendResetLinkRequest;
 use App\Http\Requests\UserRequest;
