@@ -17,6 +17,7 @@ use App\Http\Controllers\WatchController;
 use App\Http\Middleware\CheckSaleStateMiddleware;
 use App\Http\Middleware\IsActiveUserMiddleware;
 use App\Http\Middleware\IsAdminMiddleware;
+use App\Http\Middleware\IsSuperAdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -119,7 +120,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::middleware([IsAdminMiddleware::class])->group(function () {
-        Route::post('/create-admin', [AuthController::class, 'createAdmin']);
+        Route::post('/create-admin', [AuthController::class, 'createAdmin'])->middleware(IsSuperAdminMiddleware::class);
         Route::put('/update-password', [AuthController::class, 'updateAdminPassword']);
 
         Route::prefix('subscribers')->group(function () {
@@ -145,7 +146,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('users')->group(function () {
             Route::post('/toggle-status/{user}', [UserController::class, 'toggleStatus']);
-
         });
 
         Route::prefix('reports')->group(function () {
