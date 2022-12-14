@@ -7,6 +7,7 @@ use App\Http\Requests\Kyc_Request;
 use App\Http\Resources\UserResource;
 use App\Models\Kyc;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class KYCsController extends Controller
@@ -22,26 +23,24 @@ class KYCsController extends Controller
 
     public function store(Kyc_Request $request)
     {
-        $kys = Kyc::query()->create([
-            'gender' => $request->gender,
-            'country' => $request->country,
-            'city' => $request->city,
-            'address' => $request->address,
-            'phone_number' => $request->phone_number,
-            'author_type' => $request->author_type,
-            'author_art_type' => $request->author_art_type,
-            'user_id' => auth()->id(),
-        ])->assignRole($request->author_type);
-        if ($request->hasFile('passport_id')) {
-            $kys->addMedia($request->passport_id)->toMediaCollection('passport_id');
+        try {
+            $kys = Kyc::query()->create([
+                'gender' => $request->gender,
+                'country' => $request->country,
+                'city' => $request->city,
+                'address' => $request->address,
+                'phone_number' => $request->phone_number,
+                'author_type' => $request->author_type,
+                'author_art_type' => $request->author_art_type,
+                'user_id' => auth()->id(),
+            ]);
+            if ($request->hasFile('passport_id')) {
+                $kys->addMedia($request->passport_id)->toMediaCollection('passport_id');
+            }
+            return response()->json(UserResource::make(auth()->user()->load('kyc')));
+        } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
-        return response()->json(UserResource::make(auth()->user()->load('kyc')));
-    }
-
-    public function show(Kyc $KYC)
-    {
-        //
-
     }
 
     public function changeAccountStatus(Kyc $kyc, Request $request)
