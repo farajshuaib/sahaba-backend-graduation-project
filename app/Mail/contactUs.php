@@ -32,7 +32,7 @@ class contactUs extends Mailable
     {
         return $this->subject($this->details['subject'])
             ->from($this->details['email'])
-            ->to('info@sahabanft.com')
+            ->to('info@sahabanft.com.ly')
             ->view('emails.contact_email');
     }
 }

@@ -39,8 +39,8 @@ class Collection extends Model implements HasMedia
             ->with(['category', 'user', 'nfts' => function ($query) {
                 $query->orderBy('id', 'DESC')->limit(3);
             }])
-            ->orderBy('id', 'DESC')
-            ->paginate(15);
+            ->orderBy('id', 'DESC');
+
     }
 
 

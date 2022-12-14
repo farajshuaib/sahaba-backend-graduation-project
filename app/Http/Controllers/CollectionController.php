@@ -11,15 +11,16 @@ use App\Models\CollectionCollaborator;
 use App\Notifications\FollowerCreateNewCollectionNotification;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 
 
 class CollectionController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $collections = Collection::withFilters();
+        $collections = Collection::withFilters()->where('blockchain_id', $request->chainId)->paginate(15);
         return response()->json([
             'data' => CollectionResource::collection($collections),
             'meta' => PaginationMeta::getPaginationMeta($collections)

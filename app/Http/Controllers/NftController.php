@@ -23,7 +23,10 @@ class NftController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $nfts = Nft::withFilters()->paginate(15);
+        $nfts = Nft::withFilters()->whereHas('collection', function ($query) {
+            $query->where('blockchain_id', request('chainId'));
+        })->paginate(10);
+
         return response()->json([
             'data' => NftResource::collection($nfts),
             'meta' => PaginationMeta::getPaginationMeta($nfts)
@@ -32,7 +35,9 @@ class NftController extends Controller
 
     public function latest(): JsonResponse
     {
-        $nfts = Nft::withFilters()->isPublished()->orderBy('created_at', 'desc')->paginate(15);
+        $nfts = Nft::withFilters()->isPublished()->orderBy('created_at', 'desc')->whereHas('collection', function ($query) {
+            $query->where('blockchain_id', request('chainId'));
+        })->paginate(10);
         return response()->json([
             'data' => NftResource::collection($nfts),
             'meta' => PaginationMeta::getPaginationMeta($nfts)
