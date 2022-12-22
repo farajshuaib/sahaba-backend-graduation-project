@@ -23,30 +23,42 @@ class NftController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $nfts = Nft::withFilters()->whereHas('collection', function ($query) {
-            $query->where('blockchain_id', request('chainId'));
-        })->paginate(10);
+        try {
+            $nfts = Nft::withFilters()->whereHas('collection', function ($query) {
+                $query->where('blockchain_id', request('chainId'));
+            })->paginate(10);
 
-        return response()->json([
-            'data' => NftResource::collection($nfts),
-            'meta' => PaginationMeta::getPaginationMeta($nfts)
-        ]);
+            return response()->json([
+                'data' => NftResource::collection($nfts),
+                'meta' => PaginationMeta::getPaginationMeta($nfts)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function latest(): JsonResponse
     {
-        $nfts = Nft::withFilters()->isPublished()->orderBy('created_at', 'desc')->whereHas('collection', function ($query) {
-            $query->where('blockchain_id', request('chainId'));
-        })->paginate(10);
-        return response()->json([
-            'data' => NftResource::collection($nfts),
-            'meta' => PaginationMeta::getPaginationMeta($nfts)
-        ]);
+        try {
+            $nfts = Nft::withFilters()->isPublished()->orderBy('created_at', 'desc')->whereHas('collection', function ($query) {
+                $query->where('blockchain_id', request('chainId'));
+            })->paginate(10);
+            return response()->json([
+                'data' => NftResource::collection($nfts),
+                'meta' => PaginationMeta::getPaginationMeta($nfts)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function show(Nft $nft): JsonResponse
     {
-        return response()->json(NftResource::make($nft->load(['creator', 'owner', 'collection', 'watchers'])));
+        try {
+            return response()->json(NftResource::make($nft->load(['creator', 'owner', 'collection', 'watchers'])));
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function store(NftRequest $request): JsonResponse
@@ -201,13 +213,17 @@ class NftController extends Controller
 
     public function toggleLike(Nft $nft)
     {
-        $user = auth()->user();
-        if ($user->hasLiked($nft)) {
-            $user->unlike($nft);
-            return response()->json(['message' => __('nft_unliked_successfully')], 200);
-        } else {
-            $user->like($nft);
-            return response()->json(['message' => __('nft_liked_successfully')], 200);
+        try {
+            $user = auth()->user();
+            if ($user->hasLiked($nft)) {
+                $user->unlike($nft);
+                return response()->json(['message' => __('nft_unliked_successfully')], 200);
+            } else {
+                $user->like($nft);
+                return response()->json(['message' => __('nft_liked_successfully')], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json(['message' => $e], 500);
         }
     }
 }

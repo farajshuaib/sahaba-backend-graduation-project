@@ -15,16 +15,24 @@ class CollectionCollaboratorsController extends Controller
 {
     public function index()
     {
-        $collaborators = CollectionCollaborator::query()->with('user', 'collection')->paginate(20);
-        return response()->json([
-            'data' => CollectionCollaboratorResource::collection($collaborators),
-            'meta' => PaginationMeta::getPaginationMeta($collaborators)
-        ]);
+        try {
+            $collaborators = CollectionCollaborator::query()->with('user', 'collection')->paginate(20);
+            return response()->json([
+                'data' => CollectionCollaboratorResource::collection($collaborators),
+                'meta' => PaginationMeta::getPaginationMeta($collaborators)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function show(CollectionCollaborator $collaboration)
     {
-        return response()->json(CollectionCollaboratorResource::make($collaboration->load('user', 'collection')));
+        try {
+            return response()->json(CollectionCollaboratorResource::make($collaboration->load('user', 'collection')));
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function store(CollectionCollaboratorRequest $request)

@@ -13,11 +13,15 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::withFilters()->paginate(5);
-        return response()->json([
-            'data' => TransactionResource::collection($transactions),
-            'meta' => PaginationMeta::getPaginationMeta($transactions)
-        ], 200);
+        try {
+            $transactions = Transaction::withFilters()->paginate(5);
+            return response()->json([
+                'data' => TransactionResource::collection($transactions),
+                'meta' => PaginationMeta::getPaginationMeta($transactions)
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function show(Transaction $transaction): JsonResponse

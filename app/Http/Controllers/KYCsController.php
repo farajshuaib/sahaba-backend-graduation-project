@@ -14,11 +14,15 @@ class KYCsController extends Controller
 {
     public function index()
     {
-        $users = User::with('kyc')->whereHas('kyc')->paginate(20);
-        return response()->json([
-            'data' => UserResource::collection($users),
-            'meta' => PaginationMeta::getPaginationMeta($users)
-        ]);
+        try {
+            $users = User::with('kyc')->whereHas('kyc')->paginate(20);
+            return response()->json([
+                'data' => UserResource::collection($users),
+                'meta' => PaginationMeta::getPaginationMeta($users)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Kyc_Request $request)
@@ -45,34 +49,42 @@ class KYCsController extends Controller
 
     public function changeAccountStatus(Kyc $kyc, Request $request)
     {
-        $statuses = ['on_review', 'approved', 'rejected', 'pending'];
-        if (in_array($request->status, $statuses)) {
-            $kyc->status = $request->status;
-            $kyc->save();
-            return response()->json([
-                'message' => __('account_status_updated_successfully'),
-                'user' => UserResource::make(User::query()->with('kyc')->find($kyc->user_id))]);
+        try {
+            $statuses = ['on_review', 'approved', 'rejected', 'pending'];
+            if (in_array($request->status, $statuses)) {
+                $kyc->status = $request->status;
+                $kyc->save();
+                return response()->json([
+                    'message' => __('account_status_updated_successfully'),
+                    'user' => UserResource::make(User::query()->with('kyc')->find($kyc->user_id))]);
 
+            }
+            return response()->json(['message' => 'invalid status'], 422);
+        } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
-        return response()->json(['message' => 'invalid status'], 422);
     }
 
     public function update(Kyc $kys, Request $request)
     {
-        $kys = $kys->update([
-            'gender' => $request->gender,
-            'country' => $request->country,
-            'city' => $request->city,
-            'address' => $request->address,
-            'phone_number' => $request->phone_number,
-            'author_type' => $request->author_type,
-            'author_art_type' => $request->author_art_type,
-            'user_id' => $request->user_id,
-        ]);
-        if ($request->hasFile('passport_id')) {
-            $kys->addMedia($request->passport_id)->toMediaCollection('passport_id');
+        try {
+            $kys = $kys->update([
+                'gender' => $request->gender,
+                'country' => $request->country,
+                'city' => $request->city,
+                'address' => $request->address,
+                'phone_number' => $request->phone_number,
+                'author_type' => $request->author_type,
+                'author_art_type' => $request->author_art_type,
+                'user_id' => $request->user_id,
+            ]);
+            if ($request->hasFile('passport_id')) {
+                $kys->addMedia($request->passport_id)->toMediaCollection('passport_id');
+            }
+            return response()->json(UserResource::make(User::query()->find($request->user_id)->load('kyc')));
+        } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
-        return response()->json(UserResource::make(User::query()->find($request->user_id)->load('kyc')));
     }
 
 

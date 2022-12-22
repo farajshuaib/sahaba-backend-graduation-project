@@ -21,55 +21,78 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::withFilters();
-        return response()->json([
-            'data' => UserResource::collection($users),
-            'meta' => PaginationMeta::getPaginationMeta($users)
-        ]);
+        try {
+
+            $users = User::withFilters();
+            return response()->json([
+                'data' => UserResource::collection($users),
+                'meta' => PaginationMeta::getPaginationMeta($users)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function show(User $user)
     {
-        return response()->json(UserResource::make($user->load('subscribe', 'socialLinks', 'kyc')->loadCount('owned_nfts', 'created_nfts', 'followers', 'followings', 'collections')));
+        try {
+            return response()->json(UserResource::make($user->load('subscribe', 'socialLinks', 'kyc')->loadCount('owned_nfts', 'created_nfts', 'followers', 'followings', 'collections')));
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function userCollections(User $user): JsonResponse
     {
-
-        $collections = Collection::with('category', 'nfts', 'collaborators', 'user')->where('user_id', $user['id'])->paginate(10);
-        return response()->json([
-            'data' => CollectionResource::collection($collections),
-            'meta' => PaginationMeta::getPaginationMeta($collections)
-        ]);
+        try {
+            $collections = Collection::with('category', 'nfts', 'collaborators', 'user')->where('user_id', $user['id'])->paginate(10);
+            return response()->json([
+                'data' => CollectionResource::collection($collections),
+                'meta' => PaginationMeta::getPaginationMeta($collections)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function userTransactions(User $user): JsonResponse
     {
-
-        $transactions = Transaction::with('to', 'nft')->where('from', $user['id'])->paginate(10);
-        return response()->json([
-            'data' => TransactionResource::collection($transactions),
-            'meta' => PaginationMeta::getPaginationMeta($transactions)
-        ]);
+        try {
+            $transactions = Transaction::with('to', 'nft')->where('from', $user['id'])->paginate(10);
+            return response()->json([
+                'data' => TransactionResource::collection($transactions),
+                'meta' => PaginationMeta::getPaginationMeta($transactions)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
 
     public function ownedNfts(User $user): JsonResponse
     {
-        $nfts = Nft::with('collection', 'owner', 'creator')->where('owner_id', $user['id'])->paginate(10);
-        return response()->json([
-            'data' => NftResource::collection($nfts),
-            'meta' => PaginationMeta::getPaginationMeta($nfts)
-        ]);
+        try {
+            $nfts = Nft::with('collection', 'owner', 'creator')->where('owner_id', $user['id'])->paginate(10);
+            return response()->json([
+                'data' => NftResource::collection($nfts),
+                'meta' => PaginationMeta::getPaginationMeta($nfts)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function createdNfts(User $user): JsonResponse
     {
-        $nfts = Nft::with('collection', 'owner', 'creator')->where('creator_id', $user['id'])->paginate(10);
-        return response()->json([
-            'data' => NftResource::collection($nfts),
-            'meta' => PaginationMeta::getPaginationMeta($nfts)
-        ]);
+        try {
+            $nfts = Nft::with('collection', 'owner', 'creator')->where('creator_id', $user['id'])->paginate(10);
+            return response()->json([
+                'data' => NftResource::collection($nfts),
+                'meta' => PaginationMeta::getPaginationMeta($nfts)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function likedNfts(User $user): JsonResponse
@@ -114,28 +137,36 @@ class UserController extends Controller
 
     public function toggleFollow(User $user)
     {
-        $current_user = auth()->user();
-        if ($current_user->isFollowing($user)) {
-            $current_user->unfollow($user);
-            return response()->json(['message' => __('author_unfollowed_successfully')], 200);
-        } else {
-            $current_user->follow($user);
-            $user->acceptFollowRequestFrom($current_user);
-            return response()->json(['message' => __('author_followed_successfully')], 200);
+        try {
+            $current_user = auth()->user();
+            if ($current_user->isFollowing($user)) {
+                $current_user->unfollow($user);
+                return response()->json(['message' => __('author_unfollowed_successfully')], 200);
+            } else {
+                $current_user->follow($user);
+                $user->acceptFollowRequestFrom($current_user);
+                return response()->json(['message' => __('author_followed_successfully')], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
 
     public function toggleStatus(User $user)
     {
-        if ($user->status == 'active') {
-            $user->status = 'suspended';
-            $user->save();
-            return response()->json(['message' => 'user suspended successfully'], 200);
-        } else {
-            $user->status = 'active';
-            $user->save();
-            return response()->json(['message' => 'user activated successfully'], 200);
+        try {
+            if ($user->status == 'active') {
+                $user->status = 'suspended';
+                $user->save();
+                return response()->json(['message' => 'user suspended successfully'], 200);
+            } else {
+                $user->status = 'active';
+                $user->save();
+                return response()->json(['message' => 'user activated successfully'], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 

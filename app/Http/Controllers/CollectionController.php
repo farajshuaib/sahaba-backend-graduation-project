@@ -20,15 +20,20 @@ class CollectionController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $collections = Collection::withFilters()->where('blockchain_id', $request->chainId)->paginate(15);
-        return response()->json([
-            'data' => CollectionResource::collection($collections),
-            'meta' => PaginationMeta::getPaginationMeta($collections)
-        ]);
+        try {
+            $collections = Collection::withFilters()->where('blockchain_id', $request->chainId)->paginate(15);
+            return response()->json([
+                'data' => CollectionResource::collection($collections),
+                'meta' => PaginationMeta::getPaginationMeta($collections)
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function store(CollectionRequest $request): JsonResponse
     {
+
         DB::beginTransaction();
         try {
             $collection = Collection::create([
@@ -62,7 +67,11 @@ class CollectionController extends Controller
 
     public function show(Collection $collection): JsonResponse
     {
-        return response()->json(CollectionResource::make($collection->load(['category', 'user', 'socialLinks', 'reports.user', 'collaborators.user'])));
+        try {
+            return response()->json(CollectionResource::make($collection->load(['category', 'user', 'socialLinks', 'reports.user', 'collaborators.user'])));
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
 
@@ -96,8 +105,12 @@ class CollectionController extends Controller
 
     public function myCollections()
     {
-        $user = auth()->user()->load(['collections']);
-        return CollectionResource::collection($user['collections']);
+        try {
+            $user = auth()->user()->load(['collections']);
+            return CollectionResource::collection($user['collections']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
 }
