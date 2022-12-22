@@ -24,7 +24,7 @@ class NftResource extends JsonResource
             $this->mergeWhen($this->is_for_sale, function () {
                 return ['sale_end_at' => $this->whenLoaded('sale_end_at')];
             }),
-            $this->mergeWhen(auth()->check() && (!auth()->user()->hasRole('admin') || !auth()->user()->hasRole('super-admin')), function () use ($currentNft) {
+            $this->mergeWhen(auth()->check() && (!auth()->user()->hasRole('admin') && !auth()->user()->hasRole('super-admin')), function () use ($currentNft) {
                 return ['is_liked' => auth()->user()->hasLiked($currentNft)];
             }),
             'collection' => CollectionResource::make($this->whenLoaded('collection')),
