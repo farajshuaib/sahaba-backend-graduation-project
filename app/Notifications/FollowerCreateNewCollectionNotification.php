@@ -36,7 +36,7 @@ class FollowerCreateNewCollectionNotification extends Notification
     {
         return (new MailMessage)
             ->line('new Collection created.')
-            ->action('Notification Action', url('/'))
+            ->action('preview', url('https://app.sahabanft.com.ly/collection/25' . $this->collection->id))
             ->line($this->user->username . 'has created new Collection');
     }
 

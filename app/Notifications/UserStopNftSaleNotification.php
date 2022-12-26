@@ -58,9 +58,9 @@ class UserStopNftSaleNotification extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line($this->user->username . 'has stop selling NFT.')
+            ->action('Preview', url('https://app.sahabanft.com.ly/nft-details/' . $this->nft->id));
+            ->line('Thank you for using sahabanft app!');
     }
 
     public function toArray(mixed $notifiable): array
