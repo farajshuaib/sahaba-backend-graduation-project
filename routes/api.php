@@ -145,7 +145,7 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         Route::prefix('users')->group(function () {
-            Route::post('/toggle-status/{user}', [UserController::class, 'toggleStatus']);
+            Route::put('/toggle-status/{user}', [UserController::class, 'toggleStatus']);
         });
 
         Route::prefix('reports')->group(function () {
