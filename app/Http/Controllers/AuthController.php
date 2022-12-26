@@ -49,7 +49,7 @@ class AuthController extends Controller
                 $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
                 return response()->json([
                     'token' => $token,
-                    'user' => $user
+                    'user' => $user->load('roles')
                 ], 200);
             }
             return response()->json(['message' => __('auth.password')], 403);
@@ -81,7 +81,7 @@ class AuthController extends Controller
     public function IsLoggedIn(): JsonResponse
     {
         if (auth()->check()) {
-            return response()->json(['message' => 'success', 'user' => auth()->user()]);
+            return response()->json(['message' => 'success', 'user' => auth()->user()->load('roles')]);
         }
         return response()->json(['message' => 'failed'], 401);
     }
