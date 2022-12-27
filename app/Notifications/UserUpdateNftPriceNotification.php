@@ -58,7 +58,7 @@ class UserUpdateNftPriceNotification extends Notification
     {
         return (new MailMessage)
             ->line($this->user->username . 'has update NFT price.')
-            ->action('Notification Action', url('https://app.sahabanft.com.ly/nft-details/' . $this->nft->id));
+            ->action('Notification Action', url('https://app.sahabanft.com.ly/nft-details/' . $this->nft->id))
             ->line('Thank you for using sahabanft!');
     }
 

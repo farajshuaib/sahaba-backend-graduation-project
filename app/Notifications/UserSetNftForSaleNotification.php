@@ -42,7 +42,7 @@ class UserSetNftForSaleNotification extends Notification
         return FcmMessage::create()
             ->setData(['data' => json_encode($this->nft)])
             ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
-                ->setTitle('NFT sold')
+                ->setTitle($this->nft->title . ' NFT now for sole')
                 ->setBody($this->user->username . 'set NFT for sale.')
             )
             ->setAndroid(
@@ -57,8 +57,8 @@ class UserSetNftForSaleNotification extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line($this->user->username . 'set NFT for sale.')
-            ->action('Preview', url('https://app.sahabanft.com.ly/nft-details/' . $this->nft->id));
+            ->line($this->user->username . ' set ' . $this->nft->title . ' NFT for sale.')
+            ->action('Preview', url('https://app.sahabanft.com.ly/nft-details/' . $this->nft->id))
             ->line('Thank you for using Sahabanft marketplace !!');
     }
 

@@ -59,7 +59,7 @@ class UserBuyNftNotification extends Notification
     {
         return (new MailMessage)
             ->line($this->user->username . 'has bought new NFT.')
-            ->action('Preview', url('https://app.sahabanft.com.ly/nft-details/' . $this->nft->id));
+            ->action('Preview', url('https://app.sahabanft.com.ly/nft-details/' . $this->nft->id))
             ->line('Thank you for using Sahabanft marketplace ! !');
     }
 
