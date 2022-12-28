@@ -70,7 +70,7 @@ class FollowerCreateNewNft extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line($this->user->username . 'has created new NFT. it\'s call ' . $this->nft->name)
+            ->line($this->user->username . 'has created new NFT. it\'s call ' . $this->nft->title)
             ->action('Preview', url('https://app.sahabanft.com.ly/nft-details/' . $this->nft->id))
             ->line('Thank you for using Sahabanft marketplace !');
     }
