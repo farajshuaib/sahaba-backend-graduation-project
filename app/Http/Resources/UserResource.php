@@ -27,7 +27,7 @@ class UserResource extends JsonResource
             'followings_count' => $this->followings_count ?? null,
             'followers_count' => $this->followers_count ?? null,
             'is_subscribed' => $this->subscribe()->exists(),
-            'kyc_form' => $this->whenLoaded('kyc'),
+            'kyc_form' => KycResource::make($this->whenLoaded('kyc')),
             "status" => $this->status,
             'social_links' => SocialLinkResource::make($this->whenLoaded('socialLinks')),
             $this->mergeWhen(auth()->check() && (!auth()->user()->hasRole('admin') && !auth()->user()->hasRole('super-admin')), function () use ($currentUser) {
