@@ -29,7 +29,7 @@ class UserResource extends JsonResource
             'is_subscribed' => $this->subscribe()->exists(),
             'kyc_form' => KycResource::make($this->whenLoaded('kyc')),
             "status" => $this->status,
-            'social_links' => SocialLinkResource::make($this->socialLinks),
+            'social_links' => $this->socialLinks,
             $this->mergeWhen(auth()->check() && (!auth()->user()->hasRole('admin') && !auth()->user()->hasRole('super-admin')), function () use ($currentUser) {
                 return ['is_followed' => auth()->user()->isFollowing($currentUser)];
             }),

@@ -15,7 +15,7 @@ class SocialLinkResource extends JsonResource
     {
         return [
             'facebook_url' => $this->whenLoaded('facebook_url'),
-            'twitter_url' => $this->whenLoaded('twiiter_url'),
+            'twitter_url' => $this->whenLoaded('twitter_url'),
             'instagram_url' => $this->whenLoaded('instagram_url'),
             'telegram_url' => $this->whenLoaded('telegram_url'),
             'website_url' => $this->whenLoaded('website_url'),
