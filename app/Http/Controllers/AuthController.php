@@ -170,7 +170,7 @@ class AuthController extends Controller
             }
 
             $socialLinks = $request->only(['facebook_url', 'twitter_url', 'telegram_url', 'website_url']);
-            $user->socialLinks()->updateOrCreate($socialLinks);
+            $user->socialLinks()->updateOrCreate(['socialable_id' => $user->id, 'socialable_type' => 'User'], $socialLinks);
 
             if ($request->hasFile('profile_photo')) {
                 $user->addMedia($request->profile_photo)->toMediaCollection('users_profile');
