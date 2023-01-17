@@ -18,6 +18,7 @@ use App\Http\Middleware\CheckSaleStateMiddleware;
 use App\Http\Middleware\IsActiveUserMiddleware;
 use App\Http\Middleware\IsAdminMiddleware;
 use App\Http\Middleware\IsSuperAdminMiddleware;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,9 +37,26 @@ Route::post('/login', [AuthController::class, 'adminLogin']);
 Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->middleware('guest')->name('password.email');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.update');
 
-Route::middleware([CheckSaleStateMiddleware::class])->get('/nfts', [NftController::class, 'index']);
-Route::middleware([CheckSaleStateMiddleware::class])->get('/latest-nfts', [NftController::class, 'latest']);
-Route::middleware([CheckSaleStateMiddleware::class])->get('/nfts/{nft}', [NftController::class, 'show']);
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return response()->json(['message' => 'Email verified successfully'], 200);
+
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::get('/nfts', [NftController::class, 'index'])->middleware('check_sale_state');
+Route::get('/latest-nfts', [NftController::class, 'latest'])->middleware('check_sale_state');
+Route::get('/nfts/{nft}', [NftController::class, 'show'])->middleware('check_sale_state');
 
 Route::get('/collections', [CollectionController::class, 'index']);
 Route::get('/collections/{collection}', [CollectionController::class, 'show']);

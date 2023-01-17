@@ -13,6 +13,7 @@ use App\Models\Subscribe;
 use App\Models\User;
 use Exception;
 use Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -167,6 +168,10 @@ class AuthController extends Controller
                     'user_id' => auth()->id(),
                     'email' => $request->email
                 ]);
+                if (is_null($user->email_verified_at)) {
+                    event(new Registered($user));
+                }
+
             }
 
             $socialLinks = $request->only(['facebook_url', 'twitter_url', 'telegram_url', 'website_url', 'instagram_url']);
