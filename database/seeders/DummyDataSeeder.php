@@ -14,6 +14,6 @@ class DummyDataSeeder extends Seeder
         $this->call(WatchesSeeder::class);
         $this->call(CollectionCollaboratorSeeder::class);
         $this->call(TransactionSeeder::class);
-        $this->call(KYCSeeder::class);
+//        $this->call(KYCSeeder::class);
     }
 }

@@ -31,7 +31,7 @@ class KycFactory extends Factory
             'phone_number' => fake()->phoneNumber(),
             'user_id' => User::inRandomOrder()->first()->id,
             'author_type' => $author_types[array_rand($author_types, 1)],
-            'status' => $statuses[array_rand($statuses, count($statuses) - 1)],
+            'status' => $statuses[array_rand($statuses, 3)],
             'author_art_type' => fake()->paragraph,
 
         ];

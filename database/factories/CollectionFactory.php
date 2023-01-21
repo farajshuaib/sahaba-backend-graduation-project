@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Blockchain;
 use App\Models\Category;
 use App\Models\Collection;
 use App\Models\User;
@@ -14,11 +15,12 @@ class CollectionFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => $this->faker->numberBetween(1, 9999999),
             'name' => $this->faker->realText(20),
             'description' => $this->faker->realText(50),
             'category_id' => Category::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
-            'collection_id' => $this->faker->unique()->uuid(),
+            'blockchain_id' => Blockchain::inRandomOrder()->first()->id,
             'is_sensitive_content' => $this->faker->boolean,
         ];
     }

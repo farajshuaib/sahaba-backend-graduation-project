@@ -17,6 +17,7 @@ class TransactionFactory extends Factory
             'nft_id' => Nft::inRandomOrder()->first()->id,
             'price' => $this->faker->numberBetween(0.01, 5.0),
             'type' => $types[array_rand($types)],
+            'tx_hash' => $this->faker->uuid()
         ];
     }
 }
