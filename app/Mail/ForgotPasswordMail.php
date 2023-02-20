@@ -25,7 +25,7 @@ class ForgotPasswordMail extends Mailable
     {
         return $this->from('support@sahabanft.com', 'SAHABA NFT')
             ->to($this->email)
-            ->view('emails.forgot-password', [
+            ->view('emails.forgot_password', [
                 'email' => $this->email,
                 'token' => $this->token
             ]);
