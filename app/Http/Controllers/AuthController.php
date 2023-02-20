@@ -27,66 +27,86 @@ class AuthController extends Controller
 {
     public function connectWallet(Request $request): JsonResponse
     {
-        $user = User::firstOrCreate(['wallet_address' => $request->wallet_address]);
+        $user = User::firstOrCreate([
+            'wallet_address' => $request->wallet_address,
+        ]);
 
         $user->fcm_token = $request->fcm_token;
         $user->save();
 
-        $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
+        $token = $user->createToken(
+            'API Token: ' . $request->header('User-Agent')
+        )->plainTextToken;
 
-
-        return response()->json([
-            'token' => $token,
-            'user' => UserResource::make($user->load('subscribe', 'socialLinks', 'subscribe', 'kyc'))
-        ], 200);
-
+        return response()->json(
+            [
+                'token' => $token,
+                'user' => UserResource::make(
+                    $user->load('subscribe', 'socialLinks', 'subscribe', 'kyc')
+                ),
+            ],
+            200
+        );
     }
 
     public function adminLogin(Request $request): JsonResponse
     {
-        $user = Admin::query()->where('email', $request->email)->first();
+        $user = Admin::query()
+            ->where('email', $request->email)
+            ->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
-                $token = $user->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
-                return response()->json([
-                    'token' => $token,
-                    'user' => $user->load('roles')
-                ], 200);
+                $token = $user->createToken(
+                    'API Token: ' . $request->header('User-Agent')
+                )->plainTextToken;
+                return response()->json(
+                    [
+                        'token' => $token,
+                        'user' => $user->load('roles'),
+                    ],
+                    200
+                );
             }
             return response()->json(['message' => __('auth.password')], 403);
         }
         return response()->json(['message' => __('passwords.user')], 404);
     }
 
-
     public function createAdmin(CreateAdminRequest $request): JsonResponse
     {
         $admin = Admin::query()->create([
             'username' => $request->username,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
         ]);
         $admin->assignRole('admin');
         $admin->save();
 
-        $token = $admin->createToken('API Token: ' . $request->header('User-Agent'))->plainTextToken;
+        $token = $admin->createToken(
+            'API Token: ' . $request->header('User-Agent')
+        )->plainTextToken;
 
-
-        return response()->json([
-            'token' => $token,
-            'user' => $admin
-        ], 200);
-
+        return response()->json(
+            [
+                'token' => $token,
+                'user' => $admin,
+            ],
+            200
+        );
     }
 
     public function IsLoggedIn(): JsonResponse
     {
         if (auth()->check()) {
-            return response()->json(['message' => 'success', 'user' => auth()->user()->load('roles')]);
+            return response()->json([
+                'message' => 'success',
+                'user' => auth()
+                    ->user()
+                    ->load('roles'),
+            ]);
         }
         return response()->json(['message' => 'failed'], 401);
     }
-
 
     public function logout(): Response
     {
@@ -98,25 +118,44 @@ class AuthController extends Controller
 
     public function sendResetLink(SendResetLinkRequest $request)
     {
-        $status = Password::sendResetLink($request->only('email'), function ($notifiable, $token) {
-            Mail::to($notifiable->email)->send(new ForgotPasswordMail($token, $notifiable->email));
-        });
+        try {
+            $status = Password::sendResetLink(
+                $request->only('email'),
+                function ($notifiable, $token) {
+                    Mail::to($notifiable->email)->send(
+                        new ForgotPasswordMail($token, $notifiable->email)
+                    );
+                }
+            );
 
-        if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => __('passwords.sent')], 200);
+            if ($status === Password::RESET_LINK_SENT) {
+                return response()->json(
+                    ['message' => __('passwords.sent')],
+                    200
+                );
+            }
+
+            return response()->json(['error' => trans($status)], 400);
+        } catch (Exception $error) {
+            return response()->json(['message' => $error->getMessage()], 400);
         }
-
-        return response()->json(['error' => trans($status)], 400);
     }
 
     public function resetPassword(ResetPasswordRequest $request)
     {
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
+            $request->only(
+                'email',
+                'password',
+                'password_confirmation',
+                'token'
+            ),
             function ($user, $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
+                $user
+                    ->forceFill([
+                        'password' => Hash::make($password),
+                    ])
+                    ->setRememberToken(Str::random(60));
 
                 $user->save();
             }
@@ -134,7 +173,7 @@ class AuthController extends Controller
         try {
             $user = auth()->user();
             $user->update([
-                'password' => Hash::make($request->new_password)
+                'password' => Hash::make($request->new_password),
             ]);
         } catch (Exception $error) {
             DB::rollBack();
@@ -152,8 +191,12 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
             $user = auth()->user();
-            if (!$user)
-                return response()->json(['message' => __('you_are_not_allowed_to_modify_account')], 403);
+            if (!$user) {
+                return response()->json(
+                    ['message' => __('you_are_not_allowed_to_modify_account')],
+                    403
+                );
+            }
 
             $user->update([
                 'first_name' => $request->first_name,
@@ -166,35 +209,57 @@ class AuthController extends Controller
             if ($request->email) {
                 Subscribe::query()->updateOrCreate([
                     'user_id' => auth()->id(),
-                    'email' => $request->email
+                    'email' => $request->email,
                 ]);
                 if (is_null($user->email_verified_at)) {
                     event(new Registered($user));
                 }
-
             }
 
-            $socialLinks = $request->only(['facebook_url', 'twitter_url', 'telegram_url', 'website_url', 'instagram_url']);
-            $user->socialLinks()->updateOrCreate(['socialable_id' => $user->id, 'socialable_type' => 'User'], $socialLinks);
+            $socialLinks = $request->only([
+                'facebook_url',
+                'twitter_url',
+                'telegram_url',
+                'website_url',
+                'instagram_url',
+            ]);
+            $user
+                ->socialLinks()
+                ->updateOrCreate(
+                    ['socialable_id' => $user->id, 'socialable_type' => 'User'],
+                    $socialLinks
+                );
 
             if ($request->hasFile('profile_photo')) {
-                $user->addMedia($request->profile_photo)->toMediaCollection('users_profile');
+                $user
+                    ->addMedia($request->profile_photo)
+                    ->toMediaCollection('users_profile');
             }
 
             if ($request->hasFile('banner_photo')) {
-                $user->addMedia($request->banner_photo)->toMediaCollection('users_banner');
+                $user
+                    ->addMedia($request->banner_photo)
+                    ->toMediaCollection('users_banner');
             }
 
             DB::commit();
-            return response()->json([
-                'user' => UserResource::make($user->load('subscribe', 'socialLinks', 'subscribe', 'kyc')),
-                'message' => __('user_updated_successfully')
-            ],
-                200);
+            return response()->json(
+                [
+                    'user' => UserResource::make(
+                        $user->load(
+                            'subscribe',
+                            'socialLinks',
+                            'subscribe',
+                            'kyc'
+                        )
+                    ),
+                    'message' => __('user_updated_successfully'),
+                ],
+                200
+            );
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
-
 }
