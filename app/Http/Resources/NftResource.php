@@ -17,6 +17,7 @@ class NftResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'file_path' => $this->file_path,
+            'file_type' => $this->file_type,
             'price' => $this->price,
             'like_count' => $this->likers()->count(),
             'watch_time' => $this->watchers()->count(),
