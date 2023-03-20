@@ -21,7 +21,7 @@ class CollectionController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $collections = Collection::withFilters()->where('blockchain_id', $request->chainId)->paginate(15);
+            $collections = Collection::withFilters()->paginate(15);
             return response()->json([
                 'data' => CollectionResource::collection($collections),
                 'meta' => PaginationMeta::getPaginationMeta($collections)

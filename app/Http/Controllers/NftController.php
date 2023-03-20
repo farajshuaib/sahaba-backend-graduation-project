@@ -24,9 +24,7 @@ class NftController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $nfts = Nft::withFilters()->whereHas('collection', function ($query) {
-                $query->where('blockchain_id', request('chainId'));
-            })->paginate(10);
+            $nfts = Nft::withFilters()->paginate(10);
 
             return response()->json([
                 'data' => NftResource::collection($nfts),
@@ -40,9 +38,7 @@ class NftController extends Controller
     public function latest(): JsonResponse
     {
         try {
-            $nfts = Nft::withFilters()->isPublished()->orderBy('created_at', 'desc')->whereHas('collection', function ($query) {
-                $query->where('blockchain_id', request('chainId'));
-            })->paginate(10);
+            $nfts = Nft::withFilters()->isPublished()->orderBy('created_at', 'desc')->paginate(10);
             return response()->json([
                 'data' => NftResource::collection($nfts),
                 'meta' => PaginationMeta::getPaginationMeta($nfts)
@@ -84,7 +80,7 @@ class NftController extends Controller
             return response()->json(['nft' => NftResource::make($nft), 'message' => __('nft_created_successfully')]);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['message' => $e], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
 
     }
