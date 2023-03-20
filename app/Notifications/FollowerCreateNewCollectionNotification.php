@@ -7,7 +7,6 @@ use App\Models\Collection;
 use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use NotificationChannels\Fcm\FcmChannel;
 use NotificationChannels\Fcm\FcmMessage;
 use NotificationChannels\Fcm\Resources\AndroidConfig;
 use NotificationChannels\Fcm\Resources\AndroidFcmOptions;
@@ -29,7 +28,7 @@ class FollowerCreateNewCollectionNotification extends Notification
 
     public function via($notifiable): array
     {
-        return ['database', FcmChannel::class, 'mail'];
+        return ['database', 'mail'];
     }
 
     public function toMail($notifiable): MailMessage

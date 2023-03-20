@@ -56,12 +56,15 @@ class CollectionController extends Controller
             }
             CollectionCollaborator::create(['collection_id' => $collection->id, 'user_id' => auth()->id()]);
             Notification::sendNow(auth()->user()->followers()->get(), new FollowerCreateNewCollectionNotification($collection, auth()->user()));
+
             DB::commit();
+
             return response()->json(['data' => CollectionResource::make($collection->load('category', 'socialLinks', 'user')), 'message' => __('collection_created_successfully')], 200);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e->getMessage()], 500);
         }
+
     }
 
 
