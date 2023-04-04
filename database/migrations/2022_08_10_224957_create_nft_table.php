@@ -12,11 +12,11 @@ return new class extends Migration {
             $table->foreignId('collection_id')->constrained();
             $table->foreignId('creator_id')->constrained('users');
             $table->foreignId('owner_id')->constrained('users');
-            $table->string('file_path');
-            $table->string('file_type');
-            $table->string('title');
+            $table->string('file_path', 90);
+            $table->string('file_type', 20);
+            $table->string('title', 50);
             $table->string('description');
-            $table->unsignedDouble('price',);
+            $table->unsignedDouble('price');
             $table->enum('status', ['published', 'hidden'])->default('published');
             $table->boolean('is_for_sale')->default(false);
             $table->timestamp('sale_end_at')->nullable();

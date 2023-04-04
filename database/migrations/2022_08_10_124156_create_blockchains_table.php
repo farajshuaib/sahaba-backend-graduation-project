@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('blockchains', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('symbol');
+            $table->string('name', 30);
+            $table->string('symbol', 10);
             $table->string('rpc_url')->unique();
             $table->string('explorer_url')->unique();
             $table->timestamps();

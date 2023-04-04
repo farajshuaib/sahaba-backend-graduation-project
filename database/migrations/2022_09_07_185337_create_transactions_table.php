@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignId('from')->constrained('users');
             $table->foreignId('to')->constrained('users');
             $table->unsignedDouble('price');
-            $table->string('tx_hash');
+            $table->string('tx_hash', 90);
             $table->enum('type', ['mint', 'set_for_sale', 'sale', 'update_price', 'cancel_sale']);
             $table->timestamps();
             $table->softDeletes();

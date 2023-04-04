@@ -14,14 +14,14 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string("first_name")->nullable();
-            $table->string("last_name")->nullable();
-            $table->string('username')->nullable();
-            $table->string('email')->nullable()->unique();
-            $table->string('bio')->nullable();
-            $table->string('wallet_address')->unique();
+            $table->string("first_name", 50)->nullable();
+            $table->string("last_name", 50)->nullable();
+            $table->string('username', 50)->nullable();
+            $table->string('email', 50)->nullable()->unique();
+            $table->string('bio', 255)->nullable();
+            $table->string('wallet_address', 42)->unique();
             $table->enum('status', ['active', 'suspended'])->default('active');
-            $table->string('fcm_token')->nullable();
+            $table->string('fcm_token', 152)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

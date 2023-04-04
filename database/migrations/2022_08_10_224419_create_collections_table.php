@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description');
+            $table->string('name', 50);
+            $table->text('description', 255);
             $table->foreignId('category_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->boolean('is_sensitive_content')->default(0);
