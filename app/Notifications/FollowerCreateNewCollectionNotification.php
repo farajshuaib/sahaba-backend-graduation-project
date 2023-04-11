@@ -26,9 +26,9 @@ class FollowerCreateNewCollectionNotification extends Notification
         $this->user = $user;
     }
 
-    public function via($notifiable): array
+    public function via(mixed $notifiable): array
     {
-        return ['database', 'mail'];
+        return ['database', 'mail', 'firebase'];
     }
 
     public function toMail($notifiable): MailMessage
