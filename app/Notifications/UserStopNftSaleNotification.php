@@ -7,6 +7,7 @@ use App\Models\Nft;
 use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\Fcm\FcmChannel;
 use NotificationChannels\Fcm\FcmMessage;
 use NotificationChannels\Fcm\Resources\AndroidConfig;
 use NotificationChannels\Fcm\Resources\AndroidFcmOptions;
@@ -33,7 +34,7 @@ class UserStopNftSaleNotification extends Notification
 
     public function via(mixed $notifiable): array
     {
-        return ['database', 'mail', 'firebase'];
+        return ['database', 'mail', FcmChannel::class];
     }
 
 

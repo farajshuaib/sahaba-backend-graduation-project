@@ -13,6 +13,7 @@ use NotificationChannels\Fcm\Resources\AndroidFcmOptions;
 use NotificationChannels\Fcm\Resources\AndroidNotification;
 use NotificationChannels\Fcm\Resources\ApnsConfig;
 use NotificationChannels\Fcm\Resources\ApnsFcmOptions;
+use NotificationChannels\Fcm\FcmChannel;
 
 class FollowerCreateNewCollectionNotification extends Notification
 {
@@ -28,7 +29,7 @@ class FollowerCreateNewCollectionNotification extends Notification
 
     public function via(mixed $notifiable): array
     {
-        return ['database', 'mail', 'firebase'];
+        return ['database', 'mail', FcmChannel::class];
     }
 
     public function toMail($notifiable): MailMessage
