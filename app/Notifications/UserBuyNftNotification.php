@@ -33,7 +33,7 @@ class UserBuyNftNotification extends Notification
 
     public function via(mixed $notifiable): array
     {
-        return ['database', 'mail'];
+        return ['database', 'mail', 'firebase'];
     }
 
 

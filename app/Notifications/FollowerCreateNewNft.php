@@ -39,7 +39,7 @@ class FollowerCreateNewNft extends Notification
      */
     public function via(mixed $notifiable): array
     {
-        return ['database', 'mail'];
+        return ['database', 'mail', 'firebase'];
     }
 
 
