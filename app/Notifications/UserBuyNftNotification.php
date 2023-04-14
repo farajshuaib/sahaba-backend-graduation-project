@@ -9,9 +9,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Fcm\FcmChannel;
 use NotificationChannels\Fcm\FcmMessage;
-use NotificationChannels\Fcm\Resources\AndroidConfig;
-use NotificationChannels\Fcm\Resources\AndroidFcmOptions;
-use NotificationChannels\Fcm\Resources\AndroidNotification;
 use NotificationChannels\Fcm\Resources\ApnsConfig;
 use NotificationChannels\Fcm\Resources\ApnsFcmOptions;
 
@@ -34,7 +31,7 @@ class UserBuyNftNotification extends Notification
 
     public function via(mixed $notifiable): array
     {
-        return ['database', 'mail',FcmChannel::class];
+        return ['database', 'mail', FcmChannel::class];
     }
 
 
@@ -45,11 +42,6 @@ class UserBuyNftNotification extends Notification
             ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
                 ->setTitle('NFT sold')
                 ->setBody($this->user->username . 'has bought new NFT.')
-            )
-            ->setAndroid(
-                AndroidConfig::create()
-                    ->setFcmOptions(AndroidFcmOptions::create()->setAnalyticsLabel('analytics'))
-                    ->setNotification(AndroidNotification::create()->setColor('#0A0A0A'))
             )->setApns(
                 ApnsConfig::create()
                     ->setFcmOptions(ApnsFcmOptions::create()->setAnalyticsLabel('analytics_ios')));
