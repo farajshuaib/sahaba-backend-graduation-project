@@ -162,7 +162,6 @@ class NftController extends Controller
 
         DB::beginTransaction();
         try {
-            $nft->is_for_sale = !$nft->is_for_sale;
             Transaction::query()->create([
                 'nft_id' => $nft->id,
                 'from' => $nft->owner_id,
@@ -171,6 +170,7 @@ class NftController extends Controller
                 'type' => $nft->is_for_sale ? 'cancel_sale' : 'set_for_sale',
                 'tx_hash' => $request->tx_hash
             ]);
+            $nft->is_for_sale = !$nft->is_for_sale;
             $nft->save();
             Notification::sendNow(auth()->user()->followers()->get(), new UserSetNftForSaleNotification($nft, auth()->user()));
             DB::commit();
